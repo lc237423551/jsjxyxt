@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.StudentDao">
+	<resultMap type="student" id="studentResult">
+		<id column="sno" property="sno"/>
+		<result column="sname" property="sname"/>
+		<result column="ssex" property="ssex"/>
+		<result column="sid" property="sid"/>
+		<result column="semail" property="semail"/>
+		<result column="sphone" property="sphone"/>
+		<result column="sadress" property="sadress"/>
+		<result column="sremark" property="sremark"/>
+		<association property="cla" javaType="cla" >
+    		<id column="cno" property="cno"/>
+    		<result column="cname" property="cname"/>
+    		<association property="speciality" javaType="Speciality" >
+    			<id column="specid" property="specid"/>
+    			<result column="specname" property="specname"/>
+		    </association>
+		</association>
+	</resultMap>
+	<resultMap type="student" id="studentResult2">
+		<id column="sno" property="sno"/>
+		<result column="sname" property="sname"/>
+		<result column="semail" property="semail"/>
+		<result column="sphone" property="sphone"/>
+		<association property="cla" javaType="cla" >
+    		<id column="cno" property="cno"/>
+    		<result column="cname" property="cname"/>
+		</association>
+	</resultMap>
+	<select id="findStudent" parameterType="student"  resultMap="studentResult">
+		        select * from student,cla,speciality
+		 <where>
+			<if test="sno!=null and sno!='' ">
+				and sno =#{sno}
+			</if>
+			<if test="sname!=null and sname!='' ">
+				and sname like concat('%',#{sname},'%')
+			</if>
+			<if test="cno!=null and cno!='' ">
+				and student.cno=#{cno}
+			</if>
+			   and student.cno=cla.cno and cla.specid=speciality.specid;
+		</where>
+		       
+	</select>
+	
+	<update id="updateStudent" parameterType="student"  >
+		update student
+		<set>
+			<if test=" sname != null and sname != ''"> sname= #{sname},</if>
+			<if test=" sid != null and sid != ''"> sid= #{sid},</if>
+			<if test=" ssex != null and ssex != ''"> ssex= #{ssex},</if>
+			<if test=" semail != null and semail != ''"> semail= #{semail},</if>
+			<if test=" sphone != null and sphone != ''"> sphone= #{sphone},</if>
+			<if test=" sadress != null and sadress != ''"> sadress= #{sadress},</if>
+			<if test=" sremark != null and sremark != ''"> sremark= #{sremark},</if>
+			<if test=" cno != null and cno != ''"> cno= #{cno},</if>
+		</set>
+		where sno = #{sno}
+	</update>
+	<delete id="deleteStudent" parameterType="String">
+		<!-- 删除请假表 -->
+        delete from vacate where sno=#{sno};
+        <!-- 删除实训请假表-->
+		delete from practiceappli where sno=#{sno};
+	 	<!-- 删除实训的表1 -->
+	 	delete from shixunInfo where sno=#{sno};
+	 	<!-- 删除实训的表2 -->
+	 	delete from trainInfo where sno=#{sno};
+	 	<!-- 删除周总结 -->
+	 	delete from weekwork where sno=#{sno};
+	 	<!-- 删除学生用户 -->
+	 	delete from user where users=#{sno};
+	 	<!-- 删除学生 -->	
+		delete from student where sno=#{sno};
+	</delete>
+	
+	<insert id="insertStudent" parameterType="student" >
+		insert into student(sno,sname,ssex,cno) values(#{sno},#{sname},#{ssex},#{cno});
+	</insert>
+	
+	
+	<!-- 批量添加 -->
+	 <insert id="insertAll" parameterType="java.util.List">
+        insert into student (sno, sname,cno)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sno}, #{item.sname},#{item.cno})
+        </foreach>
+    </insert>
+	
+	<select id="getStudentbyId" parameterType="string" resultMap="studentResult2">
+		select * from student s,cla c
+		   where s.cno=c.cno
+		   and s.sno=#{studentId}
+	</select>
+	
+	
+</mapper>

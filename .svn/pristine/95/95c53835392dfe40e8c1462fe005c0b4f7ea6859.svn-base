@@ -1,0 +1,144 @@
+package com.java.controller;
+
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.java.entity.Advice;
+import com.java.entity.User;
+import com.java.service.AdviceService;
+import com.java.service.UnitService;
+import com.java.service.UserService;
+import com.java.service.VacateService;
+import com.java.service.WeekworkService;
+import com.java.util.ResponseUtil;
+import com.java.util.StringUtil;
+import com.java.util.WordGenerator;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+@Controller
+@RequestMapping(value="/advice")
+public class AdviceController {	
+	@Resource
+	private AdviceService adviceService;
+	
+	@Resource
+	private UserService userService;
+	
+	@Autowired
+	private VacateService vacateService;
+	
+	@Autowired
+	private UnitService unitService;
+	
+	//添加一个公告
+	@RequestMapping("/insert")
+	public String insert(HttpServletResponse response,HttpServletRequest request) throws IOException{
+		String content=request.getParameter("content");
+		User user=(User)request.getSession().getAttribute("user");
+		String filename=request.getParameter("filename");
+		String users=user.getUsers();
+		//1添加基本信息
+		Advice advice=new Advice();
+		advice.setContent(content);
+		advice.setUsers(users);
+		advice.setFilename(filename);
+		JSONObject result=new JSONObject();
+    	try{
+    		adviceService.insertAdvice(advice);
+			result.put("errmsg", "1");
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			result.put("errmsg", "0");
+			List<Advice> list=adviceService.findAdvice(null);
+			JSONArray jsonArray=JSONArray.fromObject(list);
+			result.put("result", jsonArray);
+			ResponseUtil.write(response, result);
+			return null;
+		}
+    	List<Advice> list=adviceService.findAdvice(null);
+		JSONArray jsonArray=JSONArray.fromObject(list);
+		result.put("result", jsonArray);
+		ResponseUtil.write(response, result);
+		return null;
+	}
+	
+	@RequestMapping("/getAdviceInfo")
+	public String getAdviceInfo(HttpServletResponse response,HttpServletRequest request) throws IOException{
+		User user=(User)request.getSession().getAttribute("user");
+		String users=user.getUsers();
+		Advice advice=new Advice();
+		advice.setUsers(users);
+		List<Advice> list=adviceService.findAdvice(advice);
+		advice=list.get(0);
+		JSONObject result=new JSONObject();
+		result.put("result", advice);
+		ResponseUtil.write(response, result);
+		return null;
+	}
+    //更新公告
+	@RequestMapping("/update")
+	public String update(HttpServletResponse response,HttpServletRequest request) throws IOException{
+		String advice_id=request.getParameter("advice_id");
+		String content=request.getParameter("content");
+		
+		StringUtil su=new StringUtil();
+		if(!su.isEmpty(content)){
+			Advice advice=new Advice(Integer.parseInt(advice_id),content);
+			adviceService.updateAdvice(advice);
+		}
+		return null;
+	}
+	
+	@RequestMapping("/get")//得到所有公告的信息
+	public String get(HttpServletResponse response,HttpServletRequest request) throws IOException{
+		Advice advice=new Advice();
+		List<Advice> list=adviceService.findAdvice(advice);
+		JSONArray jsonArray=JSONArray.fromObject(list);
+		JSONObject result=new JSONObject();
+		result.put("result", jsonArray);
+		result.put("nums", list.size());
+		ResponseUtil.write(response, result);
+		return null;
+	}
+	@RequestMapping("/delete")//删除公告
+	public String delete(HttpServletResponse response,HttpServletRequest request) throws IOException {
+		JSONObject result=new JSONObject();
+		String advice_id=request.getParameter("advice_id");
+		try{
+			adviceService.deleteAdvice(advice_id);
+			result.put("errmsg", "1");
+		}catch (Exception e) {
+			result.put("errmsg", "0");
+		}
+		List<Advice> list=adviceService.findAdvice(null);
+		JSONArray jsonArray=JSONArray.fromObject(list);
+		result.put("result", jsonArray);
+		ResponseUtil.write(response, result);
+		return null;
+	}
+	
+ }

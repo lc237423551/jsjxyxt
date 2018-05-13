@@ -1,0 +1,67 @@
+<draggable></draggable>
+<div class="modal-body wrapper bg-light"  >
+
+  <div class="row">
+    <div class="col-sm-12 ">
+    <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加学生</h3>
+      <form  name="form" class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 row" >学号:</label>
+          <div class="col-sm-9 p-r">
+          	<input type="text" class="form-control no-border" ng-model="stu.sno" name="sno" pattern="^[a-zA-Z0-9]{11,15}$"  placeholder="格式:2014111****" required ng-mousedown="clearDown($event)"> 
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.sno.$dirty && form.sno.$valid"></span>   
+	          <span class="required text-danger text-lg">*</span>
+	      	  <span class="text-danger p-t block" ng-show=" form.sno.$dirty && form.sno.$invalid&&form.sno.$error.pattern">请输入11~15位学号</span>
+	          </div>
+        </div>
+        <div class="form-group"a>
+          <label class="control-label col-sm-3 row">姓名:</label>
+          <div class="col-sm-9 p-r">
+          	<input type="text" class="form-control" ng-model="stu.sname"name="sname" placeholder="格式:张**" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.sname.$dirty && form.sname.$valid"></span> 
+	          <span class="text-danger p-t block" ng-show=" form.sname.$dirty && form.sname.$invalid">此项必填</span>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">性别:</label>
+          <div class="col-sm-9 p-r">
+          	<select class="form-control col-sm-3" ng-model="stu.ssex" required ng-mousedown="clearDown($event)">
+                <option>男</option>
+                <option>女</option>
+          	</select>
+          	<span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+         	<div class="form-group">
+		        <label class="control-label col-sm-3 row">专业:</label>
+		        <div class="col-sm-9 p-r">		
+			       <ui-select ng-model="stu.spec" theme="bootstrap" ng-change="changeSpec(stu.spec)" ng-mousedown="clearDown($event)">
+			            <ui-select-match placeholder="选择或搜索专业">{{$select.selected.specname}}</ui-select-match>
+			            <ui-select-choices  repeat="item in dropdownspec | filter: $select.search">
+			              <span ng-bind-html="item.specname | highlight: $select.search"></span>	
+			            </ui-select-choices>
+			        </ui-select>	
+			        <span class="required text-danger text-lg">*</span>	
+		        </div>
+		      </div>
+         	<div class="form-group">
+		        <label class="control-label col-sm-3 row">班级:</label>
+		        <div class="col-sm-9 p-r">		
+		          <ui-select ng-model="stu.classes" theme="bootstrap" ng-disabled="hasChooseSpec" required ng-mousedown="clearDown($event)">
+		            <ui-select-match placeholder="选择或搜索班级">{{$select.selected.cname}}</ui-select-match>
+		            <ui-select-choices  repeat="item in dropdowncp | filter: $select.search | filter:{specname:filterclass}">
+		              <span ng-bind-html="item.cname | highlight: $select.search"></span>
+		            </ui-select-choices>
+		          </ui-select>
+		          <span class="required text-danger text-lg">*</span>
+		        </div>
+		      </div>            
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveStudent(form)" ><strong>添加</strong></button>
+      	  <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ng-click="reset(form)"><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>

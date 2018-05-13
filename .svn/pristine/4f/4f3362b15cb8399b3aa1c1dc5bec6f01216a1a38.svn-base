@@ -1,0 +1,92 @@
+
+
+app.controller('sycode', ['$scope', '$filter', '$http', '$timeout', 'editableOptions', 'editableThemes', 'toaster','$filter','$q',
+  function($scope, $filter, $http, $timeout, editableOptions, editableThemes, toaster, $filter, $q){
+    editableThemes.bs3.inputClass = 'input-sm';
+    editableThemes.bs3.buttonsClass = 'btn-sm';
+    editableOptions.theme = 'bs3';
+    
+    $scope.newsInsert='0';
+    $http.get('/jsjxyxt/sycode/get.do').success(function(data){
+    	$scope.sycodes = data.result;
+    	
+    })
+ 
+ 
+     
+    $scope.saveUser = function(change, codeid) {
+    	var url ='/jsjxyxt/sycode/update.do'
+    	var data = {
+    			"codeid": codeid,
+    			"codeno": change.codeno,
+    			"codevalue": change.codevalue,
+    			"codecontent": change.codecontent,
+    			"codename": change.codename,
+    		}
+    	$http.post(url, data).success(function(data){
+			    $scope.toaster = {
+			            type: 'success',
+			            title: '系统提示',
+			            text: '修改成功'
+			        };
+    		toaster.pop($scope.toaster.type, $scope.toaster.title, $scope.toaster.text);
+    	})
+    }
+
+    //删除
+    $scope.removeUser = function(codeid) {
+    	$scope.isAlertShow = true;
+        var remove = $scope.$on('clickOk',function(event, data){
+        	var url = '/jsjxyxt/sycode/delete.do';
+        	 var data={
+        			 "codeid": codeid
+     		}
+		    	$http.post(url,data).success(function(data){
+		    		if(data.errmsg==0){
+		    			toaster.pop("error","系统提示","删除失败");
+		    		}else{
+		    			toaster.pop("success","系统提示","删除成功");
+		    		}
+		    		
+		    		$timeout(function(){
+		    			$scope.$apply(function(){
+		    				$scope.sycodes = data.result;
+		    			})
+		    		})
+		    	})
+            }
+        )
+         $scope.$on('clickCanel',function(event, data){   
+        	    if(remove())
+        	    remove = null;
+                return;
+            }
+        )
+    };
+    
+    
+
+    $scope.saveSycode = function() {
+    	var url = '/jsjxyxt/sycode/add.do',
+		data = {
+    			"codeno": $scope.sycode.codeno,
+    			"codevalue":  $scope.sycode.codevalue,
+    			"codecontent":  $scope.sycode.codecontent,
+    			"codename":  $scope.sycode.codename,
+		}
+	$http.post(url,data).success(function(data){
+		$scope.sycodes = data.result;
+		toaster.pop("success", "系统提示", '保存成功');
+		$scope.newsInsert=data.news;
+		$scope.sycode={
+				sycodeno:'',
+				codevalue:'',
+				codecontent:'',
+				codename:'',
+		}
+	})
+   };   
+  
+
+
+}]);

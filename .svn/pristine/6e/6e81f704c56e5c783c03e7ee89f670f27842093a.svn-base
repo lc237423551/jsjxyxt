@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <h3 class="modal-title">撤销理由</h3>
+</div>
+<div class="modal-body">
+     <div class="form-group">
+		  <input type="text" class="form-control ng-pristine ng-valid ng-touched" ng-model="write.v_backreason" placeholder="撤销理由" >
+	</div>
+</div>
+<div class="modal-footer">                  
+    <button class="btn btn-default" ng-click="cancel()">取消</button>
+    <button class="btn btn-primary" ng-click="ok()">确认</button>
+</div>

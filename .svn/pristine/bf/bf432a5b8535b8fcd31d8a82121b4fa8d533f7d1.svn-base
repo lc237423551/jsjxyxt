@@ -1,0 +1,46 @@
+/**
+ * 实训公司情况管理
+ */
+app.controller('trainCompanyState',['$scope', '$http', function($scope, $http){
+	  $scope.search1={
+				place:'',
+				companyname:''
+			}
+	//得到公司信息
+		var da={
+				"uname":$scope.search1.companyname.uname,
+				"ucity":$scope.search1.place.ucity
+			    }
+	  $scope.wait=1;
+	$http.post('/jsjxyxt/unit/getwithnum.do',da).success(function(data){
+		$scope.units = data.result;
+		$scope.nums=data.result.length;
+		 $scope.wait=0;
+	})
+	//城市下拉框
+
+		var url="/jsjxyxt/unit/getCity.do";
+	 $http.get(url).success(function(data){
+			$scope.place=data.result;
+		})
+		//城市名称下拉框
+		var url="/jsjxyxt/unit/getName.do";
+	 $http.get(url).success(function(data){
+			$scope.companyname=data.result;
+		})
+ 
+	$scope.search=function(){
+		 $scope.wait=1;
+		var data={
+				"uname":$scope.search1.companyname.uname,
+    			"ucity":$scope.search1.place.ucity
+		}
+		var url="/jsjxyxt/unit/getwithnum.do";
+		$http.post(url, data).success(function(data){
+    		$scope.units = data.result;
+    		$scope.nums=data.result.length;
+    		 $scope.wait=0;
+    	})
+	}
+	
+}])

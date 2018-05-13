@@ -1,0 +1,236 @@
+<div class="wrapper-md">
+	<div class="col">
+	    <div class="wrapper-md m-l-lg">
+	      <ul class="timeline">
+	        <li class="tl-header">
+	          <div class="btn btn-info">审核流程</div>
+	        </li>
+	        <li class="tl-item" ng-repeat="item in liuchengs">
+	          <div class="tl-wrap b-{{item.scolor}}">
+	          </div>
+	          <span class="tl-data {{item.scolor}}">{{item.status}}</span>
+	        </li>
+	        <i class="fa fa-check tl-icon {{checkcolor}}" aria-hidden="true"></i>
+	      </ul>
+	    </div>
+	  </div>
+	<!-- <div data-ng-include=" './tpl/PracticeMag/shenqingfujian.html' "></div>-->
+	<div ng-show="backreason" class="col-sm-12 t-c text-danger text-bold text-2x">您的申请被驳回，理由如下：{{backreason}},请自行撤销!!!</div>
+	<div class="shenqing_warning t-c danger" ng-show="!canshenqing"><p>同学，请先正确填写个人信息中的电话和邮箱，才可以开始实训和请假的申请，请留下正确的联系方式，方便我们联系你!!</p><img src="./img/shenqing1.jpg" />
+	</div>
+	<div class="row row-sm" ng-show="status>=1 && canshenqing">
+	    <div class="col-sm-6">
+	      <div class="panel b-a">
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">请假条</span>          
+	        </div> 
+	        <div class="wrapper-md" style="height:400px; overflow:scroll">
+		      <p><span>请假开始时间:</span><span>{{fujian_start}}</span></p>
+		      <p><span>请假结束时间:</span><span>{{fujian_end}}</span></p>
+		      <p><span>离校时间:</span><span>{{fujian_lixiao}}</span></p>
+		      <p><span>家庭电话:</span><span>{{phone}}</span></p>
+		      <p><span>住宿位置:</span><span>{{position}}</span></p>
+		      <p><span>请假事由:</span><span>{{reason}}</span></p>
+		</div>
+	      </div>
+	    </div>
+	    <div class="col-sm-6" >
+	      <div class="panel b-a">
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">实训申请表</span>          
+	        </div>
+	        <div class="wrapper-md" style="height:400px; overflow:scroll">
+		      <p><span>实习题目:</span><span>{{title}}</span></p>
+		      <p><span>实习单位:</span><span>{{ otherCompany || companyName}}</span></p>
+		      <p ng-if="showOther" class="p-r" style="padding-right: 10px;">
+         			
+         	  </p>
+		      <p><span>地址:</span><span>{{companyposition}}</span></p>
+		      <p><span>协作指导老师姓名:</span><span>{{xiezuoname}}</span></p>
+		      <p><span>协作指导老师职务:</span><span>{{zhiwu}}</span></p>
+		      <p><span>老师联系电话:</span><span>{{teacherphone}}</span></p>
+		      <p><span>校内指导老师:</span><span>{{tname}}</span></p>
+		      <p><span>分散实习理由:</span><span>{{shixireason}}</span></p>
+			</div>
+	    </div>
+	   </div>
+			<a ng-if="status<=1" class="btn btn-warning font-bold" style="position: relative; top: -10px; left:44%; transform: translate(-50%, 0)" ng-click="chexiaoShenqing()" >撤销请假条和申请表</a>
+			<a ng-if="status<=1" class="btn btn-success font-bold" style="position: relative; top: -10px; left:44%; transform: translate(-50%, 0)" href="/jsjxyxt/student/exportWord.do" >下载请假条与申请表</a>
+	  </div>
+	  
+	<div class="row row-sm" ng-show="status<1 && canshenqing">
+	    <div class="col-sm-6">
+	      <div class="panel b-a">
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">请假条</span>          
+	        </div> 
+	        <div class="wrapper-md" style="height:500px; overflow:scroll">
+		      <form class="form-horizontal" name="qingjiatiao">
+		            <div >
+		            	<div class="form-group" >
+			            	<label class="col-sm-3 control-label">请假开始时间:</label>
+			             	<div class="padder col-sm-9">
+			             		<div class=" input-group ">
+				             		<input  type="text" class="form-control" datepicker-popup="yyyy/MM/dd" ng-model="qing_jia_start_time" is-open="openedstart" min-date="minDate" readonly="readonly"   datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="关闭"/>
+						              <span class="input-group-btn">
+						                <button type="button" class="btn btn-default" ng-click="openstart($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+						              </span>
+				             	</div>
+				             	<span class="required text-danger text-lg">*</span>
+			             	</div>
+			           </div>
+			           <div class="form-group" >
+			            	<label class="col-sm-3 control-label">请假结束时间:</label>
+			             	<div class="padder col-sm-9">
+			             		<div class=" input-group ">
+				             		<input type="text" class="form-control" datepicker-popup="yyyy/MM/dd" readonly="readonly"  ng-model="qing_jia_end_time"  is-open="openedend"  min-date="minDate"  datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true"  max-date="maxDate" close-text="关闭" />
+						              <span class="input-group-btn">
+						                <button type="button" class="btn btn-default" ng-click="openend($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+						              </span>
+				             	</div>
+				             	<span class="required text-danger text-lg">*</span>
+				             	<div class="m-t-xs danger" ng-show="qing_jia_end_time < qing_jia_start_time">请假结束时间必选在请假开始时间之后</div>
+			             	</div>
+			           </div>
+			           <div class="form-group">
+			            	<label class="col-sm-3 control-label">离校时间:</label>
+			             	<div class="padder col-sm-9">
+			             		<div class=" input-group ">
+				             		<input type="text" class="form-control" datepicker-popup="yyyy/MM/dd" readonly="readonly"  is-open="openedlixiao" ng-model="li_xiao_time"  min-date="minDate"  max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="关闭" />
+						              <span class="input-group-btn">
+						                <button type="button" class="btn btn-default" ng-click="lixiao($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+						              </span>
+				             	</div>
+				             	<span class="required text-danger text-lg">*</span>
+				             	<div class="danger m-t-xs" ng-show="qing_jia_end_time < li_xiao_time || li_xiao_time < qing_jia_start_time">离校时间必须在请假开始时间之后并且不超过请假结束时间</div>
+			             	</div>
+			           </div>
+		            </div>
+		            
+		           <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-3 control-label">家庭电话:</label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="inputPassword3"  ng-model="phone" placeholder="156**" name="phonenum" pattern="(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}" required>
+				      <div ng-show="qingjiatiao.phonenum.$touched && (qingjiatiao.phonenum.$invalid || qingjiatiao.phonenum.$error.pattern)" class="danger m-t-xs">电话号码好好写啊，亲</div>
+				   	  <span class="required text-danger text-lg">*</span>
+				    </div>
+				    
+				  </div>
+				   <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-3 control-label">住宿位置:</label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="inputPassword3" ng-model="position" placeholder="济南市-" required name="positionname" >
+				      <div ng-show="qingjiatiao.positionname.$touched && qingjiatiao.positionname.$invalid" class="danger m-t-xs">写点地址吧，别空着，亲</div>
+				      <span class="required text-danger text-lg">*</span>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-3 control-label">请假事由:</label>
+					 <div class="col-sm-9">
+					 	<textarea  ng-model="reason" type="textarea" name="qingjiashiyou" class="form-control" ng-model="email" required style="resize: none;" required ></textarea>
+					 	<div ng-show="qingjiatiao.qingjiashiyou.$touched && qingjiatiao.qingjiashiyou.$invalid" class="danger m-t-xs">总要有点理由吧，亲</div>
+						<span class="required text-danger text-lg">*</span>
+					 </div>
+					</div>
+					 <div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-3 control-label">校内指导教师:</label>
+					 <div class="col-sm-9">
+					 	<ui-select ng-model="tea.teacher" theme="bootstrap" required>
+				            <ui-select-match placeholder="搜索">{{$select.selected.tname}}</ui-select-match>
+				            <ui-select-choices repeat="item in teachers | filter: $select.search">
+				              <div ng-bind-html="item.tname | highlight: $select.search"></div>
+				             
+				            </ui-select-choices>
+				          </ui-select>
+				          <span class="required text-danger text-lg">*</span>
+					 </div>
+					</div>
+		      </form>
+		</div>
+	      </div>
+	    </div>
+	    <div class="col-sm-6" >
+	      <div class="panel b-a">
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">实训申请表</span>          
+	        </div>
+	        <div class="wrapper-md" style="height:500px; overflow:scroll">
+		      <form name="shixishenqing" class="form-horizontal">
+		        <div class="form-group">
+				    <label for="inputEmail3" class="col-sm-3 control-label">实习题目:</label>
+				    <div class="col-sm-9">
+				      <input ng-model="title" type="text" class="form-control" id="inputEmail3" name="title" placeholder="管理系统..." required >
+				      <div ng-show="shixishenqing.title.$touched && (shixishenqing.title.$invalid || shixishenqing.title.$error.pattern)" class="danger m-xs">这个要认真填的，亲</div>
+				      <span class="required text-danger text-lg">*</span>
+				    </div>
+				  </div>
+				 <div class="form-group">	
+				 	  <label for="inputEmail3" class="col-sm-3 control-label">实习单位:</label>
+				 	  <div class="col-sm-9">
+				      	<select ng-model="companyName" ng-change="showOtherEvent()" class="form-control" required name="shixidanwei">
+				      		<option  ng-repeat="company in companys">{{company.uname}}</option>
+				      	</select>
+				      	<span class="required text-danger text-lg">*</span>
+				      	 <div ng-show="shixishenqing.shixidanwei.$touched && shixishenqing.shixidanwei.$invalid" class="danger m-t-xs">需要选一个公司的，亲</div>
+         				 <div ng-if="showOther" class="p-r" style="padding-right: 10px;">
+         				 	<input ng-model="$parent.otherCompany"  type="text" class="form-control m-t " placeholder="公司名称" required name="otherCompany">
+	         				 <span class="required text-danger text-lg">*</span>
+	         				 <div ng-show="shixishenqing.otherCompany.$touched && shixishenqing.otherCompany.$invalid" class="danger m-t-xs">填下公司名称，亲</div>
+         				 </div>
+
+				    </div>
+			        </div>
+				  <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-3 control-label">地址:</label>
+				    <div class="col-sm-9">
+				      <input ng-model="companyposition" type="text" class="form-control" id="inputPassword3" placeholder="济南市-" required name="shixiposition">
+				      <div ng-show="shixishenqing.shixiposition.$touched && shixishenqing.shixiposition.$invalid" class="danger">留个地址吧，亲</div>
+				       <span class="required text-danger text-lg">*</span>
+				    </div>
+				  </div>
+				 
+				  <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-3 control-label">协作指导老师姓名:</label>
+				    <div class="col-sm-9">
+				      <input ng-model="xiezuoname" type="text" class="form-control" id="inputPassword3" placeholder="李*" required pattern="^[\u4E00-\u9FFF]+$" name="zhidaoxingming">
+				      <div ng-show="shixishenqing.zhidaoxingming.$touched && (shixishenqing.zhidaoxingming.$invalid || shixishenqing.zhidaoxingming.$error.pattern)" class="danger m-xs">随便写个指导老师吧，亲</div>
+				       <span class="required text-danger text-lg">*</span>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-3 control-label">协作指导老师职务:</label>
+				    <div class="col-sm-9">
+				      <input ng-model="zhiwu" type="text" class="form-control" id="inputPassword3" placeholder="经理等其他" required  name="zhidaozhiwu">
+				      <div ng-show="shixishenqing.zhidaozhiwu.$touched && shixishenqing.zhidaozhiwu.$invalid " class="danger m-xs">老师总要有个官吧，亲</div>
+				       <span class="required text-danger text-lg">*</span>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-3 control-label">老师联系电话:</label>
+				    <div class="col-sm-9">
+				      <input ng-model="teacherphone" type="text" class="form-control" id="inputPassword3" placeholder="156**" required pattern="(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}" name="zhidaodianhua">
+				      <div ng-show="shixishenqing.zhidaodianhua.$touched && (shixishenqing.zhidaodianhua.$invalid || shixishenqing.zhidaodianhua.$error.pattern)" class="danger m-xs">留个老师电话吧，亲</div>
+				       <span class="required text-danger text-lg">*</span>
+				    </div>
+				  </div>
+				  
+				<div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-3 control-label">分散实习理由:</label>
+					 <div class="col-sm-9">
+					 	<textarea ng-model="shixireason" type="textarea" name="shixiliyou" class="form-control" ng-model="email" required style="resize: none;" required></textarea>
+					 	<div ng-show="shixishenqing.shixiliyou.$touched && shixishenqing.shixiliyou.$invalid" class="danger m-t-xs">总要有点理由吧，亲</div>
+					 	 <span class="required text-danger text-lg">*</span>
+					 </div>
+					</div>
+					
+		      </form>
+			</div>
+	    </div>
+	   </div>
+			<a href class="btn btn-success font-bold" style="position: relative; top: -10px; left:50%; transform: translate(-50%, 0)" ng-click="submitShenqing()" ng-disabled="qingjiatiao.$invalid || shixishenqing.$invalid" >提交请假条和申请表</a>
+	  </div>
+
+<ng-alert ng-if="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+

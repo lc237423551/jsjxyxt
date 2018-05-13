@@ -1,0 +1,34 @@
+<div class="row-row" ng-controller="weeksumCtr">
+<div class=" m-t-xxl m-l-xxl"  ng-if="tab==0">
+  <span class="h3 text-danger "  >实训未开始，无可编辑的周总结</span>
+</div>
+      
+        <div class="cell">
+
+          <div class="cell-inner" ng-if="tab==1">
+            <div class="wrapper-sm">
+			            <div class="clear m-b">
+			               <span class="h3 text-black"> {{student.student.sname}}</span>&nbsp;
+			               <span class="h3 text-black"> {{student.student.sno}}</span>
+			               <strong class="m-l "><i class="glyphicon glyphicon-paperclip"></i> 实训题目:</strong><strong class="m-l text-danger">&nbsp;{{student.subjectname.name}}&nbsp;&nbsp;&nbsp;</strong>
+			               <a   ui-sref="apps.contact.detail({id: student.subjectname.id})"><button class="btn btn-success">实训任务书</button></a>
+			               <strong class="m-l "><i class="icon-pointer"></i>实训单位:</strong><strong class="m-l text-danger">&nbsp;{{student.unit.uname}}&nbsp;&nbsp;&nbsp;</strong>
+			                  <button class="btn btn-info btn-sm pull-right" ng-show="!isShowAllWeek" ng-click="changeWeekShow()">显示全部周</button>
+                              <button class="btn btn-info btn-sm pull-right" ng-show="isShowAllWeek"  ng-click="changeWeekShow()">显示可编辑周</button>
+			            </div>
+          
+      		  <div ng-show="isShowAllWeek" class="m-t">
+      		  	 <a ng-repeat="week in weeks" class="btn btn-default w-xs  btn-sm " ui-sref="apps.contact.weeksum.detail({week: week})" ui-sref-active="btn-info">第{{week}}周</a>
+      		  </div>
+      		  <div ng-show="!isShowAllWeek" class="m-t">
+      		  	 <a ng-repeat="week in canEditWeeks" class="btn btn-default w-xs  btn-sm " ui-sref="apps.contact.weeksum.detail({week: week})" ui-sref-active="btn-info">第{{week}}周</a>
+      		  </div>
+      		   <!-- weeksum -->
+             <div ui-view></div>
+              </div>
+              <!-- / fields -->
+               <!-- week -->
+              
+            </div>            
+          </div>
+</div>

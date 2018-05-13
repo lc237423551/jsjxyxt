@@ -1,0 +1,111 @@
+<!-- 实训指导教师界面 -->
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="wrapper-sm pr" >
+    <div class=" pull-left " style="padding:10px 0">
+  		<span class="m-n font-thin h4" >实训分配</span>
+  	</div>
+	<div class="clearfix">
+			    <div class="wrapper-sm col-sm-6">
+			    	<ui-select ng-model="search.classes" class="col-sm-3 no-lrpadder" name="classes"  theme="bootstrap" required >
+			            <ui-select-match placeholder="选择或搜索班级">{{$select.selected.cname }}</ui-select-match>
+			            <ui-select-choices  repeat="item in dropdowncp | filter: $select.search ">
+			              <span ng-bind-html="item.cname | highlight: $select.search"></span>
+			            </ui-select-choices>
+			          	</ui-select>
+			    		<ui-select ng-model="search.teachers" class="col-sm-3 no-lrpadder m-l" name="teachers"  theme="bootstrap" required >
+			            <ui-select-match placeholder="选择或搜索教师">{{$select.selected.tname  }}</ui-select-match>
+			            <ui-select-choices  repeat="item in teacherss | filter: $select.search ">
+			              <span ng-bind-html="item.tname | highlight: $select.search"></span>
+			            </ui-select-choices>
+			          	</ui-select>
+	          		<button class="btn btn-info col-sm-2 m-l" ng-click="selectStu()" ng-disabled="form.$invalid">查询</button>
+	          		<span class="text-danger   col-sm-3">结果数：{{length}}</span>
+			    </div>
+	          	
+	          	<form class="form-horizontal col-sm-4 pull-right "ng-show="remainingCount!==0" >
+					<div class="form-group  wrapper-xs">
+					<label class="control-label col-sm-4 ft1rem">分配:</label>
+					   <ui-select ng-model="sea.teacher" name="teacher" class="col-sm-6 no-lrpadder" theme="bootstrap"  required>
+					      <ui-select-match placeholder="选择或搜索教师">{{$select.selected.tname}}</ui-select-match>
+					      <ui-select-choices  repeat="item in teachers | filter: $select.search">
+					         <span ng-bind-html="item.tname | highlight: $select.search"></span>	
+					         <small ng-bind-html="item.tno | highlight: $select.search" ></small>
+					      </ui-select-choices>
+					   </ui-select>
+					   <button class="btn btn-warning col-sm-2" ng-click="toteacher()" ng-disabled="form.$invalid">分配</button>
+					</div>
+					
+				</form>	
+				
+				<span ng-show="remainingCount==0" class="text-danger col-sm-3 wrapper-sm pull-right">在下面勾选学生来为学生分配指导老师</span>
+								
+   </div>
+ <div class="m-t-sm clearfix">
+  <table class="table table-bordered table-hover table-condensed bg-white-only ">
+    	<thead class="fixedThead ">
+    		<tr style="font-weight: bold" >
+		      <td ><label class="i-checks i-checks-sm">
+			                <input type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)"><i></i>全选
+			      </label></td>
+		      <td>班级</td>
+		      <td>学号</td>
+		      <td>姓名</td>
+		      <td>实训题目</td>
+		      <td>状态</td>
+		      <td>指导老师</td>
+		      <td>操作</td>
+		    </tr>
+    	</thead>
+    	<tbody class="scrollTbody" style="width: 101.333333%;">
+    		<tr ng-repeat="item in students" class="{{checkChange}}">
+			     <td class="v-middle">
+				      <label class="i-checks i-checks-sm">
+			            <input type="checkbox" ng-model="item.completed" ng-change="todoCompleted(item)"><i></i>
+			          </label>
+			      </td>
+			      <td class="v-middle">
+			        {{item.student.cla.cname}}
+			      </td>
+			      <td class="v-middle">
+			        {{item.student.sno}}
+			      </td>
+			      <td class="v-middle">
+			        {{item.student.sname}}
+			      </td>
+			      <td class="v-middle">
+			        {{item.subjectname.name}}
+			      </td>
+			       <td class="v-middle">
+			        {{item.state}}
+			      </td>
+			      <td class="v-middle">
+			      <span editable-text="item.teacher.tno" e-name="tno" e-form="subjectform"  e-required>
+         				 {{ item.teacher.tname || '' }}
+        			</span>
+
+			<td >
+	        <!-- form -->
+	        <form editable-form name="subjectform" onaftersave="saveStu($data, item.student.sno)" ng-show="subjectform.$visible" class="form-buttons form-inline" shown="inserted ==students ">
+	          <button type="submit" ng-disabled="subjectform.$waiting" class="btn btn-sm btn-info">
+	                                       保存
+	          </button>
+	          <button type="button" ng-disabled="subjectform.$waiting" ng-click="subjectform.$cancel()" class="btn btn-sm btn-default">
+	                                       取消
+	          </button>
+	        </form>
+	        <div class="buttons" ng-show="!subjectform.$visible">
+	          <button class="btn btn-sm btn-info" ng-click="subjectform.$show()">修改教师</button>
+	        </div>  
+	      </td>
+		    	</tr>
+    	</tbody>
+  </table>
+  <div class="alert" ng-show="wait==1">
+	<img src="/jsjxyxt/src/img/wait.gif">
+  </div>
+
+</div>
+<bt-fixed count="remainingCount"></bt-fixed>
+<div class="bt-fixed result bg-info"></div>
+ </div>

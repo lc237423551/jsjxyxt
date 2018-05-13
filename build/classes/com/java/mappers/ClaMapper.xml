@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.ClaDao">
+	<resultMap type="cla" id="claResult">
+		<id column="cno" property="cno"/>
+		<result column="cname" property="cname"/>
+		<result column="start" property="start"/>
+		<result column="end" property="end"/>
+		<association property="teacher" javaType="Teacher" >
+    		<id column="tno" property="tno"/>
+    		<result column="tname" property="tname"/>
+		</association>
+		<association property="speciality" javaType="Speciality" >
+    		<id column="specid" property="specid"/>
+    		<result column="specname" property="specname"/>
+		</association>
+	</resultMap>
+	
+	
+	<select id="findCla" parameterType="map"  resultMap="claResult">
+		        select * from cla,speciality,teacher 
+		 <where>
+			<if test="tno !=null and tno !='' ">
+				and speciality.tno =#{tno}
+			</if>
+			<if test="cno !=null and cno !='' ">
+				and cla.cno =#{cno}
+			</if>
+			<if test="specid !=null and specid !='' ">
+				and speciality.specid =#{specid}
+			</if>
+			<if test="cname !=null and cname !='' ">
+				and cname =#{cname}
+			</if>
+			    and cla.specid=speciality.specid and cla.tno=teacher.tno
+		</where>
+	</select>
+	
+	<select id="findByTno" parameterType="String"  resultMap="claResult">
+		        select * from cla,speciality  where cla.tno =#{tno} and cla.specid=speciality.specid ;
+	</select>
+	
+	<insert id="addCla" parameterType="Cla">
+		insert into cla(cno,cname,specid,tno) values(#{cno},#{cname},#{specid},#{tno})
+	</insert>
+	<delete id="deleteCla" parameterType="Cla">
+		delete from cla where cno=#{cno}
+	</delete>
+	<update id="updateCla" parameterType="Cla">
+	update cla 
+	<set>
+		<if test="tno != null and tno  != ''">  tno= #{ tno},</if>
+		<if test="start != null and start  != ''">  start= #{ start},</if>
+		<if test="end != null and end  != ''">  end= #{ end},</if>
+	</set>
+	  where cno=#{cno} 
+	</update>
+	
+	
+	<select id="findCla1" parameterType="String"  resultMap="claResult">
+		  select * from cla where cno in (select cno from student where sno in (select sno from trainInfo where tno=#{tno}));
+	</select>
+	
+</mapper>

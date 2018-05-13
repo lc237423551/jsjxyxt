@@ -1,0 +1,67 @@
+<div class="panel b-a">
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">实训任务书</span>          
+	        </div> 
+	        <div class="wrapper-md">
+		      <form class="form-horizontal" name="renwushu">
+		           <div class="form-group">
+		           <!--  <i class="fa fa-exclamation text-danger pull-left" >未审核</i>-->
+				   <label for="inputPassword3" class="col-sm-1 control-label">题目:</label>
+				   <div class="col-sm-3"  >
+				   		   <input type="text"  ng-model="subject.name" class="form-control">
+				   		   <input type="hidden" ng-model="subject.name"  name="id">
+				   </div>
+				   <span ng-if="subject.sub_state=='未审核'"  class="label bg-danger" >未审核</span>
+				   <span ng-if="subject.sub_state=='已审核'" class="label bg-success">已审核</span>
+				   <button class="btn btn-default m-l-xxl" ng-if="subject.sub_state=='未审核'&&role=='教师'"popover-placement="bottom" popover="审核通过后，学生将不能继续编辑任务书" popover-trigger="mouseenter"  ng-click="update1()"><i class="icon-pin"></i> &nbsp;&nbsp;审核通过</button>
+				   <button class="btn btn-default  m-l-xxl" ng-if="subject.sub_state=='已审核'&&role=='教师'"popover-placement="bottom"  popover="审核不通过后，学生将可以继续编写任务书" popover-trigger="mouseenter"  ng-click="update2()"><i class="icon-pin"></i>&nbsp;&nbsp;审核不通过</button>
+		  
+				   
+				   
+				   <button class="btn btn-rounded btn-sm btn-warning pull-right" onclick="history.go(-1)"><i class="icon-action-undo"></i>&nbsp;&nbsp;返回</button>
+				      
+				  </div>
+				 
+				  
+				 
+				  	<input type="hidden" ng-model="subject.id"  name="id">
+
+				  <div class="form-group" >
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">已知技术参数和实训要求:</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.skill" type="textarea" name="yaoqiu" class="form-control"  required style="resize: none;" required  rows="8"></textarea>
+					 	<div ng-show="renwushu.yaoqiu.$touched && renwushu.yaoqiu.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					<div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">实训内容与步骤:</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.content" type="textarea" name="buzhou" class="form-control"  required style="resize: none;"  rows="8"></textarea>
+					 	<div ng-show="renwushu.buzhou.$touched && renwushu.buzhou.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					<div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">实训工作计划与进度安排(按2周填写):</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.plan" type="textarea" name="anpai" class="form-control" ng-model="anpai"  style="resize: none;" required  rows="8"></textarea>
+					 	<div ng-show="renwushu.anpai.$touched && renwushu.anpai.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					<div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">实训考核要求:</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.requirement" type="textarea" name="kaoheyaoqiu" class="form-control"  required style="resize: none;"   rows="8"></textarea>
+					 	<div ng-show="renwushu.kaoheyaoqiu.$touched && renwushu.kaoheyaoqiu.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					
+		      
+		             <div class="form-group  t-c">
+						<button ng-if="role=='教师'" class="btn  btn-success m-r-xxl "  ng-click="save()"   ng-disabled="renwushu.$invalid">保存任务书</button>
+						<button class="btn  btn-success m-r-xxl " ng-if="role=='学生'&&subject.sub_state=='未审核'"  ng-click="save()"  ng-disabled="renwushu.$invalid">保存任务书</button>
+					</div>
+					</form>
+		</div>
+		</div>
+	     

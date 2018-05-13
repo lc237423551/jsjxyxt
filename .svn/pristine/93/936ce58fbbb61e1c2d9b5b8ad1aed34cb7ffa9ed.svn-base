@@ -1,0 +1,34 @@
+
+<div class="modal-body wrapper bg-light"  >
+
+  <div class="row">
+    <div class="col-sm-12 ">
+    <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加题目</h3>
+      <form  name="form" class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">题目:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" name="specid" placeholder="请输入题目" ng-model="subject.name" required>
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.specid.$dirty && form.specid.$valid"></span> 
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">指导老师:</label>
+          <div class="col-sm-9">
+          	      <ui-select ng-model="subject.teacher" theme="bootstrap" required>
+		            <ui-select-match placeholder="选择或搜索教师">{{$select.selected.tname}}</ui-select-match>
+		            <ui-select-choices group-by="'group'" repeat="item in teachers | filter: $select.search">
+		              <span ng-bind-html="item.tname | highlight: $select.search"></span>
+		              <small ng-bind-html="item.telphone | highlight: $select.search" ></small>
+		            </ui-select-choices>
+		          </ui-select>	
+          </div>
+        </div> 
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveSubject()" ng-disabled="form.$invalid"><strong>添加</strong></button>
+      	  <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>

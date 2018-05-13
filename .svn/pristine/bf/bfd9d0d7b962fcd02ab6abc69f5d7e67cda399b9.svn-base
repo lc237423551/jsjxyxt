@@ -1,0 +1,79 @@
+<draggable></draggable>
+<div class="modal-body wrapper bg-light"  >
+
+  <div class="row">
+    <div class="col-sm-12 ">
+    <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加教师</h3>
+      <form  name="form" class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 row" >教职工号:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control no-border" ng-model="tea.tno" name="tno" pattern="^\d{6}$"  placeholder="6位教职工号" required ng-mousedown="clearDown($event)"> 
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.tno.$dirty && form.tno.$valid"></span>   
+	      	  <span class="text-danger p-t block" ng-show=" form.tno.$dirty && form.tno.$invalid&&form.tno.$error.pattern">请输入6位教职工号</span>
+	          <span class="required text-danger text-lg">*</span>
+	          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">姓名:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" ng-model="tea.tname"name="tname" placeholder="格式:张**" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.tname.$dirty && form.tname.$valid"></span> 
+	          <span class="text-danger p-t block" ng-show=" form.tname.$dirty && form.tname.$invalid">此项必填</span>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">性别:</label>
+          <div class="col-sm-9">
+          	<select class="form-control col-sm-3" ng-model="tea.tsex"  required ng-mousedown="clearDown($event)">
+                <option>男</option>
+                <option>女</option>
+          	</select>
+          	<span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+         	<div class="form-group">
+		        <label class="control-label col-sm-3 row">教研室:</label>
+		        <div class="col-sm-9">		
+			       <ui-select ng-model="tea.dept" theme="bootstrap" ng-mousedown="clearDown($event)">
+			            <ui-select-match placeholder="搜索或选择教研室">{{$select.selected.codecontent}}</ui-select-match>
+			            <ui-select-choices repeat="item in dropdowndept | filter: $select.search">
+              			<div ng-bind-html="item.codecontent | highlight: $select.search"></div>    
+            			</ui-select-choices>
+         		  </ui-select>	
+         		  <span class="required text-danger text-lg">*</span>	
+		        </div>
+		      </div>
+         	<div class="form-group">
+		        <label class="control-label col-sm-3 row">职称:</label>
+		        <div class="col-sm-9">		
+		          <ui-select ng-model="tea.post" theme="bootstrap" ng-disabled="hasChooseSpec" required ng-mousedown="clearDown($event)">
+		            <ui-select-match placeholder="选择或搜索职称">{{$select.selected.codecontent}}</ui-select-match>
+		            <ui-select-choices  repeat="item in zhchs | filter: $select.search ">
+		              <span ng-bind-html="item.codecontent | highlight: $select.search"></span>
+		            </ui-select-choices>
+		          </ui-select>
+		          <span class="required text-danger text-lg">*</span>
+		        </div>
+		      </div>
+		      <div class="form-group">
+		        <label class="control-label col-sm-3 row">学位:</label>
+		        <div class="col-sm-9">		
+		          <ui-select ng-model="tea.xw" theme="bootstrap" ng-disabled="hasChooseSpec" required ng-mousedown="clearDown($event)">
+		            <ui-select-match placeholder="选择或搜索学位">{{$select.selected.codecontent}}</ui-select-match>
+		            <ui-select-choices  repeat="item in xws | filter: $select.search  ">
+		              <span ng-bind-html="item.codecontent | highlight: $select.search"></span>
+		            </ui-select-choices>
+		          </ui-select>
+		          <span class="required text-danger text-lg">*</span>
+		        </div>
+		      </div>              
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveTea(form)" ><strong>添加</strong></button>
+      	  <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ng-click="reset(form)"><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>

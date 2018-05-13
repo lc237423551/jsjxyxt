@@ -1,0 +1,71 @@
+app.controller('AnnouncementCtrl',['$scope','$filter','$http','$timeout','editableOptions','editableThemes','toaster','$filter','$q',
+    function($scope, $filter, $http, $timeout, editableOptions, editableThemes, toaster, $filter, $q){
+		editableThemes.bs3.inputClass = 'input-sm';
+	    editableThemes.bs3.buttonsClass = 'btn-sm';
+	    editableThemes.bs3.inputClass = 'input';
+	    editableOptions.theme = 'bs3';
+	$http.get('').success(function(data){
+	    $scope.Annces= data.result;
+    })
+    //获取所有公告
+    $http.get('/jsjxyxt/advice/get.do').success(function(data){
+    	$scope.advices = data.result;
+    	$scope.nums=data.nums
+    })
+    //编辑
+//    $scope.saveAdvice = function(change, advice) {
+//    	var url ='/jsjxyxt/advice/update.do'
+//    	var data = {
+//    			"advice_id": advice,
+//    			"content": change.content,
+//    		}
+//    	$http.post(url, data).success(function(data){
+//					toaster.pop('success', '系统提示','修改成功');
+//					 $timeout(function(){
+//			    			$scope.$apply(function(){
+//			    				$scope.advice = data.result;
+//			    			})
+//			    		});
+//    	})
+//    }
+	//删除
+	  $scope.removeAdvice = function(adviceid) {
+	    	
+	    	//展示弹出框
+	    	$scope.isAlertShow = true;
+	    	var deferred = $q.defer();
+	        var promise = deferred.promise;
+	        
+	        promise.then(function () {
+	           	
+	        	var url = '/jsjxyxt/advice/delete.do',
+	        		data = {
+	        			"advice_id":adviceid
+	        		}
+	        	$http.post(url,data).success(function(data){
+	        		if(data.result=="0"){
+	        			toaster.pop('error', '系统提示', '删除失败');
+	        		}else{
+	        		    toaster.pop('success', '系统提示','删除成功');   		
+	        		$timeout(function(){
+	        			$scope.$apply(function(){
+	        				$scope.advices = data.result;
+	        			})
+	        		})
+	        		
+	        		}    		
+	        	})
+		    	
+	        });	
+	        $scope.$on('clickOk',function(event, data){
+	                deferred.resolve();
+	            }
+	        )
+	         $scope.$on('clickCanel',function(event, data){       
+	                return;
+	            }
+	        )
+	    	
+	    };
+	
+}]);

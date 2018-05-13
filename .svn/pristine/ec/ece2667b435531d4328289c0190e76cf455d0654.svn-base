@@ -1,0 +1,67 @@
+
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="wrapper-sm ">
+	<div id="pdf">
+	</div>
+	<div class="col-sm-12">
+	<div class=" pull-left col-md-5" style="padding:6px 0">
+  		<span class="m-n font-thin h4" ><span class="h3 ">{{cname}}班</span>实训报告管理</span>
+  	</div>
+				<button class="btn btn-success pull-right m-l" popover="下载本班教师评语模板" popover-placement="bottom" popover-trigger="mouseenter"> <a href="/jsjxyxt/importtremark/down.do" ><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;下载教师评语 </a></button>	
+			    <button class="btn btn-info pull-right m-l" popover="下载本班学生实训明细表" popover-placement="bottom" popover-trigger="mouseenter"> <a href="/jsjxyxt/downExcel/downByCTeacher.do?cno={{cno}}" ><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;下载明细表 </a></button>
+			    <button class="btn btn-info pull-right" popover="下载本班学生全部实训文档" popover-placement="bottom" popover-trigger="mouseenter"> <a href="/jsjxyxt/download/downAll.do" ><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;打包下载 </a></button>  
+   </div>
+ <div class="m-t-xxl">
+  <table class="table table-bordered table-hover table-condensed bg-white-only ">
+    <tr style="font-weight: bold" class="success text-center">
+      <td style="width:5%"></td>
+      <td style="width:10%">学号</td>
+      <td style="width:10%">姓名</td>
+      <td style="width:15%">实训题目</td>
+      <td style="width:10%">源代码提交状态</td>
+      <td style="width:10%">报告提交状态</td>
+      <td style="width:10%">下载</td>
+    </tr>
+    <tr ng-repeat="item in students" >
+      <td class="v-middle">
+        <small>{{$index+1}}</small>
+      </td>
+      <td class="v-middle">
+        <small>{{item.student.sno}}</small>
+      </td>
+      <td class="v-middle">
+        <small>{{item.student.sname}}</small>
+      </td>
+      <td class="v-middle">
+        <small>{{item.subjectname.name}}</small>
+      </td>
+       <td class="v-middle">
+	       <span ng-if="item.shixunInfo.codeState==0"> 未提交 </span>
+	       <span ng-if="item.shixunInfo.codeState==1"> 已提交 </span> 
+      </td>
+      <td class="">
+       <span ng-if="item.shixunInfo.sxpdfState==0"><small>未提交</small></span>
+       <span ng-if="item.shixunInfo.sxpdfState==1"><small>已提交</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==2"><small>已预览</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==3"><small>不合格</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==4"><small>已归档</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==5"><small>已撤销归档</small></span> 
+       <div class="btn-group dropdown" ng-if="item.shixunInfo.sxpdfState != 0">
+          <button class="btn btn-info btn-sm"  ng-click="showPdf(item)" popover="再次点击关闭预览框,预览后学生不能再次提交" popover-placement="top" popover-trigger="mouseenter">预览</button>
+          <button class="btn btn-default btn-sm" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="operate1(item.student.sno)">审核不合格</a></li>
+            <li><a href=""  ng-click="operate2(item.student.sno)">归档</a></li>
+            <li class="divider"></li>
+            <li ng-if="item.shixunInfo.sxpdfState==4"><a href="" ng-click="operate3(item.student.sno)">撤销归档</a></li>
+          </ul>
+        </div>  
+      </td>
+      <td class="v-middle">
+      		<a  ng-if="item.shixunInfo.codeState==1" href="/jsjxyxt/download/downCode.do?sno={{item.student.sno}}"> <span class="text-success">[<i class="fa fa-cloud-download ">下载</i>]</span></a>
+      </td>
+     
+    </tr>
+  </table>
+</div>
+ </div>

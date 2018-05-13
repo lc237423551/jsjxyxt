@@ -1,0 +1,34 @@
+<div class="modal-body wrapper bg-light"  >
+	<div >
+	  <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+	  <h4 class="m-t-none m-b b-b ">{{sname}}--实训情况</h4>
+	  <div style=" overflow:scroll; height:400px;">
+	  <table class="table table-bordered table-hover t-c table-condensed bg-white-only ">
+	    <tr style="font-weight: bold" class="success">
+	      <td>周数</td>
+	      <td>状态</td>
+	      <td>实训题目</td>
+	      <td>实训单位</td>
+	      <td>指导教师</td>
+	    </tr>
+	    <tr ng-repeat="item in students"   >
+	      <td class="v-middle" ng-class="{warning:item.state=='校外'}">
+	        <small>{{$index+1}}</small>
+	      </td>
+	      <td class="v-middle" >
+	        <small>{{item.state || '暂无'}}</small> 
+	      </td>
+	      <td class="v-middle" >
+	        <small>{{item.subjectname.name || '暂无'}}</small> 
+	      </td>
+	      <td class="v-middle" >
+	        <small>{{item.unit.uname || '暂无'}}</small> 
+	      </td>
+	       <td class="v-middle" >
+	        <small>{{item.teacher.tname|| '暂无'}}</small> 
+	      </td>
+	    </tr>
+	  </table>
+	  </div>
+</div>
+</div>

@@ -1,0 +1,25 @@
+ 
+<div class="hbox hbox-auto-xs hbox-auto-sm" >
+
+  <!-- /.aside -->
+  <div class="col col-sm-6 bg-white"  >
+  		<div class="panel  b-b padder-v no-lrpadder font-bold text-md">最新公告:</div>
+        <div class="panel-body">
+        	<div ng-repeat="item in advices.slice().reverse()">
+        		<small class="text-sm"><b class="badge bg-success ">{{$index+1}}</b>{{item.content || '' }}</small>
+        		<hr/>
+        	</div>
+<!--         	<small class="text-sm"><b class="badge bg-success ">1</b>由于特殊原因，想要撤回实训申请的同学，如果审核已全部通过（<code>专业负责人已审批状态</code>）,需要联系专业负责人撤销审批。（<code>指导教师已审批，辅导员已审批两种状态</code>）可以直接联系辅导员、专业负责人、班主任中任何一人便可撤回申请。（<code>学生已申请状态</code>）可以自行撤销，如果学生申请页面显示教师撤回理由，请自行撤销申请。</small> -->
+<!-- 		<hr/> -->
+<!-- 		<small class="text-sm text-danger"><b class="badge bg-success ">2</b>已开通实训题目修改功能;在指导教师未审核通过前,教师和学生都能修改实训题目和任务书;若已审核,指导教师可撤销审核.</small> -->
+<!-- 		<hr/> -->
+<!-- 		<small class="text-sm text-danger"><b class="badge bg-success ">3</b>每次周总结只能填写当前周和当前周的上一周,从第3周填写至第18周.</small> -->
+<!-- 		<hr/> -->
+		 
+        </div>
+  </div>
+  <div class="col col-sm-6"  >
+         <img alt="" src="/jsjxyxt/src/img/sdjzu1.jpg" style="width:100%; ">
+  </div>
+  
+</div>

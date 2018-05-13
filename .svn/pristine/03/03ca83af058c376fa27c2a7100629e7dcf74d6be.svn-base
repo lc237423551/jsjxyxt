@@ -1,0 +1,72 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="bg-light lter b-b wrapper-sm"  style="float:left; ">
+    <div class=" pull-left" style="padding:6px 0">
+  	<span class="m-n font-thin h4" >用户管理</span>
+  </div>
+  <div  class=" pull-left col-md-10">
+  
+   <span ng-controller="ModalAddUser" class="pull-left">
+          <script type="text/ng-template" id="myModalAddUser.html">
+            <div ng-include="'tpl/modal.adduser.html'"></div>
+          </script>
+          <button class="btn btn-md  btn-info" type="button" ng-click="open('md')">增加用户</button>      
+   </span>
+        <form class="form-horizontal pull-right col-md-3" >
+	     	<div class="input-group">
+	     	  <input type="text" class="form-control input-md  no-border rounded padder" ng-model="search" placeholder="搜索管理员">
+		      <span class="input-group-btn ">
+		        <button class="btn btn-sm  rounded" type="button" ng-click="selectUser()" >
+		        	<i class="fa fa-search"></i>
+		        </button>
+		      </span>
+		     </div>
+         </form>
+  
+  </div>
+</div>
+<div class="m-t-xxs">
+  <table class="table table-bordered table-hover table-condensed bg-white-only t-c">
+    <tr style="font-weight: bold" class="success">
+    <td style="width:6%"></td>
+      <td style="width:10%">用户账号</td>
+      <td style="width:10%">用户姓名</td>
+      <td style="width:10%">用户身份</td>
+      <td style="width:25%">操作</td>
+    </tr>
+    <tr ng-repeat="item in uses" ng-class="{info: item.users == {{newsInsert}} }">
+    
+    <td class="v-middle">
+          {{$index+1}}
+    </td>
+    <td class="v-middle">
+          {{item.users}}
+    </td>
+    <td class="v-middle">
+        <span editable-text="item.username" e-name=username e-form="manageruserform" e-required>
+          {{ item.username || '' }}
+        </span>
+      </td>
+    <td class="v-middle">
+          {{item.role}}
+    </td>
+     <td style="white-space: nowrap">
+        <form editable-form name="manageruserform" onaftersave="saveUser($data, item.users)" ng-show="manageruserform.$visible" class="form-buttons form-inline" shown="inserted == uses">
+          <button type="submit" ng-disabled="manageruserform.$waiting" class="btn btn-sm btn-info">
+         	 确认
+          </button>
+          <button type="button" ng-disabled="manageruserform.$waiting" ng-click="manageruserform.$cancel()" class="btn btn-sm btn-default">
+       		     取消
+          </button>
+        </form>
+        <div class="buttons" ng-show="!manageruserform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="manageruserform.$show()">编辑</button>
+          <button class="btn btn-sm btn-danger" ng-click="removeUser(item.users)" ng-if="item.users!=users">删除</button>
+          <button class="btn btn-sm btn-default" ng-click="resetUser(item.users)">初始化密码</button>
+        </div>  
+      </td>
+    </tr>
+  </table>
+</div>
+
+

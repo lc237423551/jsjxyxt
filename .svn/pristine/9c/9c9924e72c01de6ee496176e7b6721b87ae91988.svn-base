@@ -1,0 +1,60 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-xs hbox-auto-sm bg-light ">
+
+  <!-- column -->
+  <div class="col w-xs b-r">
+    <div class="vbox">
+      <div class="row-row">
+        <div class="cell scrollable hover">
+          <div class="cell-inner">
+            <div class="list-group no-radius no-border no-bg m-b-none">
+              <a class="list-group-item b-b" ng-class="{'focus': (filter == '')}" ng-click="selectGroup({name:''})">全部学生</a>
+              <a ng-repeat="item in groups"  class="list-group-item m-l hover-anchor b-a no-select" ng-class="{'focus m-l-none': item.selected}" ng-click="selectGroup(item)">
+                <span class="block m-l-n" ng-class="{'m-n': item.selected }">{{ item.cname ? item.cname : 'Untitled' }}</span>
+                
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+  <!-- column -->
+  <div class="col w lter b-r">
+    <div class="vbox">
+      <div class=" b-b">
+        <div class="list-group no-radius no-border no-bg m-b-none">
+          <span class="list-group-item  no-radius no-border no-bg "><small class="text-danger">[完成周数]</small>&nbsp;姓名</span>
+        </div>
+      </div>
+      <div class="row-row">
+      	<img  src="/jsjxyxt/src/img/timg.gif" style="width:128px" ng-show="isShow">
+        <div class="cell scrollable hover">
+          <div class="cell-inner">
+            <div class="m-t-n-xxs">
+              <div class="list-group list-group-lg no-radius no-border no-bg m-b-none">
+                <a ng-repeat="item in students | filter:{remark:filter} | filter:query | orderBy:'sname'" class="list-group-item m-l" ng-class="{'select m-l-none': item.selected }" ng-click="selectItem(item)" ui-sref="apps.contact.weeksum({sno: item.sno})">
+                  <span class="block text-ellipsis m-l-n text-sm" ng-class="{'m-l-none': item.selected }">
+                   <strong class="text-danger">&nbsp; {{item.nums}}&nbsp;</strong> {{ item.student.sname }}
+                    
+                   </span> 
+                </a>
+              </div>
+            </div>
+            <div class="text-center pos-abt w-full" style="top:50%;" ng-hide="(students | filter:{remark:filter} | filter:query).length">没有符合结果的查询</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+
+  <!-- column -->
+  <div class="col bg-white-only">
+    <div class="vbox" ui-view>      
+    </div>
+  </div>
+  <!-- /column -->
+</div>
+<!-- /hbox layout -->

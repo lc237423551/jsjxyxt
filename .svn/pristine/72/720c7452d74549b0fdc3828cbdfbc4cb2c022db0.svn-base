@@ -1,0 +1,104 @@
+app.controller('managerClass', ['$scope', '$filter', '$http', '$timeout', 'editableOptions', 'editableThemes', 'toaster','$filter','$q',  
+  function($scope, $filter, $http, $timeout, editableOptions, editableThemes, toaster, $filter, $q){
+    editableThemes.bs3.inputClass = 'input-sm';
+    editableThemes.bs3.buttonsClass = 'btn-sm';
+    editableOptions.theme = 'bs3';
+    $http.get('/jsjxyxt/cla/get.do').success(function(data){
+    	$scope.classes= data.result;
+    })
+    
+    $scope.saveUser = function(change, user) {
+    	var url ='/jsjxyxt/cla/updateCla.do'
+    	var data = {
+    			"cno": user,
+    			"cname": change.cname,
+    			"start":change.start,
+    			"end":change.end,
+    			"tno":change.tno,
+    		}
+    	$http.post(url, data).success(function(data){
+				if(data.errmsg ==0){
+					toaster.pop('error', '系统提示','教师编号不存在');
+					 $timeout(function(){
+			    			$scope.$apply(function(){
+			    				$scope.classes = data.result;
+			    			})
+			    		});
+					
+				}else{
+					toaster.pop('success', '系统提示','修改成功');
+					 $timeout(function(){
+			    			$scope.$apply(function(){
+			    				$scope.classes = data.result;
+			    			})
+			    		});
+				}			
+			
+    		
+    	})
+    }
+    $scope.specgroups = [];
+    $scope.loadspecGroups = function(){
+    	return $scope.specgroups.length ? null: $http.get('/jsjxyxt/speciality/get.do').success(function(data){
+    		$scope.specgroups = data.result
+    	})
+    }
+
+    
+    $scope.showspecGroup = function(item) {    	
+        if(item.speciality.specname && $scope.specgroups.length) {
+          var selected = $filter('filter')($scope.specgroups, {specname: item.speciality.specname})
+          return selected.length ? selected[0].specname : 'Not set';
+        }else{
+        	return item.speciality.specname || 'Not set';
+        } 
+     };
+      //删除
+     $scope.removeUser = function(cno) {
+     	$scope.isAlertShow = true;
+         var remove = $scope.$on('clickOk',function(event, data){
+         	var url = '/jsjxyxt/cla/deleteCla.do';
+         	 var data={
+         			"cno": cno
+      		}
+ 		    	$http.post(url,data).success(function(data){
+ 		    		if(data.result=="0"){
+ 		    			$scope.toaster = {
+ 					            type: 'error',
+ 					            title: '系统提示',
+ 					            text: '删除失败'
+ 					        };
+ 		    		}else{
+ 		    		$scope.toaster = {
+ 					            type: 'success',
+ 					            title: '系统提示',
+ 					            text: '删除成功'
+ 					        };
+ 		    		
+ 		    		$timeout(function(){
+ 		    			$scope.$apply(function(){
+ 		    				$scope.classes = data.result;
+ 		    			})
+ 		    		})
+ 		    		
+ 		    		}
+ 		    		
+ 		    		toaster.pop($scope.toaster.type, $scope.toaster.title, $scope.toaster.text);
+ 		    	})
+             }
+         )
+          $scope.$on('clickCanel',function(event, data){   
+         	    if(remove())
+         	    remove = null;
+                 return;
+             }
+         )
+          $scope.$on('clickOk',function(event, data){   
+        	 if(remove())
+        	 remove = null;
+              return;
+          })
+     };
+ 
+
+}]);

@@ -1,0 +1,130 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<div class="bg-light lter b-b wrapper-sm" style="float:left; ">
+  <div class=" pull-left" style="padding:6px 0">
+  	<span class="m-n font-thin h4" >学生管理</span>
+  </div>
+  <div class="pull-left col-sm-11">
+	     <div class="col-sm-3">
+	     	<span ng-controller="ModalAdd" class="pull-left">
+	          <script type="text/ng-template" id="myModalAdd.html">
+                <div ng-include="'tpl/modal.addstu.html'"></div>
+             </script>
+	          <button class="btn btn-info" ng-click="open('md')">增加学生</button>
+	        </span>
+	        <span ng-controller="ModalUpload" class="pull-left">
+	          <script type="text/ng-template" id="myModalUpload.html">
+            <div ng-include="'tpl/modal.upload.html'"></div>
+          </script>
+	          <button class="btn btn-info m-l" ng-click="open('lg')">批量增加</button>
+	        </span>	   
+	     </div>
+        <form class=" col-sm-5" name="form" >
+         <div class="form-horizontal col-md-4 no-lrpadder"  >
+         	<div class="form-group m-n">	
+		          <ui-select ng-model="cla.spec" name="spec" theme="bootstrap" ng-change="changeSpec(cla.spec)" required>
+		            <ui-select-match placeholder="选择专业">{{$select.selected.specname}}</ui-select-match>
+		            <ui-select-choices  repeat="item in dropdownspec | filter: $select.search">
+		              <span ng-bind-html="item.specname | highlight: $select.search"></span>	
+		            </ui-select-choices>
+		          </ui-select>
+		        </div>
+		    </div>
+         
+         <div class="form-horizontal col-md-4 no-lrpadder m-l"  >
+         	<div class="form-group m-n">	
+		          <ui-select ng-model="cla.classes" name="classes" theme="bootstrap" ng-disabled="hasChooseSpec" required >
+		            <ui-select-match placeholder="选择班级">{{$select.selected.cname}}</ui-select-match>
+		            <ui-select-choices  repeat="item in dropdowncp | filter: $select.search | filter:{specname:filterclass}">
+		              <span ng-bind-html="item.cname | highlight: $select.search"></span>
+		            </ui-select-choices>
+		          </ui-select>
+		      </div>
+         </div>
+          <button class="form-group btn m-b-xs w-xs btn-primary m-l" ng-click="selectStu()" ng-disabled="form.$invalid">查询</button>
+         
+         </form>
+          
+           <form class="form-horizontal pull-right col-sm-3" >
+	     	<div class="input-group">
+	     	  	<input type="text" class="form-control input-md  no-border rounded padder" placeholder="通过学号姓名搜索学生" ng-model="search">
+			      <span class="input-group-btn ">
+			        <button class="btn btn-sm  rounded " type="button" ng-click="selectUser()" >
+			        	<i class="fa fa-search"></i>
+			        </button>
+			      </span>
+
+	     	  </div>
+	     	   <span>{{stuNum}}</span>
+         </form>
+   </div>
+</div>
+
+	
+ <div class="m-t-xxs">
+  <table class="table table-bordered table-hover table-condensed bg-white-only t-c">
+    <tr style="font-weight: bold" class="success">
+      <td style="width:7%"></td>
+      <td style="width:10%">学号</td>
+      <td style="width:10%">姓名</td>
+      <td style="width:10%">专业</td>
+      <td style="width:10%">班级</td>
+      <td style="width:15%">联系电话</td>
+      <td style="width:15%">邮箱</td>
+      <td style="width:20%">操作</td>
+    </tr>
+    <tr ng-repeat="item in students" ng-class="{info: item.sno == {{newsInsert}} }">
+      <td class="v-middle">
+        <span>
+          {{$index+1}}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span  e-name="sno" e-form="managerstuform"  e-required>
+          {{ item.sno || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span editable-text="item.sname" e-name="sname" e-form="managerstuform" e-required>
+          {{ item.sname || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <a editable-select="item.cla.speciality.specname" e-name="specname" onshow="loadspecGroups()" e-form="managerstuform" e-ng-options="spec.specname as spec.specname for spec in specgroups" e-ng-change="changeSpeces($data)">
+          {{ showspecGroup(item)   }}
+        </a> 
+      </td>
+       <td class="v-middle">
+        <span editable-select="item.cla.cname" e-name="cname" onshow="loadclassGroups()" e-form="managerstuform" e-ng-options="class.cname as class.cname for class in classgroups" >
+          {{ showclassGroup(item) }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span editable-text="item.sphone" e-name="sphone" e-form="managerstuform"  e-required>
+          {{ item.sphone || ' ' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span editable-text="item.semail" e-name="semail" e-form="managerstuform"  e-required>
+          {{ item.semail || ' ' }}
+        </span>
+      </td>
+      <td style="white-space: nowrap">
+        <form editable-form name="managerstuform" onaftersave="saveUser($data, item.sno)" ng-show="managerstuform.$visible" class="form-buttons form-inline" shown="inserted == students">
+          <button type="submit" ng-disabled="managerstuform.$waiting" class="btn btn-sm btn-info">
+         	 确认
+          </button>
+          <button type="button" ng-disabled="managerstuform.$waiting" ng-click="managerstuform.$cancel()" class="btn btn-sm btn-default">
+       		     取消
+          </button>
+        </form>
+        <div class="buttons" ng-show="!managerstuform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="managerstuform.$show()">编辑</button>
+          <button class="btn btn-sm btn-danger" ng-click="removeUser(item.sno)">删除</button>
+          <button class="btn btn-sm btn-default" ng-click="reset(item.sno)">初始化密码</button>
+        </div>  
+      </td>
+    </tr>
+  </table>
+
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+ </div>

@@ -1,0 +1,70 @@
+package com.java.entity;
+
+import java.util.Date;
+
+public class Advice {
+
+	private int advice_id;
+	private String content;
+	private Date publishDate;
+	private String users;
+	private String username;
+	private String filename;
+	private User user;
+	
+	public Advice() {
+		super();
+	}
+	
+	public Advice(int advice_id, String content) {
+		super();
+		this.advice_id = advice_id;
+		this.content = content;
+	}
+
+	public int getAdvice_id() {
+		return advice_id;
+	}
+	public void setAdvice_id(int advice_id) {
+		this.advice_id = advice_id;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String conttent) {
+		this.content = conttent;
+	}
+	public Date getPublishDate() {
+		return publishDate;
+	}
+	public void setPublishDate(Date publishDate) {
+		this.publishDate = publishDate;
+	}
+	public String getUsers() {
+		return users;
+	}
+	public void setUsers(String users) {
+		this.users = users;
+	}
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+}

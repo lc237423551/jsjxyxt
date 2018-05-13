@@ -1,0 +1,45 @@
+
+<p class="m-t m-l">实训指导管理</p>	
+<div class="col-sm-12 row">
+	<div class="col-sm-12">
+		<div class="col-sm-5 form-group">
+				<label  class="control-label col-sm-3" style="height:32px; line-height:32px; padding:0" >选择班级：</label>
+				<div class="col-sm-8 no-gutter" style="padding:0">
+					<select class="form-control"  ng-model="class">
+						<option ng-repeat = "item in classes">{{item.cname}}</option>
+					</select>
+				</div>
+		</div>		
+	</div>
+	<div class="col-sm-11" style="height:100%; overflow:auto">
+		<table class="table mt20 col-sm-12 table-hover">
+			<caption class="fb lt1 def">学生列表</caption>
+			<thead class="">
+				<tr class="">
+					<td></td>
+					<td >学号</td>
+					<td>姓名</td>
+					<td>班级</td>
+					<td>性别</td>
+					<td>电话</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat ="item in students" class=" {{checkChange}}">
+					<td>
+						<label class="checkbox i-checks m-l-md m-b-md">
+			          		<input type="checkbox" ng-model="todo.completed" ng-change="todoCompleted(item)"><i></i>
+			        	</label>
+			        </td>
+					<td class="studentId">{{item.sno}}</td>
+					<td>{{item.sname}}</td>
+					<td>{{item.classBean.cname}}</td>
+					<td>{{item.ssex}}</td>
+					<td>{{item.telphone}}</td>	
+					<td><button class="btn btn-info btn-sm" ng-click="deleteStu()"></button></td>		
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

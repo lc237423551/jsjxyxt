@@ -1,0 +1,26 @@
+<div class="modal-body wrapper bg-light"  >
+	<div >
+	  <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+	  <h3 class="m-t-none m-b b-b ">任务书人数详情<small class="m-l-lg">{{num}}人</small></h3>
+	   <div style=" overflow:scroll; height:400px;">
+	  <table class="table table-bordered table-hover t-c table-condensed bg-white-only ">
+	    <tr style="font-weight: bold" class="info">
+	      <td >编号</td>
+	      <td >姓名</td>
+	      <td >学号</td>
+	    </tr>
+	    <tr ng-repeat="item in subjects" class="{{checkChange}}">
+	      <td class="v-middle">
+	        {{$index+1}}
+	      </td>
+	      <td class="v-middle">
+	        {{item.student.sname || '暂无'}}
+	      </td>
+	      <td class="v-middle" >
+	        {{item.student.sno || '暂无'}}
+	      </td>
+	    </tr>
+	  </table>
+	  </div>
+</div>
+</div>

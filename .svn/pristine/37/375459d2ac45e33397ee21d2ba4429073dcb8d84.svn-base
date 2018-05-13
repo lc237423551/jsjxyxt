@@ -1,0 +1,117 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="bg-light wrapper-sm" style="overflow: hidden;">
+  <div class=" pull-left" style="padding:6px 0">
+  	<span class="m-n font-thin h4" >公告管理</span>
+  </div>
+  <div class="pull-left col-md-11">
+   <span ng-controller="ModalAddAdvice" class="pull-left">
+          <script type="text/ng-template" id="myModalAddAdvice.html">
+            <div ng-include="'tpl/modal.addadcive.html'"></div>
+          </script>
+          <button class="btn btn-info" ng-click="open('lg')">增加公告</button>
+
+    </span>  
+  </div>
+ <script>
+	 app.filter('cut', function () {
+		  return function (value, wordwise, max, tail) {
+		    if (!value) return '';
+	
+		    max = parseInt(max, 10);
+		    if (!max) return value;
+		    if (value.length <= max) return value;
+	
+		    value = value.substr(0, max);
+		    if (wordwise) {
+		      var lastspace = value.lastIndexOf(' ');
+		      if (lastspace != -1) {
+		        value = value.substr(0, lastspace);
+		      }
+		    }
+	
+		    return value + (tail || ' …');
+		  };
+		});
+ </script>
+</div>	
+ <div class="m-t-xxs">
+  <table class="table table-bordered table-hover table-condensed bg-white-only t-c">
+    <tr style="font-weight: bold" class="success">
+     <td style="width:5%">序号</td>
+      <td style="width:10%">公告标题</td>
+      <td style="width:45%">公告内容</td>
+      <td style="width:7.5%">发布时间</td>
+      <td style="width:7.5%">发布者</td>
+      <td style="width:10%">附件编辑</td>
+      <td style="width:10%">操作</td>
+    </tr>
+    <tr ng-repeat="item in advices">
+     <td class="v-middle">
+     
+       <span>
+          {{$index+1}}
+        </span>
+     </td>
+      <td class="v-middle" style="display:none;">
+        <!-- editable username (text with validation) -->
+        <span  e-name="advice_id" e-form="manageradvform"  e-required>
+          {{ item.advice_id || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.title" e-name="title" e-form="manageradviceform"  e-required>
+          {{ item.title || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.content" e-name="content" e-form="manageradviceform"  e-required>
+          {{ item.content| cut:true:50:' ...' || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >   
+        <span editable-text="item.publishDate" e-name="publishDate" e-form="manageradvform"  e-required>
+          {{ item.publishDate.month+1+"月"+item.publishDate.date+"日" || '' }}
+        </span>
+       </td>
+       <td class="v-middle" >   
+        <span editable-text="item.users" e-name="users" e-form="manageradvform"  e-required>
+          {{ item.users || '' }}
+        </span>
+       </td>
+       <td class="v-middle" >   
+        <div class="buttons">
+         	<span ng-controller="ModalAdviceUpload" class="pull-left">
+	          <script type="text/ng-template" id="myModalAddAdviceUpload.html">
+            		<div ng-include="'tpl/model.adviceUpload.html'"></div>
+          		</script>
+	          <button class="btn btn-sm btn-info" ng-click="open('lg',item.filename)">上传</button>
+    		</span>  
+         	<button class="btn btn-sm btn-danger">删除</button>
+        </div>
+       </td>
+      <td style="white-space: nowrap">
+        <!-- form -->
+<!--         <form editable-form name="manageradviceform" onaftersave="saveAdvice($data, item.advice_id)" ng-show="manageradviceform.$visible" class="form-buttons form-inline" shown="inserted == advices"> -->
+<!--           <button type="submit" ng-disabled="manageradviceform.$waiting" class="btn btn-sm btn-info"> -->
+<!--                                        确认 -->
+<!--           </button> -->
+<!--           <button type="button" ng-disabled="manageradviceform.$waiting" ng-click="manageradviceform.$cancel()" class="btn btn-sm btn-default"> -->
+<!--                                        取消 -->
+<!--           </button> -->
+<!--         </form> -->
+        <div class="buttons" ng-show="!manageradviceform.$visible">
+          <span ng-controller="ModalAddAdviceedit" class="pull-left">
+	          <script type="text/ng-template" id="myModalAddAdviceedit.html">
+            		<div ng-include="'tpl/model.adviceedit.html'"></div>
+          		</script>
+	          <button class="btn btn-sm btn-info" ng-click="open('lg',item.advice_id,item.content)">编辑</button>
+    	</span>  
+          <button class="btn btn-sm btn-danger" ng-click="removeAdvice(item.advice_id)">删除</button>
+        </div>  
+      </td>
+    </tr>
+  </table>
+ </div>

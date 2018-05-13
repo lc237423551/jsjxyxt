@@ -1,0 +1,117 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">个人信息管理</h1>
+</div>
+<div class="wrapper-md">
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">个人信息编辑</div>
+        <div class="panel-body">
+          <div >
+              <div class="form-group">
+                <label class="col-sm-3 control-label">学号:</label>
+                <div class="col-sm-9">
+                    {{ user.sno || '未填写' }}
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">姓名:</label>
+                <div class="col-sm-9">
+                 {{ user.sname || '未填写' }}
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">专业:</label>
+                <div class="col-sm-9">
+                    {{ user.cla.speciality.specname || '未填写' }}
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">班级:</label>
+                <div class="col-sm-9">
+                 {{ user.cla.cname || '未填写' }}
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+               <div class="form-group">
+                <label class="col-sm-3 control-label">性别:</label>
+                <div class="col-sm-9">
+                 <span class="form-control-static">
+                	<a editable-select="user.ssex" e-name="ssex" e-form="personalstuform" e-ng-options="s.value as s.value for s in statuses" onbeforesave="checkName($data, user.id)" e-required>
+                		{{  user.ssex || showStatus(user) }}
+                	</a>
+                </span>
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              
+               <div class="form-group">
+                <label class="col-sm-3 control-label">身份证号:</label>
+                <div class="col-sm-9">
+                  <span editable-text="user.sid" e-name="name" e-form="personalstuform" onbeforesave="checkName($data, user.id)" e-required>
+		          {{ user.sid || '未填写' }}
+		        </span>
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              
+               <div class="form-group">
+                <label class="col-sm-3 control-label">邮箱: </label>
+                <div class="col-sm-9">
+                 <span editable-text="user.semail" e-name="name" e-form="personalstuform" onbeforesave="checkName($data, user.id)" e-required>
+		          {{ user.semail || '未填写' }}
+		        </span>
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              
+              <div class="form-group">
+                <label class="col-sm-3 control-label">手机号:  </label>
+                <div class="col-sm-9">
+                <span editable-text="user.sphone" e-name="name" e-form="personalstuform" onbeforesave="checkName($data, user.id)" required >
+		          {{ user.sphone || '未填写' }}
+		        </span>
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              
+               <div class="form-group">
+                <label class="col-sm-3 control-label">地址:  </label>
+                <div class="col-sm-9">
+               <span editable-text="user.sadress" e-name="name" e-form="personalstuform"  e-required>
+		          {{ user.sadress || '未填写' }}
+		        </span>
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              
+              <div class="form-group">
+                <label class="col-sm-3 control-label">备注:  </label>
+                <div class="col-sm-9">
+              <span editable-text="user.sremark" e-name="name" e-form="personalstuform"  e-required>
+		          {{ user.sremark || '未填写' }}
+		        </span>
+                </div>
+              </div>
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              
+			 <form editable-form name="personalstuform" onaftersave="saveUser($data, user)" ng-show="personalstuform.$visible" class="form-buttons form-inline" shown="inserted == user">
+	          <button type="submit" ng-disabled="personalstuform.$waiting" class="btn btn-sm btn-info">
+	           	 确认
+	          </button>
+	          <button type="button" ng-disabled="personalstuform.$waiting" ng-click="personalstuform.$cancel()" class="btn btn-sm btn-default">
+	           	 取消
+	          </button>
+	        </form>
+	        <div class="buttons" ng-show="!personalstuform.$visible">
+	          <button class="btn btn-sm btn-info" ng-click="personalstuform.$show()">编辑</button>
+	        </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+	

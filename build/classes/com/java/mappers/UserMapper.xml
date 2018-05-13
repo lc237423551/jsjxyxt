@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.UserDao">
+	<resultMap type="user" id="UserResult">
+		<id column="users" property="users"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<result column="role" property="role"/>
+		<result column="loginnum" property="loginnum"/>
+		<result column="lastlogintime" property="lastlogintime"/>
+	</resultMap>
+	
+	<select id="findUser" parameterType="user"  resultMap="UserResult">
+		 select * from user 
+		 <where>
+			<if test="username!=null and username!='' ">
+				and username like concat('%',#{username},'%')
+			</if>
+			<if test="users!=null and users!='' ">
+				and users =#{users}
+			</if>
+			<if test="password !=null and password !='' ">
+				and password = #{password}
+			</if>
+			<if test="role !=null and role !='' ">
+				and role = #{role}
+			</if>
+		</where>
+	</select>
+	<select id="findUser2" parameterType="user"  resultType="User">
+		 select * from user where users=#{users} and role=#{role} and password=#{password};
+		 
+	</select>
+	
+	<select id="findUser1" parameterType="String" resultMap="UserResult">
+		 select * from user where role='管理员' or role='辅导员' ;
+	</select>
+	
+	<update id="updateUser" parameterType="user" > 
+		update user
+		<set>
+			<if test="  username!= null and  username != ''"> username = #{username },</if>
+			<if test="  password!= null and   password!= ''">  password= #{ password},</if>
+			<if test="  loginnum!= null and   loginnum!= ''">  loginnum= #{ loginnum},</if>
+		</set>
+		where users = #{users}
+	</update>
+	
+	<delete id="deleteUser" parameterType="String" >
+	    delete from user where users=#{users};
+	</delete>
+	
+	<insert id="insertUser" parameterType="user">
+		insert into user(users,username,password,role,loginnum)values(#{users},#{username},#{password},#{role},0);
+	</insert>
+	
+	
+	
+	
+	
+</mapper>

@@ -1,0 +1,74 @@
+/**
+ * 实训任务书 学生端
+ */
+
+angular.module('app').controller('renwushu', ['$scope', '$http', 'toaster', '$location', function($scope, $http, toaster, $location){
+	/*
+	 * 得到学生的信息
+	 */
+
+	 $http.get('/jsjxyxt/subjectname/getById.do', {params:{id:$location.search().id}}).success(function(data){
+			$scope.subject=data.subject;
+ 
+			$scope.role=data.role;
+		})
+		
+		//保存任务书
+		$scope.save=function(){
+			 var data={
+					 'name':$scope.subject.name,
+					 'id':$scope.subject.id,
+					 'skill':$scope.subject.skill,
+					 'content':$scope.subject.content,
+					 'plan':$scope.subject.plan,
+					 'requirement':$scope.subject.requirement,
+					 
+			 }
+			 $http.post('/jsjxyxt/subjectname/write.do', data).success(function(data){
+				
+				 if(data.errmsg==0){
+					 toaster.pop('error', '系统提示','保存失败');   
+				 }else{
+					 toaster.pop('success', '系统提示','保存成功');   
+				 }
+    		})
+			 
+			 
+		 }
+	 //修改
+	 $scope.update1=function(){
+		 var data={
+				 
+				 'id':$scope.subject.id,
+				 'sub_state':'已审核',
+				 
+		 }
+		 $http.post('/jsjxyxt/subjectname/write.do', data).success(function(data){		
+			 if(data.errmsg==0){
+				 toaster.pop('error', '系统提示','保存失败');   
+			 }else{
+				 $scope.subject.sub_state='已审核';
+				 toaster.pop('success', '修改成功','任务书状态修改为'+$scope.subject.sub_state);   
+			 }
+		})
+	 }
+	 
+	 $scope.update2=function(){
+		 var data={
+				 
+				 'id':$scope.subject.id,
+				 'sub_state':'未审核',
+				 
+		 }
+		 $http.post('/jsjxyxt/subjectname/write.do', data).success(function(data){		
+			 if(data.errmsg==0){
+				 toaster.pop('error', '系统提示','保存失败');   
+			 }else{
+				 $scope.subject.sub_state='未审核';
+				 toaster.pop('success', '修改成功','任务书状态修改为'+$scope.subject.sub_state);   
+			 }
+		})
+	 }
+	 
+	
+}])

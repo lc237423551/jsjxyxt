@@ -1,0 +1,78 @@
+<!-- 实训公司状态管理 -->
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="wrapper-sm " ng-controller="history">
+	<div class="col-sm-10">	
+	  <form class="form-horizontal pull-left col-sm-3" >
+        <div class="input-group" >
+             <select class="form-control" ng-model="year"  required>
+                <option value="" selected>请选择毕业届次</option>
+                <option value="全部">全部</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                
+              </select>
+        </div>
+	   </form>
+	    <form class="form-horizontal pull-left col-sm-3" >
+		     	<div class="input-group">
+		     	  	<input type="text" class="form-control input-md  no-border    " placeholder="输入姓名" ng-model="sname">
+				      <span class="input-group-btn ">
+				        <button class="btn btn-lm  rounded " type="button" ng-click="selectStudent()" >
+				        	<i class="fa fa-search"></i>
+				        </button>
+				      </span>
+		     	  </div>
+	     </form>
+
+   </div>
+ <div class="m-t-xxl">
+  <table class="table table-bordered table-hover table-condensed bg-white-only ">
+    <tr style="font-weight: bold" class="success text-center">
+      <td style="width:5%">序号</td>
+      <td style="width:7%">毕业届次</td>
+      <td style="width:10%">学号</td>
+      <td style="width:10%">姓名</td>
+      <td style="width:10%">专业</td>
+      <td style="width:10%">班级</td>
+      <td style="width:10%">实习题目</td>
+      <td style="width:10%">实习单位</td>
+    </tr>
+    <tr ng-repeat="item in students" class="{{checkChange}}">
+    	<td class="v-middle">
+        <span>
+          {{$index+1}}
+        </span>
+      </td>  
+      <td class="v-middle" ng-class="{danger:item.sno == undefinded}">
+        {{item.year|| '暂无'}}
+      </td>
+      <td class="v-middle" ng-class="{danger:item.sno == undefinded}">
+        {{item.sno|| '暂无'}}
+      </td>
+      <td class="v-middle" ng-class="{danger:item.sname == undefinded}">
+        {{item.sname || '暂无'}}
+      </td>
+      <td class="v-middle " ng-class="{danger:item.spec == undefinded}">
+        {{item.spec || '暂无'}}
+      </td>
+      <td class="v-middle" ng-class="{danger:item.cname == undefinded}">
+        {{item.cname || '暂无'}}
+      </td>
+      <td class="v-middle" ng-class="{danger:item.subjectname == undefinded}">
+        {{item.subjectname || '暂无'}}
+      </td>
+      <td class="v-middle" ng-class="{danger:item.tuname == undefinded}">
+        {{item.tuname || '暂无'}}
+      </td>
+      <div style="positon:relative;; top:0;left:100px" class="w h400" ></div>
+    </tr>
+  </table>
+
+</div>
+
+ </div>

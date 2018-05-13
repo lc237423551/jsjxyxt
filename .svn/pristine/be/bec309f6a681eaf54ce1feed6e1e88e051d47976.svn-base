@@ -1,0 +1,51 @@
+/**
+ * 
+ */
+app.controller('myweeksum_detailCtr', ['$scope', '$http','$location', 'toaster', function($scope, $http, $location, toaster){
+	$scope.isTeacher = false
+	$location.search().week
+	$scope.thisWeek = $location.search().week;
+	$scope.thisWeek = $location.search().week;
+	var week = $location.search().week
+	
+	$http.get('/jsjxyxt/weekwork/getWeekwork.do', {params: {week:week}  
+	}).success(function(data){
+		$scope.summary = data.result.summary
+		$scope.advise = data.result.advise
+		$scope.arrange = data.result.arrange
+		$scope.evaluation = data.result.evaluation
+		$scope.deal = data.result.deal
+		$scope.time=data.result.wtime
+		//查看是否是可编辑周
+		if(data.weeknums.indexOf(week)>-1){
+			
+			$scope.canWrite = true
+		}else{
+			$scope.canWrite = false
+		}
+	})
+	//保存
+	$scope.saveMyWeekSummary = function(){
+		var data = {
+			"week": week,
+			"summary": $scope.summary,
+			"advise": $scope.advise,
+			"arrange": $scope.arrange
+		}
+		var url = "/jsjxyxt/weekwork/update.do"
+		$http.post(url, data).success(function(data){
+			if(data.result==1){
+				toaster.pop("success", "系统提示", "保存成功");
+				$scope.time=data.time
+			}else{
+				toaster.pop("error", "系统提示", "保存失败");
+			}
+			
+//			$scope.summary = data.result.summary
+//			$scope.advise = data.result.advise
+//			$scope.arrange = data.result.arrange
+//			$scope.evaluation = data.result.evaluation
+//			$scope.deal = data.result.deal
+		})
+	}
+}])

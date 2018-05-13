@@ -1,0 +1,90 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="bg-light wrapper-sm" style="overflow: hidden;">
+  <div class=" pull-left" style="padding:6px 0">
+  	<span class="m-n font-thin h4" >实训题目管理</span>
+  </div>
+  <div class="pull-left col-md-9">
+          <a class="btn btn-info" href="#/app/teacher/renwushuTea?id=0">增加题目</a>
+        </span>  
+  </div>
+  
+</div>	
+ <div class="m-t-xxs t-c">
+  <table class="table table-bordered table-hover table-condensed bg-white-only">
+    <tr style="font-weight: bold" class="success">
+     <td style="width:5%">序号</td>
+      <td style="width:10%">题目</td>
+      <td style="width:15%">指导教师</td>
+      <td style="width:15%">审核状态</td>
+      <td style="width:15%">校内/校外</td>
+      <td style="width:25%">操作</td>
+      <td style="width:15%">编辑任务书</td>
+    </tr>
+    <tr ng-repeat="item in subjects">
+     <td class="v-middle">
+     
+       <span>
+          {{$index+1}}
+        </span>
+     </td>  
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span  e-name="name" e-form="managerspecform" editable-text="item.name" e-required>
+          {{ item.name || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.teacher.tno" e-name="tno" e-form="managerspecform"  e-required>
+          {{ item.teacher.tname || '' }}
+        </span>
+      </td>
+      <td class="v-middle" ng-class="{danger:item.sub_state == '未审核'}" >
+        <a editable-select="item.sub_state " e-name="sub_state" e-form="managerspecform" e-ng-options="s.name as s.name for s in statuses" onbeforesave="checkName($data, user.id)" e-required>
+               {{  item.sub_state  || showStatus(item) }}
+         </a>
+      </td>
+      <td class="v-middle" >
+        <a editable-select="item.sub_state1 " e-name="sub_state1" e-form="managerspecform" e-ng-options="s.name as s.name for s in statuses1" onbeforesave="checkName($data, user.id)" e-required>
+               {{  item.sub_state1  || showStatus(item) }}
+         </a>
+      </td>
+      
+      <td style="white-space: nowrap">
+        <!-- form -->
+        <form editable-form name="managerspecform" onaftersave="saveUser($data, item.id)" ng-show="managerspecform.$visible" class="form-buttons form-inline" shown="inserted == subjects">
+          <button type="submit" ng-disabled="managerspecform.$waiting" class="btn btn-sm btn-info">
+                                       确认
+          </button>
+          <button type="button" ng-disabled="managerspecform.$waiting" ng-click="managerspecform.$cancel()" class="btn btn-sm btn-default">
+                                       取消
+          </button>
+          
+        </form>
+        <div class="buttons" ng-show="!managerspecform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="managerspecform.$show()">修改</button>
+         <span ng-controller="ModalStuDetailsub">
+          <script type="text/ng-template" id="stuTaskDetail.html">
+            <div ng-include="'tpl/modal.stuTaskDetail.html'"></div>
+          </script>
+          <button class="btn btn-info btn-sm" ng-click="open('md',item.id)">查看学生</button>
+        </span>
+        
+        <span ng-controller="subjectstu">
+          <script type="text/ng-template" id="subjectstu.html">
+            <div ng-include="'tpl/modal.subjectstu.html'"></div>
+          </script>
+          <button class="btn btn-info btn-sm" ng-click="open('lg',item.id)">添加学生</button>
+        </span>
+        
+          <button class="btn btn-sm btn-danger" ng-click="removeSubject(item.id)">删除</button>
+         
+        </div>  
+      </td>
+      <td>
+      	<a class="btn btn-info" href="#/app/teacher/renwushuTea?id={{item.id}}">编辑任务书</a>
+      </td>
+    </tr>
+  </table>
+ </div>

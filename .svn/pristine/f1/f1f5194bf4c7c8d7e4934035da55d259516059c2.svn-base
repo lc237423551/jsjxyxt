@@ -1,0 +1,119 @@
+app.controller('managerSpec', ['$scope', '$filter', '$http', '$timeout', 'editableOptions', 'editableThemes', 'toaster','$filter','$q',
+  function($scope, $filter, $http, $timeout, editableOptions, editableThemes, toaster, $filter,$q){
+	editableThemes.bs3.inputClass = 'input-sm';
+    editableThemes.bs3.buttonsClass = 'btn-sm';
+    editableOptions.theme = 'bs3';
+    $scope.person = {};
+    //获取所有专业信息
+    $http.get('/jsjxyxt/speciality/get.do').success(function(data){
+    	$scope.specs= data.result;
+    	
+    })
+
+     //修改专业  
+     $scope.saveUser = function(change, user) {
+     	var url ='/jsjxyxt/speciality/updateSpeciality.do'
+     	var data = {
+     			"specid": user,
+     			"specname": change.specname,
+     			"tno":change.tno,
+     		}
+     	$http.post(url, data).success(function(data){
+     		if(data.errmsg=="0"){
+     			toaster.pop('error', '系统提示','教师编号不存在');
+     			$timeout(function(){
+        			$scope.$apply(function(){
+        				$scope.specs = data.result;
+        			})
+        		})
+     			
+     		}else{
+     			toaster.pop('success', '系统提示','修改成功');
+     			$timeout(function(){
+        			$scope.$apply(function(){
+        				$scope.specs = data.result;
+        			})
+        		})
+     		}
+ 			
+     })
+    }
+    /////
+//      
+//// 删除
+    $scope.removeUser = function(specid) {
+    	
+    	//展示弹出框
+    	$scope.isAlertShow = true;
+    	var deferred = $q.defer();
+        var promise = deferred.promise;
+        
+        promise.then(function () {
+           	
+        	var url = '/jsjxyxt/speciality/deleteSpeciality.do',
+        		data = {
+        			"specid": specid
+        		}
+        	$http.post(url,data).success(function(data){
+        		if(data.result=="0"){
+        			toaster.pop('error', '系统提示', '删除失败');
+        		}else{
+        		    toaster.pop('success', '系统提示','删除成功');   		
+        		$timeout(function(){
+        			$scope.$apply(function(){
+        				$scope.specs = data.result;
+        			})
+        		})
+        		
+        		}    		
+        	})
+	    	
+        });
+//    	
+        $scope.$on('clickOk',function(event, data){
+                deferred.resolve();
+            }
+        )
+         $scope.$on('clickCanel',function(event, data){       
+                return;
+            }
+        )
+    	
+    };
+//删除
+    $scope.removeUser = function(specid) {
+    	$scope.isAlertShow = true;
+        var remove = $scope.$on('clickOk',function(event, data){
+        	var url = '/jsjxyxt/speciality/deleteSpeciality.do';
+        	 var data={
+        			 "specid": specid
+     		}
+		    	$http.post(url,data).success(function(data){
+		    		if(data.result=="0"){
+	        			toaster.pop('error', '系统提示', '删除失败');
+	        		}else{
+	        		    toaster.pop('success', '系统提示','删除成功');   		
+	        		$timeout(function(){
+	        			$scope.$apply(function(){
+	        				$scope.specs = data.result;
+	        			})
+	        		})
+	        		
+	        		}
+		    	})
+            }
+        )
+         $scope.$on('clickCanel',function(event, data){   
+        	    if(remove())
+        	    remove = null;
+                return;
+            }
+        )
+         $scope.$on('clickOk',function(event, data){   
+        	 if(remove())
+        	 remove = null;
+              return;
+          })
+    };
+
+}]);

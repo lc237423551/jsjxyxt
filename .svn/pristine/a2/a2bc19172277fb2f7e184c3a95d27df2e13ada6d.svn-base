@@ -1,0 +1,158 @@
+/**
+ * 实训公司管理
+ */
+
+app.controller('shixunCompany', ['$scope', '$filter', '$http', '$timeout', 'editableOptions', 'editableThemes', 'toaster','$filter', '$window', 'FileUploader','$q' ,
+  function($scope, $filter, $http, $timeout, editableOptions, editableThemes, toaster, $filter, $window, FileUploader,$q){
+    editableThemes.bs3.inputClass = 'input-sm';
+    editableThemes.bs3.buttonsClass = 'btn-sm';
+    editableOptions.theme = 'bs3';
+    
+    $scope.statuses = [
+                       {value: '已审核',name:'已审核'},
+                       {value: '未审核',name:'未审核'},
+                     ];
+    //审核下拉框
+    $scope.showStatus = function(item) {
+          if(item.ustatus && $scope.statuses.length) {
+            var selected = $filter('filter')($scope.statuses, {ustatus:item.ustatus})
+            return selected.length ? selected[0].value : 'Not set';
+          }else{
+          	return item.ustatus || 'Not set';
+          } 
+       };
+    //获得全部单位
+    $scope.newsInsert="0";
+    var url="/jsjxyxt/unit/get.do";
+	 $http.get(url).success(function(data){
+			$scope.units=data.result;
+		})
+//	//城市下拉框
+//		var url="/jsjxyxt/unit/getCity.do";
+//	 $http.get(url).success(function(data){
+//			$scope.citys=data.result;
+//		})
+//		//城市名称下拉框
+//		var url="/jsjxyxt/unit/getName.do";
+//	 $http.get(url).success(function(data){
+//			$scope.names=data.result;
+//		})
+
+	 //修改公司 
+     $scope.saveUser = function(change, uid) {
+     	var url ='/jsjxyxt/unit/update.do'
+     	var data = {
+     			"uid": uid,
+     			"uname": change.uname,
+     			"uadress":change.uadress,
+     			"ucity":change.ucity,
+     			"uphone":change.uphone,
+     			"upeople":change.upeople,
+     			"tno":change.tno,
+     			"ustatus":change.ustatus,
+     		}
+     	$http.post(url,data).success(function(data){
+     		if(data.errmsg==0){
+    			toaster.pop("error","修改失败","该教师编号不存在");
+    		}else{
+    			toaster.pop("success","系统提示","修改成功");
+    		}
+    		
+    		$timeout(function(){
+    			$scope.$apply(function(){
+    				$scope.units = data.result;
+    			})
+    		})
+     	})
+    }
+ 
+	    
+	    $scope.removeUser = function(uid) {
+	    	$scope.isAlertShow = true;
+	        var remove = $scope.$on('clickOk',function(event, data){
+	        	var url = '/jsjxyxt/unit/delete.do';
+	        	 var data={
+	        			 "uid": uid
+	     		}
+			    	$http.post(url,data).success(function(data){
+			    		if(data.errmsg==0){
+			    			toaster.pop("error","系统提示","删除失败");
+			    		}else{
+			    			toaster.pop("success","系统提示","删除成功");
+			    		}
+			    		
+			    		$timeout(function(){
+			    			$scope.$apply(function(){
+			    				$scope.units = data.result;
+			    			})
+			    		})
+			    	})
+	            }
+	        )
+	         $scope.$on('clickCanel',function(event, data){   
+	        	    if(remove())
+	        	    remove = null;
+	                return;
+	            }
+	        )
+	         $scope.$on('clickOk',function(event, data){   
+        	 if(remove())
+        	 remove = null;
+              return;
+          })
+	    };  
+	    
+	    
+	    
+//查询
+	    $scope.search=function(){
+	    	var data={
+	    			"uname":$scope.name,
+	    	}
+	    	 var url="/jsjxyxt/unit/get.do";
+    	$http.post(url,data).success(function(data){
+    		$timeout(function(){
+    			$scope.$apply(function(){
+    				$scope.units = data.result;
+    			})
+    		})
+	    })
+	    }
+	    
+	  //城市下拉框
+
+		var url="/jsjxyxt/unit/getCity.do";
+	 $http.get(url).success(function(data){
+			$scope.place=data.result;
+		})
+		//城市名称下拉框
+		var url="/jsjxyxt/unit/getName.do";
+	 $http.get(url).success(function(data){
+			$scope.companyname=data.result;
+		})
+ 
+	$scope.search2=function(){
+		var data={
+				"uname":$scope.search1.companyname.uname,
+    			"ucity":$scope.search1.place.ucity
+		}
+		var url="/jsjxyxt/unit/getwithnum.do";
+		$http.post(url, data).success(function(data){
+    		$scope.units = data.result;
+    		$scope.nums=data.nums;
+    	})
+	}
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+}]);

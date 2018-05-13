@@ -1,0 +1,34 @@
+
+
+
+<div class="modal-body wrapper bg-light col-sm-12"  >
+	  <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+	  <h3 class="m-t-none m-b b-b ">添加学生</h3>
+	  <div class="col-sm-4 wrapper-sm bg-white h-lg">
+	  	<div class="list-group scroll-list">
+		  <a class="list-group-item" ng-repeat="item in trainStu" ng-click="checkStu($event, item)">
+		    <!-- {{item.student.sname || '暂无'}}{{item.sno || '暂无'}} -->
+		    {{item.sname}}
+		  </a>
+		</div>
+		<button class="btn btn-info pull-right" ng-click="addStuToRight()" ng-show=(trainStu.length!=0)>添加&nbsp;&nbsp;&nbsp;<i class="icon-action-redo"></i></button>
+	  </div>
+	  <div class="col-sm-1 p-r h-lg">
+	  	<i class="fa fa-angle-right text-2x icon-position"></i>
+	  </div>
+	  <div class="col-sm-7 bg-white wrapper-sm h-lg ">
+	  	<div class="list-group scroll-list">
+		  <a class="list-group-item" ng-repeat="item in showRightStu" >
+		    <!-- {{item.student.sname || '暂无'}}{{item.sno || '暂无'}} -->
+		    {{item.sname}}
+		    <button class="btn btn-warning pull-right btn-sm self-center" ng-click="cancelToLeft(item.index)">撤销</button>
+		  </a>
+		  
+		</div>
+		<button class="btn btn-success pull-right" ng-show=(showRightStu.length!=0) ng-click="saveStu()">确定
+			
+		</button>
+	  </div>
+	 
+</div>
+</div>

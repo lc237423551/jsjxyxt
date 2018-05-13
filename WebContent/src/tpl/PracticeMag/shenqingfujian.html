@@ -1,0 +1,36 @@
+<div class="row row-sm" ng-if="status>=1">
+	    <div class="col-sm-6">
+	      <div class="panel b-a">
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">请假条</span>          
+	        </div> 
+	        <div class="wrapper-md" style="height:400px; overflow:scroll">
+		      <p><span>请假开始时间:</span><span>{{qing_jia_start_time}}</span></p>
+		      <p><span>请假结束时间:</span><span>{{qing_jia_end_time}}</span></p>
+		      <p><span>离校时间:</span><span>{{li_xiao_time}}</span></p>
+		      <p><span>家庭电话:</span><span>{{phone}}</span></p>
+		      <p><span>住宿位置:</span><span>{{position}}</span></p>
+		      <p><span>请假事由:</span><span>{{reason}}</span></p>
+		</div>
+	      </div>
+	    </div>
+	    <div class="col-sm-6" >
+	      <div class="panel b-a">
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">实训申请表</span>          
+	        </div>
+	        <div class="wrapper-md" style="height:400px; overflow:scroll">
+		      <p><span>实习题目:</span><span>{{title}}</span></p>
+		      <p><span>实习单位:</span><span>{{companyName || otherCompany}}</span></p>
+		      <p><span>地址:</span><span>{{companyposition}}</span></p>
+		      <p><span>协作指导老师姓名:</span><span>{{xiezuoname}}</span></p>
+		      <p><span>协作指导老师职务:</span><span>{{zhiwu}}</span></p>
+		      <p><span>老师联系电话:</span><span>{{teacherphone}}</span></p>
+		      <p><span>校内指导老师:</span><span>{{tname}}</span></p>
+		      <p><span>分散实习理由:</span><span>{{shixireason}}</span></p>
+			</div>
+	    </div>
+	   </div>
+			<a ng-if="status<=1" class="btn btn-warning font-bold" style="position: relative; top: -10px; left:44%; transform: translate(-50%, 0)" ng-click="chexiaoShenqing()" >撤销请假条和申请表</a>
+			<a ng-if="status<=1" class="btn btn-success font-bold" style="position: relative; top: -10px; left:44%; transform: translate(-50%, 0)" href="/jsjxyxt/student/exportWord.do" >下载请假条与申请表</a>
+	  </div>

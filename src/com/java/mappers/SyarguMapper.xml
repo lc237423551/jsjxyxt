@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.SyarguDao">
+	<resultMap type="syargu" id="syarguResult">
+		<id column="arguid" property="arguid"/>
+		<result column="arguname" property="arguname"/>
+		<result column="argutype" property="argutype"/>
+		<result column="arguvalue" property="arguvalue"/>
+		<result column="remark" property="remark"/>
+	</resultMap>
+	
+	<select id="findSyargu" parameterType="syargu"  resultMap="syarguResult">
+		 select * from syargu 
+		 <where>
+			<if test="arguname !=null and arguname !='' ">
+				and arguname =#{arguname}
+			</if>
+		</where>
+		order by arguid;
+	</select>
+	<update id="updateSyargu" parameterType="syargu" >
+		update syargu set arguvalue=#{arguvalue} where arguname =#{arguname};
+	</update>
+	
+	<delete id="deleteAll">
+	 	<!-- 重置系统 牵涉好几个表 存在外键的约束 所以得考虑删除的顺序 -->
+		delete from vacate;
+		delete from practiceappli;
+	 	<!-- .清空实训的表1 -->
+	 	delete from shixunInfo;
+	 	<!-- .清空实训的表2 -->
+	 	delete from trainInfo;
+	 	<!-- .清空周总结 -->
+	 	delete from weekwork;
+	 	<!-- .删除所有学生用户 -->
+	 	delete from user where role="学生";
+	 	<!-- .删除所有学生 -->	
+	    delete from student;
+	    <!-- .删除所有班级 -->	
+	    delete from cla;
+	</delete>
+	
+	
+	
+</mapper>

@@ -1,0 +1,43 @@
+<draggable></draggable>
+<div class="modal-body wrapper bg-light"  >
+
+  <div class="row">
+    <div class="col-sm-12 ">
+    <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加系统用户</h3>
+      <form  name="form" class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 row" >账号:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control no-border" ng-model="user.users" name="users" pattern="^[0-9A-Za-z]{1,10}$"  placeholder="请输入1-10位账号" required ng-mousedown="clearDown($event)"> 
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.users.$dirty && form.users.$valid"></span>   
+	      	  <span class="text-danger block p-t" ng-show=" form.users.$dirty && form.users.$invalid&&form.users.$error.pattern">请输入1-10位账号</span>
+	          <span class="required text-danger text-lg">*</span>
+	          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">姓名:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" ng-model="user.username"name="username" placeholder="格式:张**" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.username.$dirty && form.username.$valid"></span> 
+	          <span class="text-danger block p-t" ng-show=" form.username.$dirty && form.username.$invalid">此项必填</span>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">身份:</label>
+          <div class="col-sm-9">
+             <select class="form-control" ng-model="user.role" required>
+                <option value="管理员" selected>管理员</option>
+                <option value="辅导员">辅导员</option>
+              </select>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveUser(form)" ><strong>增加</strong></button>
+      	 <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ng-click="reset(form)"><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>

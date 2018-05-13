@@ -1,0 +1,75 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="wrapper-sm">
+<div class="col-sm-12">
+	<div class=" pull-left col-md-2" style="padding:6px 0">
+  		<span class="m-n font-thin h4" >系统参数管理</span>
+  	</div>
+   </div>
+<table class="table table-bordered table-hover table-condensed bg-white-only">
+<thead> 
+ </thead>
+    <tr style="font-weight: bold" class="success">
+      <td style="width:10%">序号</td>
+      <td style="width:15%">标题</td>
+      <td style="width:60%">修改的内容</td>
+      <td style="width:15%">操作</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>教学周开始日期</td>
+      <td><div >
+            <input type="text"  popover="请输入年月日(格式:2016-9-1)" ng-model="date" popover-trigger="focus" class="form-control">
+         
+          </div>
+      </td>
+      <td><button type="submit" class="btn btn-sm btn-info" ng-click="saveDate()"> 保存</button></td>
+    </tr>
+    <tr >
+      <td>2</td>
+      <td>可修改的周总结周数</td>
+      <td>
+          <input type="text" popover="请输入可修改的周数(比如可修改第一周，第二周，填写:1&2&)周数用&隔开,默认当前周数填 0" ng-model="weeknum" popover-trigger="focus" class="form-control">
+      </td>
+      <td>
+      		<button type="submit" class="btn btn-sm btn-info" ng-click="saveWeeknum()"> 保存</button>
+      </td>
+    </tr>
+    <tr >
+      <td>3</td>
+      <td>不导出的周数</td>
+      <td>
+          <input type="text" popover="请输入不导出的周数，用&隔开(如1&2),没有的话，输入0" ng-model="unneed" popover-trigger="focus" class="form-control">
+      </td>
+      <td><button type="submit" class="btn btn-sm btn-info" ng-click="saveUnneed()"> 保存</button>
+      </td>
+    </tr>
+      <tr >
+      <td>4</td>
+      <td>系统初始化参数</td>
+      <td>
+          <input type="text" popover="0 代表系统可以进行初始化，1 代表系统不可进行初始化，若想初始化系统，请将参数改为 0" ng-model="init" popover-trigger="focus" class="form-control">
+      </td>
+      <td> <button class="btn btn-sm btn-info" ng-click="saveInit()">保存</button>
+      </td>
+    </tr>
+     <tr >
+      <td>5</td>
+      <td>实训开始周次</td>
+      <td>
+          <input type="text"  ng-model="startweekno"   class="form-control">
+      </td>
+      <td> <button class="btn btn-sm btn-info" ng-click="savestartweekno()">保存</button>
+      </td>
+    </tr>
+    <tr >
+      <td>6</td>
+      <td>请假截止日期</td>
+      <td>
+          <input type="text"  ng-model="enddate"   class="form-control">
+      </td>
+      <td> <button class="btn btn-sm btn-info" ng-click="saveenddate()">保存</button>
+      </td>
+    </tr>
+  </table>
+</div>

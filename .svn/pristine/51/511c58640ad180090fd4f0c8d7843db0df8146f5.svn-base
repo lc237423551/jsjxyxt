@@ -1,0 +1,65 @@
+<draggable></draggable>
+<div class="modal-body wrapper bg-light"  >
+
+  <div class="row">
+    <div class="col-sm-12 ">
+    <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加公司</h3>
+      <form  name="form" class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">单位名称:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" name="uname" placeholder="请填写公司名称" ng-model="company.uname" required ng-mousedown="clearDown($event)">
+	          <span class="required text-danger text-lg">*</span>
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.uname.$dirty && form.uname.$valid"></span> 
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">单位所在城市:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" placeholder="单位所在城市" name="ucity"  ng-model="company.ucity" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.ucity.$dirty && form.ucity.$valid"></span> 
+	          <span class="text-danger p-t block"  ng-show=" form.ucity.$dirty && form.ucity.$invalid">此项必填</span>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+        
+         <div class="form-group">
+          <label class="control-label col-sm-3 row">单位地址:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" placeholder="单位地址" name="uadress"  ng-model="company.uadress" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.uadress.$dirty && form.uadress.$valid"></span> 
+	          <span class="text-danger p-t block" ng-show=" form.uadress.$dirty && form.uadress.$invalid">此项必填</span>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+        
+         <div class="form-group">
+          <label class="control-label col-sm-3 row">联系人:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" placeholder="联系人" name="upeople"  ng-model="company.upeople" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.upeople.$dirty && form.upeople.$valid"></span> 
+	          <span class="text-danger p-t block" ng-show=" form.upeople.$dirty && form.upeople.$invalid">此项必填</span>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+         <div class="form-group">
+          <label class="control-label col-sm-3 row">联系方式:</label>
+          <div class="col-sm-9">
+          	<input type="text" class="form-control" placeholder="联系方式" name="uphone"  ng-model="company.uphone" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.uphone.$dirty && form.uphone.$valid"></span> 
+	          <span class="text-danger p-t block" ng-show=" form.uphone.$dirty && form.uphone.$invalid">此项必填</span>
+	          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>
+        <div class="form-group">
+        	<label class="control-label col-sm-3 row"></label>
+        </div>           
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveCompany(form)" ><strong>添加</strong></button>
+      	  <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ng-click="reset(form)"><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>

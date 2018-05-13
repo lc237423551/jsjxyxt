@@ -1,0 +1,54 @@
+<div class="panel b-a">
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+	        <div class="panel-heading text-center bg-info no-border">
+	          <span class="text-u-c m-b-none font-bold">实训任务书</span>          
+	        </div> 
+	        <div class="wrapper-md">
+		      <form class="form-horizontal" name="renwushu">
+		      <div class="form-group">
+		          <label class="col-sm-1 control-label">题目: </label>
+		           <div class="col-sm-3" ng-if="tab!=0">
+		            <span  class="h4">{{subject.name}}</span>
+		          </div>
+		          <div class="col-sm-5" ng-if="tab==0">
+		          	<input type="text" class="form-control" name="id" placeholder="请输入题目" ng-model="subject.name" required>
+			         <div ng-show="renwushu.id.$touched && renwushu.id.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+		          </div>
+		        <button class="btn btn-rounded btn-sm btn-warning pull-right" onclick="history.go(-1)"><i class="icon-action-undo"></i>&nbsp;&nbsp;返回</button>
+		        </div>
+				  	<input type="hidden" ng-model="subject.id"  name="id">
+				  <div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">已知技术参数和实训要求:</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.skill" type="textarea" name="yaoqiu" class="form-control"  required style="resize: none;" required  rows="6"></textarea>
+					 	<div ng-show="renwushu.yaoqiu.$touched && renwushu.yaoqiu.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					<div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">实训内容与步骤:</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.content" type="textarea" name="buzhou" class="form-control"  required style="resize: none;"  rows="6"></textarea>
+					 	<div ng-show="renwushu.buzhou.$touched && renwushu.buzhou.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					<div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">实训工作计划与进度安排(按2周填写):</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.plan" type="textarea" name="anpai" class="form-control"  style="resize: none;" required  rows="6"></textarea>
+					 	<div ng-show="renwushu.anpai.$touched && renwushu.anpai.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					<div class="form-group">
+				  	 <label for="inputPassword3" class="col-sm-1 control-label">实训考核要求:</label>
+					 <div class="col-sm-11">
+					 	<textarea  ng-model="subject.requirement" type="textarea" name="kaoheyaoqiu" class="form-control"  required style="resize: none;"   rows="6"></textarea>
+					 	<div ng-show="renwushu.kaoheyaoqiu.$touched && renwushu.kaoheyaoqiu.$invalid" class="danger m-t-xs">一定要写的，亲</div>
+					 </div>
+					</div>
+					<div class="form-group">
+						<button ng-if="tab==0" class="btn pull-right btn-success m-r-xxl " ng-click="save()" ng-disabled="renwushu.$invalid">保存</button>
+						<button ng-if="tab!=0" class="btn pull-right btn-info m-r-xxl " ng-click="save1()" ng-disabled="renwushu.$invalid">保存</button>
+					</div>
+		      </form>
+		</div>
+	      </div>

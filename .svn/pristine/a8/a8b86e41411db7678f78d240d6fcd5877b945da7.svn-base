@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+app.controller('weeksumCtr', ['$scope', '$location', '$http', function($scope, $location, $http) {
+	$scope.isShowAllWeek = false	
+		var sno = $location.search().sno 
+//	var url = ''
+	$http.get('/jsjxyxt/trainInfo/getBySno.do', {params:{sno: sno}}).success(function(data){
+		$scope.student = data.result
+		$scope.canEditWeeks = data.weeknums
+		$scope.tab=data.tab
+	})
+	$scope.weeks = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18']
+	
+	$scope.changeWeekShow = function(){
+		$scope.isShowAllWeek = !$scope.isShowAllWeek
+	}
+}]);

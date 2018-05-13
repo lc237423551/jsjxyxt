@@ -1,0 +1,43 @@
+/**
+ * 
+ */
+app.controller('weeksum_detailCtr',['$scope','$location', '$http', 'toaster', function($scope, $location, $http, toaster){
+	$scope.isStudent = false
+	
+	console.log($location.search().sno) 
+	//$scope.name = $location.search().sno
+	console.log($location.search().week)
+	var week = $location.search().week
+	var sno = $location.search().sno
+	$http.get('/jsjxyxt/weekwork/getWeekwork.do', {params: {sno: sno,week:week}
+	}).success(function(data){
+		console.log(data.result)
+		$scope.summary = data.result.summary
+		$scope.advise = data.result.advise
+		$scope.arrange = data.result.arrange
+		$scope.evaluation = data.result.evaluation
+		$scope.deal = data.result.deal
+		$scope.time = data.result.wtime
+		
+	})
+	
+	$scope.saveWeekSummary = function(){
+		var data = {
+				"sno": $location.search().sno,
+				"week": $location.search().week,
+				"deal": $scope.deal,
+				"evaluation":$scope.evaluation
+			}
+			console.log(data)
+			var url = "/jsjxyxt/weekwork/update.do"
+		 $http.post(url, data).success(function(data){
+			console.log(data.result)
+			if(data.result==1){
+				toaster.pop("success", "系统提示", "保存成功");
+			}else{
+				toaster.pop("error", "系统提示", "保存失败");
+			}
+			})
+	}
+	
+}])

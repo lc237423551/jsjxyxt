@@ -1,0 +1,86 @@
+<draggable></draggable>
+<div class="modal-body wrapper bg-light "  nv-file-drop="" uploader="uploader" filters="queueLimit, isDoc">
+  <div class="row">
+    <div class="col-sm-12 ">
+      <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加公告</h3>
+      <form  name="form" class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">公告内容:</label>
+          <div class="col-sm-9">
+          	<textarea rows="5" type="text" class="form-control p-r" ng-model="advice.content" name="content" placeholder="填写公告内容"clearDown($event)"></textarea>
+          	  <span class="required text-danger text-lg">*</span>
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.cname.$dirty && form.cname.$valid"></span> 
+          </div>
+        </div>  
+        <div class="col-sm-3 row">
+        	 <div class="wrapper-md">      
+      				<div ng-show="uploader.isHTML5" class="m-b-md">
+          <!-- 3. nv-file-over uploader="link" over-class="className" -->
+          			<div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploader">
+             	 		拖动文件
+          			</div>
+      				</div>
+			      <p class="m-t-md">单个doc</p>
+			      <input type="file" nv-file-select="" uploader="uploader" />
+    		</div>
+        </div>  
+        <div class="col-sm-9">
+			  <div class="wrapper-md">
+      		<table class="table bg-white-only b-a">
+          	<thead>
+              <tr>
+                  <th width="50%">文件名称</th>
+                  <th ng-show="uploader.isHTML5">文件大小</th>
+                  <th ng-show="uploader.isHTML5">进度</th>
+                  <th>状态</th>
+                  <th>操作</th>
+              </tr>
+          	</thead>
+          	<tbody>
+              <tr ng-repeat="item in uploader.queue">
+                  <td><strong>{{ item.file.name }}</strong></td>
+                  <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                  <td ng-show="uploader.isHTML5">
+                      <div class="progress progress-sm m-b-none m-t-xs">
+                          <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                      </div>
+                  </td>
+                  <td class="text-center">
+                      <span ng-show="item.isSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+                      <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                      <span ng-show="item.isError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                  </td>
+                  <td nowrap>
+                      <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                          	上传
+                      </button>
+                      <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                         	 取消
+                      </button>
+                      <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                          	删除
+                      </button>
+                  </td>
+              	</tr>
+          	</tbody>
+      	</table>
+      <div>
+        <div>
+          <p>传输进程:</p>
+          <div class="progress bg-light dker" style="">
+              <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+          </div>
+        </div>
+        <p class="text-info m-t font-bold">内容格式:职工号|姓名</p>
+        <p class="text-info font-bold">文件类型:doc或者压缩包</p>
+      </div>
+    </div>
+        </div>
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveAdvice(form)" ><strong>添加</strong></button>
+      	  <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ng-click="reset(form)"><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>

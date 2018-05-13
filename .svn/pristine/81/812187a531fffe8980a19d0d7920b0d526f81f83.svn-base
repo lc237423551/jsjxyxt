@@ -1,0 +1,90 @@
+<!-- 实训公司状态管理 -->
+
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="wrapper-sm " ng-controller="trainCompanyState">
+<div class="container-fluid">
+<div class="row">
+	<div class="col-lg-2 col-md-2 col-sm-4">
+  		<span class="m-n  h4 text-nowrap" style="line-height: 2;" >实训单位情况</span>
+  	</div>
+   <div class="col-lg-9 col-md-8 col-sm-12">
+	   <div class="row">
+	   <div class="col-md-4">
+	   	<ui-select ng-model="search1.place" name="sdress"  theme="bootstrap" required>
+	            <ui-select-match placeholder="选择或搜索地点">{{$select.selected.ucity}}</ui-select-match>
+	            <ui-select-choices  repeat="item in place | filter: $select.search">
+	              <span ng-bind-html="item.ucity | highlight: $select.search"></span>	
+	            </ui-select-choices>
+	          </ui-select>
+	          </div>
+	          <div class="col-md-4">
+	   <ui-select  ng-model="search1.companyname" name="classes"  theme="bootstrap" ng-disabled="hasChooseSpec" required >
+	            <ui-select-match placeholder="选择或搜索单位">{{$select.selected.uname}}</ui-select-match>
+	            <ui-select-choices  repeat="item in companyname | filter: $select.search ">
+	              <span ng-bind-html="item.uname | highlight: $select.search"></span>
+	            </ui-select-choices>
+	          </ui-select>
+	          </div>
+	          <div class="col-md-2"><button class="btn btn-info" ng-click="search()" ng-disabled="form.$invalid" >搜索</button></div>
+	          <div class="col-md-2"><span class="text-danger text-nowrap" style="line-height: 2.5;">结果数：{{nums}}</span>	</div>
+	   </div>
+	     
+	</div>
+	
+	<div class="col-lg-1 col-md-2 col-sm-12"  >         
+         <a href="/jsjxyxt/downExcel/unit.do "><button class="btn btn-success pull-right" popover="下载单位信息" popover-placement="bottom" popover-trigger="mouseenter"><i class="fa fa-cloud-download"></i>&nbsp;下载统计表</button></a>	
+   </div>
+  </div>
+ </div>
+ <div style="margin-top: 10px;">
+  <table class="table table-bordered table-hover table-condensed bg-white-only text-center ">
+    <tr style="font-weight: bold" class="success">
+      <td style="width:5%"></td>
+      <td style="width:20%">单位名称</td>
+      <td style="width:10%">负责人</td>
+      <td style="width:10%">联系电话</td>
+      <td style="width:7%">教师</td>
+      <td style="width:10%">所在城市</td>
+      <td style="width:15%">地址</td>
+      <td style="width:10%">实习人数</td>
+    </tr>
+    <tr ng-repeat="item in units" >
+      <td class="v-middle">
+        {{$index+1}}
+      </td>
+      <td class="v-middle"  >
+       <small> {{item.uname || '暂无'}}</small>
+      </td>
+      <td class="v-middle "  >
+        {{item.upeople || '暂无'}}
+      </td>
+      <td class="v-middle"  >
+        {{item.uphone || '暂无'}}
+      </td>
+      <td class="v-middle" >
+        {{item.teacher.tname || '暂无'}}
+      </td>
+      <td class="v-middle"  >
+        {{item.ucity || '暂无'}}
+      </td>
+      <td class="v-middle"  >
+        {{item.uadress || '暂无'}}
+      </td>
+      <td class="v-middle" >
+        <span ng-controller="ModalStuDetail">
+          <script type="text/ng-template" id="stuDetail.html">
+            <div ng-include="'tpl/modal.stuDetail.html'"></div>
+          </script>
+          <span>{{item.unums || 0}}</span>&nbsp;<span></span>&nbsp;&nbsp;<button ng-if="item.unums!=0" class="btn btn-info btn-sm" ng-click="open('md',item.uid)">详情</button>
+        </span>
+      </td>
+       
+    </tr>
+  </table>
+  <div style="margin-left:40%" ng-if="wait==1">
+	<img src="/jsjxyxt/src/img/wait.gif">
+  </div>
+
+</div>
+
+ </div>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.SpecialityDao">
+	<resultMap type="Speciality" id="specialityResult">
+		<id column="specid" property="specid"/>
+		<result column="specname" property="specname"/>
+		<result column="tno" property="tno"/>
+		<association property="teacher" javaType="Teacher" >
+    		<id column="tno" property="tno"/>
+    		<result column="tname" property="tname"/>
+		</association>
+	</resultMap>
+	
+	
+	<select id="findSpeciality" parameterType="speciality" resultMap="specialityResult">
+		        select * from speciality,teacher 
+		         <where>
+			<if test="specid !=null and specid!='' ">
+				 specid=#{specid}
+			</if>
+			<if test="specname!=null and specname!='' ">
+				and specname=#{specname}
+			</if>
+			<if test="tno !=null and tno !='' ">
+				and speciality.tno=#{tno}
+			</if>
+				and speciality.tno=teacher.tno
+		</where>
+	</select>
+	
+	<insert id="addSpeciality">
+		insert into speciality values(#{specid},#{specname},#{tno})
+	</insert>
+	<delete id="deleteSpeciality" parameterType="speciality">
+		delete from speciality where specid=#{specid}
+	</delete>
+	<update id="updateSpeciality" parameterType="speciality">
+		update speciality set specname=#{specname},tno=#{tno} where specid=#{specid}
+	</update>
+</mapper>

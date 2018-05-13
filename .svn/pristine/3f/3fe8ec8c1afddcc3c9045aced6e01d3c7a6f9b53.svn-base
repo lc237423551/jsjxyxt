@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.TrainInfoDao">
+	<resultMap type="trainInfo" id="trainInfoResult">
+		<id column="sno" property="sno"/>
+		<id column="weeknum" property="weeknum"/>
+		<result column="state" property="state"/>
+		<result column="uid" property="uid"/>
+		<result column="subjectid" property="subjectid"/>
+		<result column="t_tno" property="tno"/>
+		<association property="teacher" javaType="Teacher" >
+    			<id column="t_tno" property="tno"/>
+    			<result column="tname" property="tname"/>
+    			<result column="tpost" property="tpost"/>
+				<result column="tdegree" property="tdegree"/>   
+		</association>
+		<association property="subjectname" javaType="Subjectname" >
+			<id column="subjectid" property="id"/>
+			<result column="name" property="name"/>
+			<result column="skill" property="skill"/>
+			<result column="content" property="content"  />
+			<result column="plan" property="plan"/>
+			<result column="requirement" property="requirement"/>
+		</association>
+		<association property="unit" javaType="Unit" >
+			<id column="uid" property="uid"/>  
+			<result column="uname" property="uname"/>
+		</association>
+		<association property="shixunInfo" javaType="ShixunInfo" >
+			<id column="sno" property="sno"/>
+			<result column="ifgraduate" property="ifgraduate"/>
+			<result column="sxpdfState" property="sxpdfState"/>
+			<result column="sxpdfTime" property="sxpdfTime"/>
+			<result column="dealtime" property="dealtime"/>
+			<result column="codeState" property="codeState"/>
+		</association>
+		<association property="student" javaType="Student" >
+    	    <id column="sno" property="sno"/>
+			<result column="sname" property="sname"/>
+			<result column="ssex" property="ssex"/>
+			<result column="sphone" property="sphone"/>
+            <association property="cla" javaType="Cla" >
+			    <id column="cno" property="cno"/>
+			    <result column="cname" property="cname"/>
+				    <association property="speciality" javaType="Speciality" >
+				    	<id column="specid" property="specid"/>
+				    	<result column="specname" property="specname"/>
+					</association>
+			</association>
+		 </association>
+	</resultMap>
+	<select id="findTrainInfo" parameterType="Map"  resultMap="trainInfoResult">
+		        select 
+		        tpost,tdegree, s.sno sno,sphone,weeknum weeknum,t.state state,t.uid uid,u.uname uname, subjectid,name,t.tno t_tno,dealtime,codeState,
+				ifgraduate,sxpdfState,sxpdfTime,sname,c.cno cno,c.cname cname,sp.specid specid,specname,tea.tname tname
+		        from student s,speciality sp,cla c,trainInfo t,unit u,shixunInfo shi,subjectname sub,teacher tea
+		 <where>
+		 	<if test="  sno != null and  sno != ''">
+		 	 and t.sno=#{sno}
+		 	</if>
+		 	<if test="  sname != null and  sname != ''">
+		 	 and s.sname=#{sname}
+		 	</if>
+		 	<if test="  weeknum != null and  weeknum != ''">
+		 	 and weeknum=#{weeknum}
+		 	</if>
+		 	<if test="  cno != null and  cno != ''">
+		 	 and c.cno=#{cno}
+		 	</if>
+		 	<if test="  tno != null and  tno != ''">
+		 	 and c.tno=#{tno}
+		 	</if>
+		 	<if test="  specid != null and  specid != ''">
+		 	 and sp.specid=#{specid}
+		 	</if>
+		 	<if test="  uid != null and  uid != ''">
+		 	 and t.uid=#{uid}
+		 	</if>
+		 	<if test="  uname != null and  uname != ''">
+		 	 and u.uname like concat('%',#{uname},'%')
+		 	</if>
+		 	<if test="  name != null and  name != ''">
+		 	 and sub.name=#{name}
+		 	</if>
+		 	<if test="  subjectid != null and  subjectid != ''">
+		 	 and sub.id=#{subjectid}
+		 	</if>
+		 	<if test="  tname != null and  tname != ''">
+		 	 and tea.tname=#{tname}
+		 	</if>
+		 	<if test="  tno1 != null and  tno1 != ''">
+		 	 and t.tno=#{tno1}
+		 	</if>
+		 	<if test="  state != null and  state != ''">
+		 	 and t.state=#{state}
+		 	</if>
+			 and s.sno=t.sno 
+			 and s.cno=c.cno 
+			 and c.specid=sp.specid 
+			 and t.uid=u.uid 
+			 and t.sno=shi.sno
+			 and sub.id=t.subjectid
+			 and tea.tno=t.tno;
+		</where>
+	</select>
+	
+	<!-- 下载调用 -->
+	<select id="findTrainInfo2" parameterType="Map"  resultMap="trainInfoResult">
+		        select 
+		        s.sno sno,sphone,weeknum weeknum,t.state state,t.uid uid,u.uname uname, subjectid,name,skill,content,plan,requirement,t.tno t_tno,
+				sname,c.cname cname,specname,tea.tname tname 
+		        from student s,speciality sp,cla c,trainInfo t,unit u,shixunInfo shi,subjectname sub,teacher tea
+		 <where>
+		 	<if test="  sno != null and  sno != ''">
+		 	 and t.sno=#{sno}
+		 	</if>
+		 	<if test="  sname != null and  sname != ''">
+		 	 and s.sname=#{sname}
+		 	</if>
+		 	<if test="  weeknum != null and  weeknum != ''">
+		 	 and weeknum=#{weeknum}
+		 	</if>
+		 	<if test="  cno != null and  cno != ''">
+		 	 and c.cno=#{cno}
+		 	</if>
+		 	<if test="  tno != null and  tno != ''">
+		 	 and c.tno=#{tno}
+		 	</if>
+		 	<if test="  uid != null and  uid != ''">
+		 	 and t.uid=#{uid}
+		 	</if>
+		 	<if test="  name != null and  name != ''">
+		 	 and sub.name=#{name}
+		 	</if>
+		 	<if test="  subjectid != null and  subjectid != ''">
+		 	 and sub.id=#{subjectid}
+		 	</if>
+		 	<if test="  tname != null and  tname != ''">
+		 	 and tea.tname=#{tname}
+		 	</if>
+		 	<if test="  tno1 != null and  tno1 != ''">
+		 	 and t.tno=#{tno1}
+		 	</if>
+			 and s.sno=t.sno 
+			 and s.cno=c.cno 
+			 and c.specid=sp.specid 
+			 and t.uid=u.uid 
+			 and t.sno=shi.sno
+			 and sub.id=t.subjectid
+			 and tea.tno=t.tno;
+		</where>
+	</select>
+	<!-- 根据指导教师得到所指导的学生 -->
+	<select id="findByTno" parameterType="Map"  resultMap="trainInfoResult">
+		        select student.sno sno,student.sname sname,cname
+		        from trainInfo,student,cla
+		        where student.cno=cla.cno and trainInfo.sno=student.sno and weeknum=#{weeknum} and trainInfo.tno=#{tno};
+		 
+	</select>
+	<!-- 批量添加 -->
+	 <insert id="insertTrainInfo" parameterType="java.util.List">
+      insert into trainInfo(sno,weeknum,state,uid,tno)values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sno},#{item.weeknum},#{item.state},#{item.uid},#{item.tno})
+        </foreach>
+    </insert>
+	
+	<update id="updateTrainInfo" parameterType="trainInfo" >
+	 		 update trainInfo 
+		<set>
+			<if test="sno != null and sno  != ''">  sno= #{ sno},</if>
+			<if test="state != null and state  != ''">  state= #{ state},</if>
+			<if test="uid != null and uid  != ''">  uid= #{ uid},</if>
+			<if test="subjectid != null and subjectid  != ''">  subjectid= #{ subjectid},</if>
+			<if test="tno != null and tno  != ''">  tno= #{ tno},</if>
+			<if test="remark != null and remark  != ''">  remark= #{ remark},</if>
+		</set>
+		where sno=#{sno} and weeknum=#{weeknum};
+	</update>
+	
+	
+</mapper>

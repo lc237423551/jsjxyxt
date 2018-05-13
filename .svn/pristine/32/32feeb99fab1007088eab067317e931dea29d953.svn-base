@@ -1,0 +1,62 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+	      <div class=" bg-light lt b-b" >
+	        <span class="text-muted m-l"> 第<span style="font-size: 3rem; padding: 0 5px; display: inline-block">{{thisWeek}}</span>周总结</span> 
+	        <div class="m-l inline dropdown" dropdown>
+	          <div class="dropdown-menu animated fadeInUp w wrapper">
+	            <a ng-repeat="color in colors" class="inline m-xs bg-{{color}}" style="width:18px;height:18px" ng-click=" note.color = color "></a>
+	          </div>
+	        </div>
+	      </div>
+	      <div class="row-row" >
+	        <div class="cell">
+	          <div class="cell-inner">
+	            	<form class="form form-horizontal m-t bg-light col-sm-12" name="myweeksum" role="form" novalidate>
+	            	 <div class="form-group text-center">
+						<strong class="m-n font-thin h5" ng-if="time!=''"><i class="glyphicon glyphicon-time"></i>最后填写时间:  </strong>
+				  		<strong class="m-n font-thin h5 text-danger" ng-if="time!=''">{{time}}</strong>
+				  		<strong class="m-n font-thin h5 text-danger" ng-if="time==''">未填写</strong>
+					  </div>
+				     <div class="form-group">
+						<label for="inputEmail3" class="col-sm-1 control-label m-t">本周工作总结:</label>
+					    <div class="col-sm-10">
+					      <textarea  class="form-control no-border   m-t" name="summary" placeholder="本周工作总结。。" rows="5" style="resize:none" ng-model="summary" ng-disabled="!canWrite" required></textarea>
+	                      <p ng-show=" myweeksum.summary.$touched && myweeksum.summary.$invalid" class="text-danger">好好想想这周干了什么，留下总结哟~~</p>
+					    </div>
+					</div>
+				    <div class="form-group">
+					    <label for="inputEmail3" class="col-sm-1 control-label m-t">要求的支持和工作建议:</label>
+					    <div class="col-sm-10">
+					      <textarea  class="form-control no-border   m-t" name="advise" placeholder="要求的支持和工作建议。。" rows="5" style="resize:none" ng-model="advise" required ng-disabled="!canWrite"></textarea>
+					      
+	                      <p ng-show=" myweeksum.advise.$touched && myweeksum.advise.$invalid" class="text-danger">仔细填写，别空着~</p>
+					    </div>
+				    </div>			    				    
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-1 control-label">下周工作安排:</label>
+					    <div class="col-sm-10">
+					      <textarea  class="form-control no-border   m-t" name="arrange" placeholder="下周工作安排。。" rows="5" style="resize:none" ng-model="arrange" required ng-disabled="!canWrite"></textarea>
+					      
+	                      <p ng-show=" myweeksum.arrange.$touched && myweeksum.arrange.$invalid" class="text-danger">下周也要元气满满~~~</p>
+					    </div>
+					</div>				    
+				    <div class="form-group">
+				    	<label for="inputEmail3" class="col-sm-1 control-label m-t">教师对问题的处理:</label>
+					    <div class="col-sm-10">
+					      <textarea  class="form-control no-border   m-t" id="inputEmail3" placeholder="教师对问题的处理。。" rows="5" style="resize:none" ng-disabled="!isTeacher" ng-model="deal"></textarea>
+					    </div>
+				    </div>
+				   <div class="form-group">
+				   		<label for="inputEmail3" class="col-sm-1 control-label m-t">教师评价考核:</label>
+					    <div class="col-sm-10">
+					      <textarea  class="form-control no-border   m-t" id="inputEmail3" placeholder="教师评价考核。。" rows="5" style="resize:none" ng-disabled="!isTeacher" ng-model="evaluation"></textarea>
+					    </div>
+				   </div>
+				    
+				</form>
+				<div class="col-sm-11">
+					<button class="btn btn-info btn-md pull-right m-t m-r" ng-click="saveMyWeekSummary()" ng-disabled="myweeksum.$invalid"><i class="fa fa-save"></i> &nbsp;&nbsp;保存</button>
+				</div>
+	          </div>
+	        </div>
+	      </div>
+      

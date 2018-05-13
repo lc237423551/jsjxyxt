@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.SubjectnameDao">
+	<resultMap type="subjectname" id="SubjectnameResult">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="skill" property="skill"/>
+		<result column="content" property="content"/>
+		<result column="plan" property="plan"/>
+		<result column="requirement" property="requirement"/>
+		<result column="sub_state" property="sub_state"/>
+		<result column="sub_state1" property="sub_state1"/>
+		<result column="tno" property="tno"/>
+		<association property="teacher" javaType="Teacher" >
+    		<id column="tno" property="tno"/>
+    		<result column="tname" property="tname"/>
+		</association>
+	</resultMap>
+	
+	
+	<select id="findSubjectname" parameterType="Subjectname"  resultMap="SubjectnameResult">
+		select * from 
+           subjectname left join teacher on subjectname.tno=teacher.tno
+		 <where>
+			<if test="tno  !=null and tno !='' ">
+				and subjectname.tno =#{tno}
+			</if>
+			<if test="id  !=null and id !='' ">
+				and id =#{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findById" parameterType="Integer"  resultMap="SubjectnameResult">
+		 select * from Subjectname left join teacher on subjectname.tno=teacher.tno  where id=#{id} 
+		 
+	</select>
+	
+	<update id="updateSubjectname" parameterType="Subjectname" > 
+		update Subjectname
+		<set>
+			<if test="name != null and name  != ''">  name= #{ name},</if>
+			<if test="skill != null and skill  != ''">  skill= #{ skill},</if>
+			<if test="content != null and content  != ''">  content= #{ content},</if>
+			<if test="plan != null and plan  != ''">  plan= #{ plan},</if>
+			<if test="requirement != null and requirement  != ''">  requirement= #{ requirement},</if>
+			<if test="tno != null and tno  != ''">  tno= #{ tno},</if>
+			<if test="sub_state != null and sub_state  != ''">  sub_state= #{ sub_state},</if>
+			<if test="sub_state1 != null and sub_state1  != ''">  sub_state1= #{ sub_state1},</if>
+		</set>
+		where id = #{id}
+	</update>
+	<update id="updateSubjectname2" parameterType="Subjectname" > 
+		update Subjectname
+		<set>
+			<if test="name != null and name  != ''">  name= #{ name},</if>
+			<if test="skill != null and skill  != ''">  skill= #{ skill},</if>
+			<if test="content != null and content  != ''">  content= #{ content},</if>
+			<if test="plan != null and plan  != ''">  plan= #{ plan},</if>
+			<if test="requirement != null and requirement  != ''">  requirement= #{ requirement},</if>
+			<if test="sub_state != null and sub_state  != ''">  sub_state= #{ sub_state},</if>
+			<if test="sub_state1 != null and sub_state1  != ''">  sub_state1= #{ sub_state1},</if>
+			tno=#{tno}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteSubjectname" parameterType="Integer" >
+	    delete from Subjectname where id=#{id};
+	</delete>
+	
+ 	<insert id="insertSubjectname" parameterType="Subjectname"  useGeneratedKeys="true" keyProperty="id">
+		insert into Subjectname(name,tno,sub_state,sub_state1,skill,content,plan,requirement)values(#{name},#{tno},#{sub_state},#{sub_state1},#{skill},#{content},#{plan},#{requirement});
+	</insert> 
+	
+	
+</mapper>

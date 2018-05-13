@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.DictionaryContentDao">
+	<resultMap type="DictionaryContent" id="DictionaryContentResult">
+		<id property="id" column="id"/>
+		<result property="type_id" column="type_id"/>
+		<result property="value" column="dictionary_value"/>
+	</resultMap>
+	
+	<!-- 获取所有数据字典根据数据字典类型id -->
+	<select id="getDictionaryContentByDictionaryId" parameterType="int" resultMap="DictionaryContentResult">
+		select * from t_dictionary_content dc
+			where dc.type_id=#{dictionaryId}
+	</select>
+	<!-- 增加数据字典-->
+	<insert id="addDictionaryContent" parameterType="DictionaryContent">
+		insert into t_dictionary_content values (null,#{type_id},#{value});
+	</insert>
+	<!-- 修改数据字典 -->
+	<update id="updateDictionaryContent" parameterType="DictionaryContent">
+		update t_dictionary_content set dictionary_value=#{value} 
+			where id=#{id}
+	</update>
+	<!-- 根据类型id获取类型内容-->
+	<select id="getDictionaryContent" parameterType="int" resultMap="DictionaryContentResult">
+		select * from t_dictionary_content where type_id=#{dictionaryId};
+	</select>
+	<!-- 删除数据字典内容 -->
+	<delete id="deleteDictionaryContent" parameterType="string">
+		delete from t_dictionary_content where id=#{dictionaryId};
+	</delete>
+</mapper>

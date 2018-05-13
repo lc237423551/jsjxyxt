@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.ShixunInfoDao">
+	<resultMap type="ShixunInfo" id="shixunInfoResult">
+		<id column="sno" property="sno"/>
+		<result column="ifgraduate" property="ifgraduate"/>
+		<result column="sxpdfState" property="sxpdfState"/>
+		<result column="sxpdfTime" property="sxpdfTime"/>
+		<result column="dealtime" property="dealtime"/>
+		<result column="codeState" property="codeState"/>
+		<association property="student" javaType="Student" >
+    	    <id column="sno" property="sno"/>
+			<result column="sname" property="sname"/>
+			<result column="ssex" property="ssex"/>
+			<result column="sid" property="sid"/>
+			<result column="semail" property="semail"/>
+			<result column="sphone" property="sphone"/>
+			<result column="sadress" property="sadress"/>
+			<result column="sremark" property="sremark"/>
+            <association property="cla" javaType="Cla" >
+			    <id column="cno" property="cno"/>
+			    <result column="cname" property="cname"/>
+				    <association property="speciality" javaType="Speciality" >
+				    	<id column="specid" property="specid"/>
+				    	<result column="specname" property="specname"/>
+					</association>
+			</association>
+		 </association>
+	</resultMap>
+
+	
+	<select id="findShixunInfo" parameterType="map" resultMap="shixunInfoResult">
+		        select * from student,speciality,cla,shixunInfo
+		 <where>
+		 	<if test="cno !=null and cno !='' ">
+		 	and student.cno=#{cno}
+		 	</if>
+		 	<if test="sno !=null and sno !='' ">
+		 	and student.sno=#{sno}
+		 	</if>
+			and student.sno=shixunInfo.sno and student.cno=cla.cno and cla.specid=speciality.specid;
+		</where>
+	</select>
+	
+	<update id="updateShixunInfo" parameterType="shixunInfo" >
+	 		 update shixunInfo 
+		<set>
+			<if test="sno != null and sno  != ''">  sno= #{ sno},</if>
+			<if test="ifgraduate != null and ifgraduate  != ''">  ifgraduate= #{ ifgraduate},</if>
+			<if test="sxpdfState != null and sxpdfState  != ''">  sxpdfState= #{ sxpdfState},</if>
+			<if test="sxpdfTime != null and sxpdfTime  != ''">  sxpdfTime= #{ sxpdfTime},</if>
+			<if test="codeState != null and codeState  != ''">  codeState= #{ codeState},</if>
+			<if test="dealtime != null and dealtime  != ''">  dealtime= #{ dealtime},</if>
+		</set>
+		where sno=#{sno};
+	</update>
+	
+	<insert id="insertShixunInfo" parameterType="shixunInfo">
+		insert into shixunInfo(sno,sxpdfState,codeState)values(#{sno},#{sxpdfState},'0');
+	</insert>
+	
+</mapper>

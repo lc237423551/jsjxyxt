@@ -1,0 +1,76 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<div class="bg-light lter b-b wrapper-sm col-sm-12"  style="float:left; ">
+    <div class=" col-sm-2" style="padding:6px 0">
+  	<span class="m-n font-thin h4 text-md" >系统代码管理</span>
+  </div>
+</div>
+<div class="m-t-xxs">
+  <table class="table table-bordered table-hover table-condensed bg-white-only t-c">
+    <tr style="font-weight: bold" class="success">
+      <td style="width:5%"></td>
+      <td style="width:10%">类别编号</td>
+      <td style="width:15%">类别名称</td>
+      <td style="width:10%">内容编号</td>
+      <td style="width:15%">内容</td>
+      <td style="width:10%">操作</td>
+    </tr>
+    
+    <tr ng-repeat="item in sycodes" ng-class="{info: item.codecontent == '{{newsInsert}}' }">
+    <td class="v-middle">
+        <span>
+          {{$index+1}}
+        </span>
+      </td>   
+      <td class="v-middle">
+        <span  editable-text="item.codeno" e-name="codeno" e-form="managerteaform" e-required>
+          {{ item.codeno || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span editable-text="item.codename" e-name="codename" e-form="managerteaform"  e-required>
+          {{ item.codename || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <!-- editable status (select-local) -->
+   
+        <span editable-text="item.codevalue" e-name="codevalue"   e-form="managerteaform" e-required >
+          {{ item.codevalue || ''    }}
+        </span> 
+      </td>
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.codecontent" e-name="codecontent" e-form="managerteaform"  e-required>
+          {{ item.codecontent || '' }}
+        </span>
+      </td>
+      <td style="white-space: nowrap">
+        <!-- form -->
+        <form editable-form name="managerteaform" onaftersave="saveUser($data, item.codeid)" ng-show="managerteaform.$visible" class="form-buttons form-inline" shown="inserted == sycodes">
+          <button type="submit" ng-disabled="managerteaform.$waiting" class="btn btn-sm btn-info">      
+            	确认
+          </button>
+          <button type="button" ng-disabled="managerteaform.$waiting" ng-click="managerteaform.$cancel()" class="btn btn-sm btn-default">
+           		取消
+          </button>
+        </form>
+        <div class="buttons" ng-show="!managerteaform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="managerteaform.$show()">编辑</button>
+          <button class="btn btn-sm btn-danger" ng-click="removeUser(item.codeid)">删除</button>
+        </div>  
+      </td>
+    </tr>
+    <tr >
+      <td class="v-middle text-danger">增加</td>
+      <td class="v-middle"><input type="text" ng-model="sycode.codeno"></td>
+      <td class="v-middle"><input type="text" ng-model="sycode.codename"></td>
+      <td class="v-middle"><input type="text" ng-model="sycode.codevalue"></td>
+      <td class="v-middle"><input type="text" ng-model="sycode.codecontent"></td>
+      <td class="v-middle"> <button class="btn btn-sm btn-success" ng-click="saveSycode()">保存</button> </td>
+    </tr>
+  </table>
+    <ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+  
+</div>
+
+

@@ -1,0 +1,61 @@
+/**
+ * 
+ */
+app.controller('renwushuTea',['$scope', '$http', '$location', 'toaster', function($scope, $http, $location, toaster){
+	//判断是添加新的题目还是修改题目
+	var id=$location.search().id;
+	$scope.subject={
+			name:'',
+			tno:'${user.users}',
+			
+	}
+	
+	if(id==0){//添加题目
+		$scope.tab=0;
+		$http.get('/jsjxyxt/teacher/get.do').success(function(data){
+	    	$scope.teachers= data.result;	
+	    })
+	    $scope.save = function() {
+			var data={
+					"name":$scope.subject.name,
+					"skill":$scope.subject.skill,
+					"content":$scope.subject.content,
+					"requirement":$scope.subject.requirement,
+					"plan":$scope.subject.plan,
+					"sub_state":'已审核',
+					"sub_state1":'校内',
+			}
+			 $http.post('/jsjxyxt/subjectname/save.do', data).success(function(data){
+ 
+					 toaster.pop('success', '系统提示','保存成功');  
+					 $location.path('app/teacher/trainSubject');
+ 
+    		})
+	}
+	    
+	    
+	}else{
+
+	    $http.get('/jsjxyxt/subjectname/gets.do', {params:{id:$location.search().id}}).success(function(data){
+	    	$scope.subject=data.result
+	    })
+	}
+	//修改题目
+	$scope.save1 = function() {
+		var data={
+				"id":$location.search().id,
+				"skill":$scope.subject.skill,
+				"content":$scope.subject.content,
+				"requirement":$scope.subject.requirement,
+				"plan":$scope.subject.plan,
+		}
+		 $http.post('/jsjxyxt/subjectname/update.do', data).success(function(data){
+
+				 toaster.pop('success', '系统提示','保存成功');  
+				 $location.path('app/teacher/trainSubject');
+
+		})
+}
+   
+	
+}])

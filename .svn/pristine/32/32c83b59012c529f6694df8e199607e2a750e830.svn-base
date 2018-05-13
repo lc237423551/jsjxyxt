@@ -1,0 +1,88 @@
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<div class="bg-light lter b-b wrapper-sm clear">
+	<div class=" pull-left " style="padding:6px 0">
+  		<span class="m-n font-thin h4" >单位审核<span class="text-danger">(所有未审核的单位)</span></span>
+  	</div>
+  	<div class="col-sm-2 pull-right">
+                  <button class="btn btn-success  m-l" ng-show="remainingCount!==0" ng-click="update()"  >批量审核通过</button>	
+         </div>
+  	<form class="form-horizontal pull-right col-sm-3 no-padder" >
+	     	<div class="input-group">
+	     	  <input type="text" class="form-control input-md  no-border rounded padder" placeholder="请输入实训单位名称" ng-model="uname">
+		      <span class="input-group-btn ">
+		        <button class="btn btn-sm  rounded" type="button" ng-click="select()" >
+		        	<i class="fa fa-search"></i>
+		        </button>
+		      </span>
+		     </div>
+         </form>
+         
+	<div class="m-t-xxl">
+		<table
+			class="table table-bordered table-hover table-condensed bg-white-only t-c ">
+			<tr style="font-weight: bold" class="success ">
+				<td style="width: 10%"><label class="i-checks i-checks-sm">
+			                <input type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)"><i></i>
+			      </label> </td>
+				<td style="width: 20%">名称</td>
+				<td style="width: 10%">所在城市</td>
+				<td style="width: 10%">单位地址</td>
+				<td style="width: 10%">联系人</td>
+				<td style="width: 10%">联系方式</td>
+				<td style="width: 10%">指导教师</td>
+				<td style="width: 10%">审核状态</td>
+			</tr>
+<tr ng-repeat="item in units"  >
+	<td class="v-middle">
+       <label class="i-checks i-checks-sm">
+			            <input type="checkbox" ng-model="item.completed" ng-change="todoCompleted(item)"><i></i>
+			          </label>
+     </td> 
+     
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.uname" e-name="uname" e-form="managercompanyform"  e-required>
+         <small> {{ item.uname || '' }}</small>
+        </span>
+      </td>
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.ucity"  e-name="ucity" e-form="managercompanyform"  e-required>
+          {{ item.ucity || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.uadress"  e-name="uadress" e-form="managercompanyform"  e-required>
+          {{ item.uadress || '' }}
+        </span>
+      </td>
+       <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.upeople" e-name="upeople" e-form="managercompanyform"  e-required>
+          {{ item.upeople || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.uphone" e-name="uphone" e-form="managercompanyform"  e-required>
+          {{ item.uphone || '' }}
+        </span>
+      </td>
+       
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.teacher.tno" e-name="tno" e-form="managercompanyform"  e-required>
+          {{ item.teacher.tname || '' }}
+        </span>
+      </td>
+     <td class="v-middle"  >
+        {{item.ustatus ||''}}
+      </td>
+      
+			</tr>
+		</table>
+	</div>
+
+</div>

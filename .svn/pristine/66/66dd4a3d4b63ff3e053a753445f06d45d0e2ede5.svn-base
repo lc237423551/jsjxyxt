@@ -1,0 +1,52 @@
+/**
+ * 
+ */
+/**
+ * 学生实训情况
+ */
+app.controller('trainStudentStateAdmin', ['$scope', '$http', function($scope, $http){
+	$scope.wait=0;
+	$scope.nums=0;
+    //班级和专业初始数据
+    $scope.dropdowncp = []
+    $scope.dropdownspec = []
+    $scope.hasChooseSpec =true;//在没选择专业前禁止选择班级
+    $http.get('/jsjxyxt/speciality/getwithAll.do').success(function(data){
+		$scope.dropdownspec = data.result
+	})
+    
+    //专业下拉框值改变
+    $scope.changeSpec = function(spec){
+    	var data={
+    			"specid":spec.specid
+    	}
+    	$http.post('/jsjxyxt/cla/getwithAll.do',data).success(function(data){
+    		$scope.dropdowncp = data.result
+    	})
+    	$scope.hasChooseSpec = false;   	
+    }
+    $scope.cla={
+    		cname:'',
+    }
+    $scope.cla.classes='全部'
+    $scope.cla.spec=''
+    //根据下拉框获取学生
+    $scope.selectStu = function(){
+    	$scope.wait=1;
+    	var data = {
+    			"cno": $scope.cla.classes.cno,
+    			"specid": $scope.cla.spec.specid,
+    		}
+    	console.log(data)
+    		var url = '/jsjxyxt/trainInfo/get.do'
+    		$http.post(url,data).success(function(data){
+    			$scope.allMsys = data.result;
+    			$scope.wait=0;
+    			$scope.nums=data.nums;
+    		})	
+    }
+    
+
+
+	//-----------------------------------------获取学生实训情况
+}])

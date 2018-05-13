@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.UnitDao">
+	<resultMap type="unit" id="unitResult">
+		<id column="uid" property="uid"/>
+		<result column="uname" property="uname"/>
+		<result column="ucity" property="ucity"/>
+		<result column="uadress" property="uadress"/>
+		<result column="uphone" property="uphone"/>
+		<result column="uremark" property="uremark"/>
+		<result column="upeople" property="upeople"/>
+		<result column="tno" property="tno"/>
+		<result column="ustatus" property="ustatus"/>
+		<association property="teacher" javaType="Teacher" >
+    		<id column="tno" property="tno"/>
+    		<result column="tname" property="tname"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="unit" id="cityResult">
+		<result column="ucity" property="ucity"/>
+	</resultMap>
+	
+	<resultMap type="unit" id="nameResult">
+		<id column="uid" property="uid"/>
+		<result column="uname" property="uname"/>
+	</resultMap>
+	
+	
+	<select id="findAllcity" resultMap="cityResult">
+		 select DISTINCT ucity from unit;
+	</select>
+	<select id="findAllname" resultMap="nameResult">
+		 select * from unit;
+	</select>
+	<select id="findUnit" parameterType="unit"  resultMap="unitResult">
+		select * from 
+           unit left join teacher on unit.tno=teacher.tno
+		 <where>
+			<if test="uname !=null and uname!='' ">
+				and uname like concat('%',#{uname},'%')
+			</if>
+			<if test="ucity !=null and ucity !='' ">
+				and ucity like concat('%',#{ucity},'%')
+			</if>
+			<if test="ustatus !=null and ustatus!='' ">
+				and ustatus = #{ustatus}
+			</if>
+		</where>
+	</select>
+	<select id="findByname" parameterType="unit" resultMap="unitResult">
+		select * from unit 
+		<where>
+			<if test="uname !=null and uname!='' ">
+				and uname =#{uname}
+			</if>
+			<if test="ustatus !=null and ustatus!='' ">
+				and ustatus = #{ustatus}
+			</if>
+			<if test="uid !=null and uid!='' ">
+				and uid = #{uid}
+			</if>
+		</where>
+		
+		
+	</select>
+	<select id="findnum" parameterType="TrainInfo" resultType="Integer">
+		select count(*) from traininfo where uid=#{uid} and weeknum=#{weeknum};
+	</select>
+	
+	<delete id="deleteUnit" parameterType="Integer">
+		delete from unit where uid=#{uid};
+	</delete>
+	<update id="updateUnit" parameterType="Unit">
+		update unit
+		<set>
+			<if test=" uname != null and uname != ''"> uname= #{uname},</if>
+			<if test=" ucity != null and ucity != ''"> ucity= #{ucity},</if>
+			<if test=" uadress != null and uadress != ''"> uadress= #{uadress},</if>
+			<if test=" upeople != null and upeople != ''"> upeople= #{upeople},</if>
+			<if test=" uphone != null and uphone != ''"> uphone= #{uphone},</if>
+			<if test=" tno != null and tno != ''"> tno= #{tno},</if>
+			<if test=" ustatus != null and ustatus != ''"> ustatus= #{ustatus},</if>
+		</set>
+		where uid = #{uid}
+	</update>
+	<update id="updateUnit2" parameterType="Unit">
+		update unit
+		<set>
+			<if test=" uname != null and uname != ''"> uname= #{uname},</if>
+			<if test=" ucity != null and ucity != ''"> ucity= #{ucity},</if>
+			<if test=" uadress != null and uadress != ''"> uadress= #{uadress},</if>
+			<if test=" upeople != null and upeople != ''"> upeople= #{upeople},</if>
+			<if test=" uphone != null and uphone != ''"> uphone= #{uphone},</if>
+			<if test=" ustatus != null and ustatus != ''"> ustatus= #{ustatus},</if>
+			 tno= #{tno}  
+		</set>
+		where uid = #{uid}
+	</update>
+	<insert id="insertUnit" parameterType="Unit" useGeneratedKeys="true" keyProperty="uid" >
+		insert into unit (uname,ucity,uadress,upeople,uphone,ustatus)values(#{uname},#{ucity},#{uadress},#{upeople},#{uphone},#{ustatus});
+	</insert>
+	
+	<!-- 批量添加 -->
+	 <insert id="insertAll" parameterType="java.util.List">
+        insert into unit (uname, ucity,uadress,ustatus)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.uname}, #{item.ucity},#{item.uadress},#{ustatus})
+        </foreach>
+    </insert>
+	<!-- 获取公司名 -->
+	<select id="getCompanyNameById" parameterType="int" resultType="string">
+		select uname from unit where uid=#{companyId};
+	</select>
+	
+	
+</mapper>

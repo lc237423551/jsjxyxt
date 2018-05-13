@@ -1,0 +1,118 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="bg-light lter b-b wrapper-sm clear">
+	<div class=" pull-left " style="padding:6px 0">
+  		<span class="m-n font-thin h4" >单位信息管理</span>
+  	</div>
+	<div class="col-sm-3 pull-left">
+		<span ng-controller="ModalAddCompany" class="pull-left m-l-xs">
+			<script type="text/ng-template" id="myModalAddCompany.html">
+            <div ng-include="'tpl/modal.addcompany.html'"></div>
+          </script>
+			<button class="btn btn-info" ng-click="open('md')">增加</button>
+		</span> 
+		 <span ng-controller="ModalUploadCom" class="pull-left m-l-xs">
+          <script type="text/ng-template" id="myModalUploadCom.html">
+            <div ng-include="'tpl/modal.upload.company.html'"></div>
+          </script>
+          <button class="btn btn-info" ng-click="open('lg')">批量增加</button>
+        </span>	
+	</div>
+		<form class="pull-right col-md-3" >
+	     	<div class="input-group">
+	     	  <input type="text" placeholder="输入单位名称" class="form-control input-md  no-border rounded padder"  ng-model="name">
+		      <span class="input-group-btn ">
+		        <button class="btn btn-sm  rounded" type="button" ng-click="search()" >
+		        	<i class="fa fa-search"></i>
+		        </button>
+		      </span>
+		     </div>
+         </form>
+		
+</div>
+<div >
+	<div class="">
+		<table
+			class="table table-bordered table-hover table-condensed bg-white-only t-c ">
+			<tr style="font-weight: bold" class="success ">
+				<td style="width: 5%"> </td>
+				<td style="width: 20%"> 名称</td>
+				<td style="width: 10%"> 所在城市</td>
+				<td style="width: 10%">单位地址</td>
+				<td style="width: 10%">联系人</td>
+				<td style="width: 10%">联系方式</td>
+				<td style="width: 10%"> 指导教师</td>
+				<td style="width: 10%">审核</td>
+				<td style="width: 10%">操作</td>
+			</tr>
+<tr ng-repeat="item in units" ng-class="{info: item.uname == {{newsInsert}} }" >
+
+    <td class="v-middle">
+       <span>
+          {{$index+1}}
+        </span>
+     </td>  
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.uname" e-name="uname" e-form="managercompanyform"  e-required>
+         <small> {{ item.uname || '' }}</small>
+        </span>
+      </td>
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.ucity"  e-name="ucity" e-form="managercompanyform"  e-required>
+          {{ item.ucity || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.uadress"  e-name="uadress" e-form="managercompanyform"  e-required>
+          {{ item.uadress || '' }}
+        </span>
+      </td>
+       <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.upeople" e-name="upeople" e-form="managercompanyform"  e-required>
+          {{ item.upeople || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.uphone" e-name="uphone" e-form="managercompanyform"  e-required>
+          {{ item.uphone || '' }}
+        </span>
+      </td>
+       
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.teacher.tno" e-name="tno" e-form="managercompanyform"  e-required>
+          {{ item.teacher.tname || '' }}
+        </span>
+      </td>
+      <td class="v-middle" ng-class="{danger:item.ustatus == '未审核'}">
+        <a editable-select="item.ustatus " e-name="ustatus" e-form="managercompanyform" e-ng-options="s.name as s.name for s in statuses" onbeforesave="checkName($data, user.id)" e-required>
+               {{  item.ustatus  || showStatus(item) }}
+         </a>
+      </td>
+      
+      <td style="white-space: nowrap">
+        <!-- form -->
+        <form editable-form name="managercompanyform" onaftersave="saveUser($data, item.uid)" ng-show="managercompanyform.$visible" class="form-buttons form-inline" shown="inserted == units">
+          <button type="submit" ng-disabled="managercompanyform.$waiting" class="btn btn-sm btn-info">
+                                       保存
+          </button>
+          <button type="button" ng-disabled="managercompanyform.$waiting" ng-click="managercompanyform.$cancel()" class="btn btn-sm btn-default">
+                                       取消
+          </button>
+        </form>
+        <div class="buttons" ng-show="!managercompanyform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="managercompanyform.$show()">编辑</button>
+          <button class="btn btn-sm btn-danger" ng-click="removeUser(item.uid)">删除</button>
+        </div>  
+      </td>
+			</tr>
+		</table>
+	</div>
+
+
+</div>

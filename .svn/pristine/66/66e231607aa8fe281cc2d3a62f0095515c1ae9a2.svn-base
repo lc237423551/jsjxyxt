@@ -1,0 +1,83 @@
+'use strict';
+/* Controllers */
+  // signin controller
+app.controller('syargu', ['$scope', '$http', 'toaster','$q', function($scope, $http, toaster,$q){	
+	var url="/jsjxyxt/syargu/get.do";
+	$http.get(url).success(function(data){
+		   $scope.date=data.result[0].arguvalue//周总结起始日期
+		   $scope.weeknum=data.result[1].arguvalue//可修改的周总结数
+		   $scope.unneed=data.result[2].arguvalue//导出周总结不需要导出的周数
+		   $scope.init=data.result[3].arguvalue//
+		   $scope.startweekno=data.result[4].arguvalue//
+		   $scope.enddate=data.result[5].arguvalue//
+})
+
+
+//修改周总结起始日期
+	$scope.saveDate=function(){
+		var date={
+				"arguname":'weekdate',
+				"arguvalue":$scope.date
+		}
+		var url="/jsjxyxt/syargu/update.do";
+		$http.post(url,date).success(function(data){
+	    toaster.pop('success', '系统提示', '起始日期修改成功');
+	})	
+	}
+//修改可修改的周总结	
+	$scope.saveWeeknum=function(){
+		var weeknum={
+				"arguname":'weeknum',
+				"arguvalue":$scope.weeknum
+		}
+		var url="/jsjxyxt/syargu/update.do";
+		$http.post(url,weeknum).success(function(data){
+			toaster.pop('success', '系统提示', '可填写的周修改成功');
+	})	
+	}
+	//修改不导出的周数	
+	$scope.saveUnneed=function(){
+		var unneed={
+				"arguname":'unneed',
+				"arguvalue":$scope.unneed
+		}
+		var url="/jsjxyxt/syargu/update.do";
+		$http.post(url,unneed).success(function(data){
+			toaster.pop('success', '系统提示', '可填写的周修改成功');
+	})	
+	}
+	//修改不导出的周数	
+	$scope.saveInit=function(){
+		var init={
+				"arguname":'init',
+				"arguvalue":$scope.init
+		}
+		var url="/jsjxyxt/syargu/update.do";
+		$http.post(url,init).success(function(data){
+			toaster.pop('success', '系统提示', '修改成功');
+	})	
+	}
+	//修改实训开始日期	
+	$scope.savestartweekno=function(){
+		var startweekno={
+				"arguname":'startweekno',
+				"arguvalue":$scope.startweekno
+		}
+		var url="/jsjxyxt/syargu/update.do";
+		$http.post(url,startweekno).success(function(data){
+			toaster.pop('success', '系统提示', '修改成功');
+	})	
+	}
+	//修改请假截止日期	
+	$scope.saveenddate=function(){
+		var startweekno={
+				"arguname":'enddate',
+				"arguvalue":$scope.enddate
+		}
+		var url="/jsjxyxt/syargu/update.do";
+		$http.post(url,startweekno).success(function(data){
+			toaster.pop('success', '系统提示', '修改成功');
+	})	
+	}
+
+}]);

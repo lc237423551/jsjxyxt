@@ -1,0 +1,141 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="bg-light lter b-b wrapper-sm clear">
+	<div class=" pull-left " style="padding:6px 0">
+  		<span class="m-n font-thin h4" >辅导员请假审批</span>
+  	</div>
+	<div class="form-horizontal col-md-2 no-lrpadder m-l">
+		<div class="form-group m-n m-l">
+			<select
+				class="form-control ng-pristine ng-invalid ng-invalid-required ng-touched" required 	ng-model="status">
+				<option value="5" selected>全部</option>
+				<option value="1">学生已申请</option>
+				<option value="2">辅导员已审批</option>
+				<option value="3">指导教师已审批</option>
+				<option value="4">专业负责人已审批</option>
+			</select>
+			
+		</div>
+	</div>
+	 <div class="form-horizontal col-md-2 no-lrpadder m-l"  >
+         	<div class="form-group m-n">	
+		          <ui-select ng-model="search.searchspec" name="spec" theme="bootstrap" ng-change="changeSpec(search.searchspec)" required>
+		            <ui-select-match placeholder="选择专业">{{$select.selected.specname}}</ui-select-match>
+		            <ui-select-choices  repeat="item in dropdownspec | filter: $select.search">
+		              <span ng-bind-html="item.specname | highlight: $select.search"></span>	
+		            </ui-select-choices>
+		          </ui-select>
+		    </div>
+	</div>
+         
+    <div class="form-horizontal col-md-2 no-lrpadder m-l"  >
+         	<div class="form-group m-n">	
+		          <ui-select ng-model="search.searchclass" name="classes" theme="bootstrap" ng-disabled="hasChooseSpec" required >
+		            <ui-select-match placeholder="选择班级">{{$select.selected.cname}}</ui-select-match>
+		            <ui-select-choices  repeat="item in dropdowncp | filter: $select.search | filter:{specname:filterclass}">
+		              <span ng-bind-html="item.cname | highlight: $select.search"></span>
+		            </ui-select-choices>
+		          </ui-select>
+		      </div>
+     </div>
+	
+	<button class="form-group btn m-b-xs w-xs btn-info m-l" ng-click="selectInfo()" >查询</button>
+</div>
+<div class="wrapper-md">
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover table-condensed bg-white-only">
+			<tr style="font-weight: bold ;text-align:center" class="success">
+				<td style="width:5%"></td>
+				<td style="width:7%">班级</td>
+				 <td style="width:10%">学号</td>
+			     <td style="width:7%">姓名</td>
+			     <td style="width:15%">请假时间</td>
+			     <td style="width:20%">实习单位</td>
+			     <td style="width:10%">状态</td>
+			     <td style="width:15%" colspan="3">审批</td>
+			</tr>
+			<tr ng-repeat="item in vacates">
+				<td class="v-middle">
+					<span>{{$index+1}}</span>
+				</td>
+				<td class="v-middle">
+					<span>{{item.cla.cname}}</span>
+				</td>
+				<td class="v-middle">
+					<span>{{item.sno}}</span>
+				</td>
+				<td class="v-middle">
+					<span>{{item.student.sname}}</span>
+				</td>
+				<td class="v-middle">
+					<small>{{item.v_strattime}}~{{item.v_endtime}}</small>
+				</td>
+				
+				<td class="v-middle" >
+					<span editable-select="item.unit.uname" e-name="uname" onshow="loadcompanyGroups()" e-form="rowform" e-ng-options="g.uname as g.uname for g in companygroups">
+          				<small>{{ showcompanyGroup(item) }}({{item.unit.ustatus}})</small>
+        			</span>
+	        		<div class="btn-group dropdown" ng-show="item.unit.ustatus == '未审核' ">
+		        		<form editable-form name="rowform" onbeforesave="saveUser($data, item.pa_id,item.unit.uid)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == item">
+				          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-sm btn-info">
+				            保存
+				          </button>
+				          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-sm btn-default">
+				            取消
+				          </button>
+				        </form>
+				        <div class="buttons" ng-show="!rowform.$visible">
+				          <button class="btn btn-sm btn-info" ng-click="rowform.$show()">修改</button>
+				         
+				        </div>  
+				      </div>
+				</td>
+				<td class="v-middle">
+					<span ng-show="item.v_status == 1">学生已申请</span>
+					<span ng-show="item.v_status == 2">辅导员已审批</span>
+					<span ng-show="item.v_status == 3">指导教师已审批</span>
+					<span ng-show="item.v_status == 4">专业负责人已审批</span>
+				</td>
+				<td class="v-middle" ng-controller="BackModalCtrl">
+					<div class="btn-group dropdown" ng-if="item.v_status == 1" >
+						
+						<button class="btn btn-success btn-sm" ng-click="updateStatu(item)">通过</button>
+						
+					</div>
+					<div class="btn-group dropdown" ng-if="item.v_status ==2||item.v_status ==3" >
+						  
+						<button class="btn btn-warning btn-sm" ng-click="updateStatu(item);open(sm,item.v_id)">撤销</button>
+						
+					</div>
+					<script type="text/ng-template" id="backreason.html">
+            				<div ng-include="'./tpl/modal.backreason.html'"></div>
+         	       		 </script>
+         	       		 	<button  ng-if="item.v_backreason != '' " class="btn btn-danger btn-sm"  ng-click="open(sm,item.v_id)">理由</button>
+				
+					<div class="btn-group " >
+						<form target="_blank"  action="tpl/PracticeMag/stuApplyInfo.jsp" method="post">
+							<input type="hidden" value="{{item.student.sname}}" name="sname">
+							<input type="hidden" value="{{item.sno}}" name="sno">
+							<input type="hidden" value="{{item.v_strattime}}" name="v_strattime">
+							<input type="hidden" value="{{item.v_endtime}}" name="v_endtime">
+							<input type="hidden" value="{{item.v_leavetime}}" name="v_leavetime">
+							<input type="hidden" value="{{item.telphone}}" name="sphone">
+							<input type="hidden" value="{{item.v_stayplace}}" name="v_stayplace">
+							<input type="hidden" value="{{item.v_reason}}" name="v_reason">
+							<input type="hidden" value="{{item.practiceappli.pa_internname}}" name="pa_internname">
+							<input type="hidden" value="{{item.unit.uname}}" name="uname">
+							<input type="hidden" value="{{item.practiceappli.pa_collteaname}}" name="collteaname">
+							<input type="hidden" value="{{item.practiceappli.pa_collteaposition}}" name="collteaposition">
+							<input type="hidden" value="{{item.practiceappli.pa_collteaphone}}" name="collteaphone">
+							<input type="hidden" value="{{item.teacher.tno}}" name="tno">
+							<input type="hidden" value="{{item.teacher.tname}}" name="tname">
+						
+							<input type="hidden" value="{{item.practiceappli.pa_internreason}}" name="pa_internreason">
+							<input type="submit" class="btn btn-info btn-sm" value="详情" >
+						</form>
+						
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

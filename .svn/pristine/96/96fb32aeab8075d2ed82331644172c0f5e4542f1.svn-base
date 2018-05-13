@@ -1,0 +1,50 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-xs hbox-auto-sm bg-light " >
+
+  <!-- column -->
+  <div class="col w-md lter b-r">
+    <div class="vbox">
+      <div class=" b-b">
+        <div class="list-group no-radius no-border no-bg m-b-none">
+
+          <span class="list-group-item  no-radius no-border no-bg">实训题目</span></span>
+
+          <span class="list-group-item  no-radius no-border no-bg text-danger">实训题目</span>
+
+        </div>
+      </div>
+      <div class="row-row">
+        <div class="cell scrollable hover">
+          <div class="cell-inner">
+            <div class="m-t-n-xxs">
+              <div class="list-group list-group-lg no-radius no-border no-bg m-b-none">
+
+                <a ng-repeat="item in subjects | filter:{dealTime:filter} | filter:query | orderBy:'sname'" class="list-group-item m-l" ng-class="{'select m-l-none': item.selected }"  ui-sref="apps.renwushu.detail({id: item.id})">
+
+                <a ng-repeat="item in subjects" class="list-group-item m-l" ng-class="{'select m-l-none': item.selected }"  ui-sref="apps.renwushu.detail({id: item.id})">
+
+                  <span class="block text-ellipsis m-l-n text-sm" ng-class="{'m-l-none': item.selected }">
+
+                    {{ item.name }}
+
+                    {{ item.name }} 
+
+                   </span> 
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+
+  <!-- column -->
+  <div class="col bg-white-only">
+    <div class="vbox" ui-view>      
+    </div>
+  </div>
+  <!-- /column -->
+</div>
+<!-- /hbox layout -->

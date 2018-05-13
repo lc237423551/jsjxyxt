@@ -1,0 +1,30 @@
+<draggable></draggable>
+<div class="modal-body wrapper bg-light "  nv-file-drop="" uploader="uploader" filters="queueLimit, isRar">
+  <div class="row">
+    <div class="col-sm-12 ">
+      <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加公告</h3>
+      <form  name="form" class="form-horizontal">
+       <div class="form-group">
+          <label class="control-label col-sm-3 row" >公告标题:</label>
+          <div class="col-sm-9 p-r">
+          	<input type="text" class="form-control no-border" ng-model="advice.title" name="title"  placeholder="公告标题" required ng-mousedown="clearDown($event)"> 
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.sno.$dirty && form.sno.$valid"></span>   
+	          <span class="required text-danger text-lg">*</span>
+	          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">公告内容:</label>
+          <div class="col-sm-9">
+          	<textarea rows="5" type="text" class="form-control p-r" ng-model="advice.content" name="content" placeholder="填写公告内容"clearDown($event)"></textarea>
+          	  <span class="required text-danger text-lg">*</span>
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.cname.$dirty && form.cname.$valid"></span> 
+          </div>
+        </div>   
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveAdvice(form)" ><strong>添加</strong></button>
+      	  <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ng-click="reset(form)"><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>

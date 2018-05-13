@@ -1,0 +1,78 @@
+/**
+ * 用户管理
+ */
+app.controller('managerUser', ['$scope', '$http', '$timeout', 'toaster','$q', 'editableOptions', 'editableThemes', function($scope, $http, $timeout, toaster,$q, editableOptions, editableThemes){
+	editableThemes.bs3.inputClass = 'input-sm';
+    editableThemes.bs3.buttonsClass = 'btn-sm';
+    editableOptions.theme = 'bs3';
+	
+	//得到全部管理员用户
+	$scope.newsInsert='0';
+	var url='/jsjxyxt/user/get.do';
+	$http.get(url).success(function(data){
+    	$scope.uses = data.result;
+    	$scope.users=data.users;//登录者的用户名
+    })
+    
+    
+    
+    //删除用户
+    
+    $scope.removeUser = function(users) {
+    	$scope.isAlertShow = true;
+        var remove = $scope.$on('clickOk',function(event, data){
+        	 var url='/jsjxyxt/user/delete.do';
+        	 var data={
+     				"users":users
+     		}
+		    	$http.post(url,data).success(function(data){
+		    		$scope.uses = data.result;
+	    	    	toaster.pop('success', '系统提示', '删除成功');
+		    	})
+            }
+        )
+         $scope.$on('clickCanel',function(event, data){   
+        	    if(remove())
+        	    remove = null;
+                return;
+            })
+         $scope.$on('clickOk',function(event, data){   
+        	 if(remove())
+        	 remove = null;
+              return;
+          })
+    };
+    
+	//修改
+    $scope.saveUser = function(change, users) {
+    	var url ='/jsjxyxt/user/update.do'
+    	var data = {
+    		    "users":users,
+    		    "username":change.username
+    		}
+    	$http.post(url, data).success(function(data){
+			    $scope.toaster = {
+			            type: 'success',
+			            title: '成功提示',
+			            text: '修改成功'
+			        };
+    		toaster.pop($scope.toaster.type, $scope.toaster.title, $scope.toaster.text);
+    	})
+    };
+	
+	
+	
+    //初始化密码
+	$scope.resetUser=function(users){
+		var data={
+				"users":users
+		}
+		var url='/jsjxyxt/user/resetPassword.do';
+		$http.post(url,data).success(function(data){
+//	    	console.log(data.result)
+			toaster.pop('success', '系统提示', '密码初始化成功');	
+	    })
+	    
+	}
+    
+}])

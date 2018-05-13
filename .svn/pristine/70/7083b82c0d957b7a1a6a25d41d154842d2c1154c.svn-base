@@ -1,0 +1,96 @@
+<!-- 实训学生状态管理 -->
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="wrapper-sm ">
+<div class=" pull-left" style="padding:6px 0">
+  	<span class="m-n font-thin h4" ><span class="h3">{{specname}}专业</span>学生实训情况</span>
+  </div>
+	<div class="col-sm-9">
+			          <ui-select ng-model="cla.classes" class="col-sm-2 no-lrpadder" name="classes"  theme="bootstrap" ng-disabled="hasChooseSpec" required >
+			            <ui-select-match placeholder="选择或搜索班级">{{$select.selected.cname}}</ui-select-match>
+			            <ui-select-choices  repeat="item in classes | filter: $select.search | filter:{specname:filterclass}">
+			              <span ng-bind-html="item.cname | highlight: $select.search"></span>
+			            </ui-select-choices>
+			          </ui-select>
+			          <ui-select ng-model="stus.status" class="col-sm-2 no-lrpadder" name="status"  theme="bootstrap" ng-disabled="hasChooseSpec" required >
+			            <ui-select-match placeholder="选择校内或校外">{{$select.selected}}</ui-select-match>
+			            <ui-select-choices  repeat="item in status">
+			              <span ng-bind-html="item | highlight: $select.search"></span>
+			            </ui-select-choices>
+			          </ui-select>
+	         
+	          <button class="form-group btn btn-info col-sm-1 m-l" ng-click="selectStu()" ng-disabled="form.$invalid">查询</button>
+	          <span class="text-danger m-l">结果数：{{length}}</span>	
+	          	           <a href="/jsjxyxt/downExcel/student.do?cno={{cla.classes.cno}}&state={{stus.status}} "><button class="btn btn-success pull-right" popover="下载学生实训情况统计表" popover-placement="bottom" popover-trigger="mouseenter"><i class="fa fa-cloud-download"></i>下载</button></a>	
+	          <form class="form-horizontal pull-right col-sm-3 no-padder" >
+		     	<div class="input-group">
+		     	  <input type="text" class="form-control input-md  no-border rounded padder" placeholder="请输入学生姓名" ng-model="sname">
+			      <span class="input-group-btn ">
+			        <button class="btn btn-sm  rounded" type="button" ng-click="selectStuByName()" >
+			        	<i class="fa fa-search"></i>
+			        </button>
+			      </span>
+			     </div>
+	         </form>
+   </div>
+ <div class="m-t-xxl">
+  <table class="table table-bordered table-hover table-condensed bg-white-only text-center ">
+    <tr style="font-weight: bold" class="success">
+      <td style="width:5%"> </td>
+      <td style="width:9%">班级</td>
+      <td style="width:7%">学号</td>
+      <td style="width:7%">姓名</td>
+      <td style="width:9%">手机号</td>
+      <td style="width:8%">指导老师</td>
+      <td style="width:10%">实训单位</td>
+      <td style="width:10%">实训题目</td>
+      <td style="width:9%">校内/校外</td> 
+      <td style="width:11%"><small>周总结完成数</small></td>  
+      <td style="width:11%"><small>实训报告状态</small></td>    
+    </tr>
+    <tr ng-repeat="item in allMsys"  ng-class="{info:item.state=='校外'}">
+      <td class="v-middle">
+        {{$index+1}}
+      </td>
+       <td class="v-middle" >
+        <small>{{item.student.cla.cname || '暂无'}}</small>
+      </td>
+      <td class="v-middle" >
+        <small>{{item.student.sno || '暂无'}}</small>
+      </td>
+      <td class="v-middle" >
+        <small>{{item.student.sname || '暂无'}}</small>
+      </td>
+      <td class="v-middle" >
+        <small>{{item.student.sphone || '暂无'}}</small>
+      </td>
+      <td class="v-middle">
+        <small>{{item.teacher.tname || '暂无'}}</small>
+      </td>
+      <td class="v-middle" >
+       <small> {{item.unit.uname || '暂无'}}</small>
+      </td>
+       <td class="v-middle">
+        <small>{{item.subjectname.name || '暂无'}}</small>
+      </td>
+      <td class="v-middle" >
+       <small> {{item.state || '暂无'}}</small>
+      </td>
+       <td class="v-middle" >
+       {{item.shixunInfo.nums}}
+      </td>
+       <td class="v-middle" >
+       <span ng-if="item.shixunInfo.sxpdfState==0"><small>未提交</small></span>
+       <span ng-if="item.shixunInfo.sxpdfState==1"><small>已提交</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==2"><small>已预览</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==3"><small>不合格</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==4"><small>已归档</small></span> 
+       <span ng-if="item.shixunInfo.sxpdfState==5"><small>已撤销归档</small></span>  
+      </td>
+    </tr>
+  </table>
+<div style="margin-left:40%" ng-if="wait==1">
+	<img src="/jsjxyxt/src/img/wait.gif">
+  </div>
+</div>
+
+ </div>

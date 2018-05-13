@@ -1,0 +1,66 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="bg-light wrapper-sm" style="overflow: hidden;">
+  <div class=" pull-left" style="padding:6px 0">
+  	<span class="m-n font-thin h4" >专业管理</span>
+  </div>
+  <div class="pull-left col-md-11">
+   <span ng-controller="ModalAddSpec" class="pull-left">
+          <script type="text/ng-template" id="myModalAddSpec.html">
+            <div ng-include="'tpl/modal.addspec.html'"></div>
+          </script>
+          <button class="btn btn-info" ng-click="open('md')">增加专业</button>
+        </span>  
+  </div>
+  
+</div>	
+ <div class="m-t-xxs">
+  <table class="table table-bordered table-hover table-condensed bg-white-only t-c">
+    <tr style="font-weight: bold" class="success">
+     <td style="width:5%">序号</td>
+      <td style="width:10%">专业代码</td>
+      <td style="width:15%">专业名称</td>
+      <td style="width:15%">专业负责人</td>
+      <td style="width:25%">操作</td>
+    </tr>
+    <tr ng-repeat="item in specs">
+     <td class="v-middle">
+     
+       <span>
+          {{$index+1}}
+        </span>
+     </td>  
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span  e-name="specid" e-form="managerspecform"  e-required>
+          {{ item.specid || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.specname" e-name="specname" e-form="managerspecform"  e-required>
+          {{ item.specname || '' }}
+        </span>
+      </td>
+      <td class="v-middle" >   
+        <span editable-text="item.teacher.tno" e-name="tno" e-form="managerspecform"  e-required>
+          {{ item.teacher.tname || '' }}
+        </span>
+      <td style="white-space: nowrap">
+        <!-- form -->
+        <form editable-form name="managerspecform" onaftersave="saveUser($data, item.specid)" ng-show="managerspecform.$visible" class="form-buttons form-inline" shown="inserted == specs">
+          <button type="submit" ng-disabled="managerspecform.$waiting" class="btn btn-sm btn-info">
+                                       确认
+          </button>
+          <button type="button" ng-disabled="managerspecform.$waiting" ng-click="managerspecform.$cancel()" class="btn btn-sm btn-default">
+                                       取消
+          </button>
+        </form>
+        <div class="buttons" ng-show="!managerspecform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="managerspecform.$show()">编辑</button>
+          <button class="btn btn-sm btn-danger" ng-click="removeUser(item.specid)">删除</button>
+        </div>  
+      </td>
+    </tr>
+  </table>
+ </div>

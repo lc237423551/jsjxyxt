@@ -1,0 +1,42 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-xs bg-light " ng-init="
+  app.settings.asideFixed = true;
+  app.settings.asideDock = false;
+  app.settings.container = false;
+  app.hideAside = false;
+  app.hideFooter = true;
+  " ng-controller="NoteCtrl">
+  <!-- column -->
+  <div class="col w-mmd lt b-r">
+    <div class="vbox">
+      <span class="font-bold m-t m-b-sm text-muted text-xs m-l" style="display:inline-block">我的周总结</span><br/>
+      <span class="h5 text-danger" ng-if="tab==0">实训未开始，无可编辑的周总结</span>
+      <span ng-if="tab!=0" class="font-bold   m-b-sm text-muted text-xs m-l" style="display:inline-block">可编辑周为:</span>
+      <span ng-if="tab!=0" class="font-bold   m-b-sm text-muted text-xs m-l color-info" style="display:inline-block; font-size: 2rem; padding: 0 5px;">{{canWriteWeek}}</span>
+      <div class="row-row" ng-if="tab!=0">
+        <div class="cell scrollable">
+          <div class="cell-inner">
+            <div class="padder">
+              <div class="list-group" >
+                <a ng-repeat="item in weeks" class="list-group-item b-l-{{item.canWrite}} b-l-3x  no-padder" ng-class="bg[$index]" ng-click="selectNote($index)" >
+	                <span class="block font-bold color-{{item.canWrite}} wrapper-sm" ui-sref="apps.myweeksum.detail({week: item.week})"  >第{{item.week}}周
+	               		 &nbsp;&nbsp;&nbsp;<small ng-if="item.canWrite === 'info'" class="danger text-xs">可编写</small>
+	                </span> 
+	             </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+
+  <!-- column -->
+  <div class="col">
+    <div class="vbox" ui-view>
+    </div>
+  </div>
+  <!-- /column -->
+</div>
+<!-- /hbox layout -->

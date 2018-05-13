@@ -1,0 +1,76 @@
+<draggable></draggable>
+<div class="hbox hbox-auto-xs hbox-auto-sm"   nv-file-drop="" uploader="uploader" filters="queueLimit, isExcel">
+  
+  <div class="col w-lg bg-light b-r bg-auto">
+    <div class="wrapper-md dker b-b">
+      <h3 class="m-n font-thin">选择上传的单位Excel</h3>
+    </div>
+    <div class="wrapper-md">      
+      <div ng-show="uploader.isHTML5" class="m-b-md">
+          <!-- 3. nv-file-over uploader="link" over-class="className" -->
+          <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploader">
+             	 拖动文件
+          </div>
+      </div>
+      <p class="m-t-md">单个Excel</p>
+      <input type="file" nv-file-select="" uploader="uploader" />
+    </div>
+  </div>
+  <div class="col">
+    <div class="wrapper-md bg-light dk b-b">
+     <span class="glyphicon glyphicon-remove pull-right m-t-xs" ng-click="closeModal($event)"></span>
+      <span class="pull-right m-t-xs m-r">队列长度: <b class="badge bg-info">{{ uploader.queue.length }}</b></span>    
+      <h3 class="m-n font-thin">上传队列</h3>      
+    </div>
+    <div class="wrapper-md">
+      <table class="table bg-white-only b-a">
+          <thead>
+              <tr>
+                  <th width="50%">文件名称</th>
+                  <th ng-show="uploader.isHTML5">文件大小</th>
+                  <th ng-show="uploader.isHTML5">进度</th>
+                  <th>状态</th>
+                  <th>操作</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr ng-repeat="item in uploader.queue">
+                  <td><strong>{{ item.file.name }}</strong></td>
+                  <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                  <td ng-show="uploader.isHTML5">
+                      <div class="progress progress-sm m-b-none m-t-xs">
+                          <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                      </div>
+                  </td>
+                  <td class="text-center">
+                      <span ng-show="item.isSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+                      <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                      <span ng-show="item.isError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                  </td>
+                  <td nowrap>
+                      <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                          	上传
+                      </button>
+                      <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                         	 取消
+                      </button>
+                      <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                          	删除
+                      </button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <div>
+        <div>
+          <p>传输进程:</p>
+          <div class="progress bg-light dker" style="">
+              <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+          </div>
+        </div>
+        <p class="text-info m-t font-bold">内容格式:单位名称|所在城市|地址</p>
+        <p class="text-info font-bold">文件类型:xlsx</p>
+      </div>
+    </div>
+  </div>
+</div>

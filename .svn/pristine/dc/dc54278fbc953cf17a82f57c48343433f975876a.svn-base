@@ -1,0 +1,29 @@
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">系统初始化</h1>
+</div>
+<div class="wrapper-md">
+  <tabset class="tab-container" ng-init="steps={percent:20, step1:true, step2:false, step3:false}">
+    <tab heading="历史归档" active="steps.step1" select="steps.percent=10">
+      <p class="m-b text-danger">历史归档是将原系统的数据保存到实训历史表里，然后清空原数据库的数据。 </p> 
+      <form name="step1" class="form-validation">
+         <button class="btn btn-danger" ng-click="Reset()">归档</button>
+        <div class="m-t m-b">
+          <button type="submit" ng-show="show1" ng-disabled="step1.$invalid" class="btn btn-default btn-rounded" ng-click="steps.step2=true">下一步</button>
+        </div>
+      </form>
+    </tab>
+    <tab heading="初始化参数" disabled="step1.$invalid||show" active="steps.step2" select="steps.percent=30">
+      <form name="step2" class="form-validation">
+        <p class="m-b text-danger">修改教学周开始日期、请假结束日期和实训开始周次：</p>
+         <input type="text" name="weekdate" class="form-control col-sm-6" ng-model="update.weekdate" popover="教学周开始日期;请输入年月日(格式:2017-9-1)" popover-trigger="focus" required  >
+         <input type="text" name="enddate" class="form-control col-sm-6 m-t" ng-model="update.enddate" popover="请假结束日期;请输入年月日(格式:2018-1-1)" popover-trigger="focus" required  >
+         <input type="number" name="weekno" class="form-control m-t col-sm-6" ng-model="update.weekno" popover="实训开始的周次(教学周)" popover-trigger="focus" required  >
+        <button class="btn btn-success m-t" ng-click="save()"ng-show="show2">保存</button>
+        <p class="m-b text-danger m-t" ng-show="!show2">系统初始化完成，请到 <code><a ui-sref="app.baseMsg.managerClass" class="h4">班级管理</a></code>页面和 <code><a ui-sref="app.baseMsg.managerStu" class="h4">学生管理</a></code>页面页面分别添加班级和学生。</p>
+      </form>
+    </tab>
+  </tabset>
+</div>

@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>实训任务书</title>
+<link href="../../../libs/jquery/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+	<div class="row">
+		  <div class="col-md-1"></div>
+		  <div class="col-md-11">
+		  	<div class="panel panel-info">
+		  	<div class="panel-heading">实训任务书</div>
+		 	 <div class="panel-body">
+		 	 <span class="h4">实训题目：${param.subjectname } &nbsp;&nbsp;</span>
+		 	 <span class="h4">指导老师：${param.tname } &nbsp;&nbsp;</span>
+		 	 
+		 	 <hr/>
+		 	 <span class="h4">已知技术参数和实训要求：</span>
+		 	 <textarea  type="textarea" name="yaoqiu" class="form-control"   style="resize: none;" required  rows="6">${param.skill }</textarea>
+		 	 <hr/>
+		 	 <span class="h4">实训内容与步骤：</span> 
+		 	  <textarea  type="textarea" name="yaoqiu" class="form-control"   style="resize: none;" required  rows="6">${param.content }</textarea>
+		 	<hr/>
+		 	 <span class="h4">实训工作计划与进度安排：</span> 
+		 	  <textarea  type="textarea" name="yaoqiu" class="form-control"   style="resize: none;" required  rows="6">${param.plan }</textarea>
+		 	 <hr/>
+		 	 <span class="h4">实训考核要求： </span>
+		 	  <textarea  type="textarea" name="yaoqiu" class="form-control"   style="resize: none;" required  rows="6">${param.requirement }</textarea>
+		 	 </div>
+			 	
+		    </div>
+		  </div>
+	</div> 
+</body>
+</html>

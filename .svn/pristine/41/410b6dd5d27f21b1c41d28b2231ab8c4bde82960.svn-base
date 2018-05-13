@@ -1,0 +1,96 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':true}"></toaster-container>
+<div class="bg-light lter b-b wrapper-sm col-sm-12"  style="float:left; ">
+    <div class=" col-sm-1" style="padding:6px 0">
+  	<span class="m-n font-thin h4 text-md" >教师管理</span>
+  </div>
+  <div  class=" pull-left col-sm-11">
+  
+   <div class="col-sm-7">
+   		<span ng-controller="ModalAddTea" class="pull-left ">
+          <script type="text/ng-template" id="myModalAddTea.html">
+            <div ng-include="'tpl/modal.addtea.html'"></div>
+          </script>
+          <button class="btn btn-md  btn-info" type="button" ng-click="open('md')">增加教师</button>      
+      </span>
+      <span ng-controller="ModalUploadTea" class="pull-left m-l-xs">
+          <script type="text/ng-template" id="myModalUploadTea.html">
+            <div ng-include="'tpl/modal.upload.tea.html'"></div>
+          </script>
+          <button class="btn btn-info" ng-click="open('lg')">批量增加</button>
+        </span>	
+   </div>
+      <form class="form-horizontal pull-right col-sm-3 no-padder" >
+	     	<div class="input-group">
+	     	  <input type="text" class="form-control input-md  no-border rounded padder" placeholder="教工号或者姓名" ng-model="search">
+		      <span class="input-group-btn ">
+		        <button class="btn btn-sm  rounded" type="button" ng-click="selectUser()" >
+		        	<i class="fa fa-search"></i>
+		        </button>
+		      </span>
+		     </div>
+         </form>
+  
+  </div>
+</div>
+<div class="m-t-xxs">
+  <table class="table table-bordered table-hover table-condensed bg-white-only t-c">
+    <tr style="font-weight: bold" class="success">
+    <td style="width:10%">序号</td>
+      <td style="width:10%">教工号</td>
+      <td style="width:15%">姓名</td>
+      <td style="width:15%">教研室</td>
+      <td style="width:15%">联系电话</td>
+      <td style="width:25%">操作</td>
+    </tr>
+    <tr ng-repeat="item in teachers" ng-class="{info: item.tno == {{newsInsert}} }">
+    <td class="v-middle">
+        <span>
+          {{$index+1}}
+        </span>
+      </td>
+    
+      <td class="v-middle">
+        <span e-name="tno" e-form="managerteaform" e-required>
+          {{ item.tno || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span editable-text="item.tname" e-name="tname" e-form="managerteaform"  e-required>
+          {{ item.tname || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <!-- editable status (select-local) -->
+   
+        <span editable-select="item.tdept" e-name="tdept" onshow="loaddeptGroups()" e-form="managerteaform" e-ng-options="t.codecontent as t.codecontent for t in deptgroups">
+          {{ showdeptGroup(item)   }}
+        </span> 
+      </td>
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span editable-text="item.tphone" e-name="tphone" e-form="managerteaform"  e-required>
+          {{ item.tphone || '' }}
+        </span>
+      </td>
+      <td style="white-space: nowrap">
+        <!-- form -->
+        <form editable-form name="managerteaform" onaftersave="saveUser($data, item.tno)" ng-show="managerteaform.$visible" class="form-buttons form-inline" shown="inserted == teachers">
+          <button type="submit" ng-disabled="managerteaform.$waiting" class="btn btn-sm btn-info">      
+            	确认
+          </button>
+          <button type="button" ng-disabled="managerteaform.$waiting" ng-click="managerteaform.$cancel()" class="btn btn-sm btn-default">
+           		取消
+          </button>
+        </form>
+        <div class="buttons" ng-show="!managerteaform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="managerteaform.$show()">编辑</button>
+          <button class="btn btn-sm btn-danger" ng-click="removeUser(item.tno)">删除</button>
+          <button class="btn btn-sm btn-default" ng-click="reset(item.tno)">初始化密码</button>
+        </div>  
+      </td>
+    </tr>
+  </table>
+  <ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+</div>
+
+

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.VacateDao">
+	<resultMap type="vacate" id="vacateResult">
+		<id column="v_id" property="v_id"/>
+		<result column="sno" property="sno"/>
+		<result column="v_strattime" property="v_strattime"/>
+		<result column="v_endtime" property="v_endtime"/>
+		<result column="v_leavetime" property="v_leavetime"/>
+		<result column="telphone" property="telphone"/>
+		<result column="v_reason" property="v_reason"/>
+		<result column="v_stayplace" property="v_stayplace"/>
+		<result column="pa_id" property="pa_id"/>
+		<result column="v_status" property="v_status"/>
+		<result column="v_confirmtime" property="v_confirmtime"/>
+		<result column="v_throughtime" property="v_throughtime"/>
+		<result column="v_backreason" property="v_backreason"/>
+		<association property="practiceappli" javaType="practiceappli" >
+    		<id column="pa_id" property="pa_id"/>
+    		<result column="sno" property="sno"/>
+    		<result column="pa_internname" property="pa_internname"/>
+    		<result column="pa_internreason" property="pa_internreason"/>
+    		<result column="pa_internplace" property="pa_internplace"/>
+    		<result column="pa_collteaname" property="pa_collteaname"/>
+    		<result column="pa_collteaposition" property="pa_collteaposition"/>
+    		<result column="pa_collteaphone" property="pa_collteaphone"/>
+    		<result column="tno" property="tno"/>
+    		<result column="ifgraduate" property="ifgraduate"/>
+    		<result column="sub_id" property="sub_id"/>
+    		<result column="uid" property="uid"/>
+		</association>
+		<association property="student" javaType="student" >
+    		<id column="sno" property="sno"/>
+    		<result column="sname" property="sname"/>
+    		<result column="sid" property="sid"/>
+    		<result column="ssex" property="ssex"/>
+    		<result column="semail" property="semail"/>
+    		<result column="sname" property="sname"/>
+    		<result column="sphone" property="sphone"/>
+    		<result column="sadress" property="sadress"/>
+    		<result column="sremark" property="sremark"/>
+    		<result column="cno" property="cno"/>
+		</association>
+		<association property="unit" javaType="unit" >
+    		<id column="uid" property="uid"/>
+    		<result column="uname" property="uname"/>
+    		<result column="uadress" property="uadress"/>
+    		<result column="uphone" property="uphone"/>   		
+    		<result column="uremark" property="uremark"/>
+    		<result column="uPeople" property="upeople"/>
+    		<result column="tno" property="tno"/>
+    		<result column="ucity" property="ucity"/>   		
+    		<result column="ustatus" property="ustatus"/>
+		</association>
+		<association property="teacher" javaType="teacher" >
+    		<id column="tno" property="tno"/>
+			<result column="tname" property="tname"/>
+			<result column="tsex" property="tsex"/>
+			<result column="tdept" property="tdept"/>
+			<result column="tpost" property="tpost"/>
+			<result column="tdegree" property="tdegree"/>
+			<result column="tstudy" property="tstudy"/>
+			<result column="temail" property="temail"/>
+			<result column="tphone" property="tphone"/>
+			<result column="tremark" property="tremark"/>
+		</association>
+		<association property="cla" javaType="cla" >
+    		<id column="cno" property="cno"/>
+			<result column="cname" property="cname"/>
+			
+		</association>
+		<association property="speciality" javaType="speciality" >
+    		<id column="specid" property="specid"/>
+			<result column="specname" property="specname"/>
+			
+		</association>
+	</resultMap>
+	<select id="findApply" parameterType="map" resultMap="vacateResult">
+		select * from vacate,practiceappli,teacher,unit,student,cla
+		<where>
+			<if test="sno !=null and sno !='' ">
+				 vacate.sno =#{sno}
+			</if>
+			<if test="tno !=null and tno !='' ">
+				and practiceappli.tno =#{tno}
+			</if>
+			<if test="v_status !=null and v_status!='' ">
+			     and vacate.v_status=#{v_status}
+			</if>
+			 and vacate.sno=student.sno and practiceappli.tno =teacher.tno and practiceappli.uid = unit.uid 
+		and vacate.pa_id=practiceappli.pa_id and student.cno =cla.cno order by  v_endtime desc
+		</where>
+		 
+	</select>
+	<select id="searchApply" parameterType="map" resultMap="vacateResult">
+		select * from vacate,practiceappli,teacher,unit,student,cla,speciality
+		<where>
+			<if test="v_status !=null and v_status!='' ">
+			      vacate.v_status=#{v_status}
+			</if>
+			<if test="cname !=null and cname !='' ">
+				and cla.cname =#{cname}
+			</if>
+			<if test="specname !=null and specname !='' ">
+				and speciality.specname =#{specname}
+			</if>		
+			<if test="tno !=null and tno !='' ">
+				and practiceappli.tno =#{tno}
+			</if>
+			<if test="tno2 !=null and tno2 !='' ">
+				and speciality.tno =#{tno2}
+			</if>
+			 and vacate.sno=student.sno and practiceappli.tno =teacher.tno and practiceappli.uid = unit.uid 
+		and vacate.pa_id=practiceappli.pa_id and student.cno =cla.cno and speciality.specid=cla.specid order by  v_endtime desc
+		</where>
+	</select>
+	<insert id="insertVacate" parameterType="vacate">
+		insert into vacate(sno,v_strattime,v_endtime,v_leavetime,telphone,v_reason,v_stayplace,pa_id,v_status) values
+		(#{sno},#{v_strattime},#{v_endtime},#{v_leavetime},#{telphone},#{v_reason},#{v_stayplace},#{pa_id},#{v_status})
+	</insert>
+	<update id="updateStaus" parameterType="vacate">
+		update vacate 
+		<set>
+			<if test="v_status !=null and v_status !='' ">
+					  v_status=#{v_status},
+			</if>
+			<if test="v_confirmtime !=null  ">
+					v_confirmtime=#{v_confirmtime},
+			</if>
+			<if test=" v_throughtime != null  ">
+			
+				v_throughtime=#{v_throughtime},
+			</if>
+			<if test=" v_backreason != null  ">
+			
+				v_backreason=#{v_backreason},
+			</if>
+		</set>
+		
+		 where v_id=#{v_id}
+	</update>
+	<delete id="deleteVacate" parameterType="vacate">
+		delete from vacate where v_id=#{v_id}
+	</delete>
+	<select id="getVacateByStudentId" parameterType="string" resultMap="vacateResult">
+		select * from vacate where sno=#{studentId} order by v_id limit 1;
+	</select>
+	
+	<select id="findById" parameterType="Integer" resultType="vacate">
+		select * from vacate where v_id=#{v_id}
+	</select>
+</mapper>

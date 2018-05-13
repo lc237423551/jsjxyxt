@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.PracticeappliDao">
+	<resultMap type="practiceappli" id="practiceappliResult">
+		<id column="pa_id" property="pa_id"/>
+    		<result column="sno" property="sno"/>
+    		<result column="pa_internname" property="pa_internname"/>
+    		<result column="pa_internreason" property="pa_internreason"/>
+    		
+    		<result column="pa_internplace" property="pa_internplace"/>
+    		<result column="pa_collteaname" property="pa_collteaname"/>
+    		<result column="pa_collteaposition" property="pa_collteaposition"/>
+    		<result column="pa_collteaphone" property="pa_collteaphone"/>
+    		<result column="tno" property="tno"/>
+    		<result column="ifgraduate" property="ifgraduate"/>
+    		<result column="sub_id" property="sub_id"/>
+    		<result column="uid" property="uid"/>
+		<association property="teacher" javaType="teacher" >
+    		<id column="tno" property="tno"/>
+			<result column="tname" property="tname"/>
+			<result column="tsex" property="tsex"/>
+			<result column="tdept" property="tdept"/>
+			<result column="tpost" property="tpost"/>
+			<result column="tdegree" property="tdegree"/>
+			<result column="tstudy" property="tstudy"/>
+			<result column="temail" property="temail"/>
+			<result column="tphone" property="tphone"/>
+			<result column="tremark" property="tremark"/>
+		</association>
+		<association property="student" javaType="student" >
+    		<id column="sno" property="sno"/>
+    		<result column="sname" property="sname"/>
+    		<result column="sid" property="sid"/>
+    		<result column="ssex" property="ssex"/>
+    		<result column="semail" property="semail"/>
+    		<result column="sname" property="sname"/>
+    		<result column="sphone" property="sphone"/>
+    		<result column="sadress" property="sadress"/>
+    		<result column="sremark" property="sremark"/>
+    		<result column="cno" property="cno"/>
+		</association>
+		<association property="unit" javaType="unit" >
+    		<id column="uid" property="uid"/>
+    		<result column="uname" property="uname"/>
+    		<result column="uadress" property="uadress"/>
+    		<result column="uphone" property="uphone"/>
+    		<result column="uremark" property="uremark"/>
+    		<result column="ucity" property="ucity"/>
+    		<result column="upeople" property="upeople"/>
+    		<result column="ustatus" property="ustatus"/>
+    		
+		</association>
+		
+	</resultMap>
+	<insert id="insertPracticeappli" parameterType="practiceappli" useGeneratedKeys="true" keyProperty="pa_id">
+		insert into practiceappli(sno,pa_internname,pa_internreason,pa_internplace,pa_collteaname,pa_collteaposition,pa_collteaphone,tno,ifgraduate,sub_id,uid) 
+		values(#{sno},#{pa_internname},#{pa_internreason},#{pa_internplace},#{pa_collteaname},#{pa_collteaposition},#{pa_collteaphone},#{tno},#{ifgraduate},#{sub_id},#{uid})
+	</insert>
+	<delete id="deletePracticeappli" parameterType="practiceappli">
+		delete from practiceappli where pa_id=#{pa_id}
+	</delete>
+	<update id="updatePracticeappli" parameterType="practiceappli" >
+		update practiceappli
+		<set>
+			<if test="  tno != null and  tno != ''"> tno = #{tno },</if>
+			<if test="  sub_id != null and  sub_id != ''"> sub_id = #{sub_id },</if>
+			<if test="  uid != null and  uid != ''"> uid = #{uid }</if>
+			
+		</set>
+		<where>
+			<if test=" sno != null and sno!='' ">sno=#{sno} </if>
+			<if test=" pa_id !=null and pa_id!='' ">and pa_id=#{pa_id}</if>
+			
+		</where>
+	</update>
+	<select id="findPractice" parameterType="practiceappli" resultType="Practiceappli">
+		select * from practiceappli 
+		<where>
+			<if test="pa_id !=null and pa_id!='' ">
+				 pa_id =#{pa_id}
+			</if>
+			<if test="uid !=null and uid!='' ">
+				and uid =#{uid}
+			</if>
+			
+		</where> 
+	</select>
+	<select id="selectPracticeappli" parameterType="string" resultType="Practiceappli">
+		select * from practiceappli where sno=#{studentId} order by pa_id limit 1;
+	</select>
+</mapper>

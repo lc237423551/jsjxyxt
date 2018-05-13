@@ -1,0 +1,63 @@
+/**
+ * 系统初始化
+ */
+angular.module('app').controller('initCtr',['$scope', '$http','toaster','$q', function($scope, $http, toaster, $q){
+	$scope.classes = [];
+	$scope.succ=false;
+    $scope.show=true;
+	$scope.show1=false;
+	$scope.show2=true;
+//    $scope.year=2018
+//    $scope.weekdate='2018-9-1'
+//    $scope.weekno=3
+	$scope.update={
+			weekdate:'2017-9-1',
+			weekno:3,
+			enddate:'2018-1-1'
+	}
+	
+	
+	 $scope.Reset = function() {
+    	$scope.isAlertShow = true;
+        var remove = $scope.$on('clickOk',function(event, data){
+        	var url="/jsjxyxt/syargu/reset.do";
+		    	$http.get(url).success(function(data){
+		    		if(data.result==1){
+						toaster.pop('error', '归档失败', '请到系统参数页面-修改系统初始化参数');
+						
+					}else{
+						toaster.pop('success', '系统提示', '归档成功');	
+						$scope.show1=true;
+						$scope.show=false;
+					}
+		    	})
+            }
+        )
+         $scope.$on('clickCanel',function(event, data){   
+        	    if(remove())
+        	    remove = null;
+                return;
+            }
+        )
+         $scope.$on('clickOk',function(event, data){   
+        	 if(remove())
+        	 remove = null;
+              return;
+          })
+    };
+    $scope.save=function(){
+    	var data={
+    			"weekdate":$scope.update.weekdate,
+    			"weekno":$scope.update.weekno,
+    			"enddate":$scope.update.enddate
+    	}
+    	var url="/jsjxyxt/syargu/reset1.do";
+    	$http.post(url,data).success(function(data){
+				toaster.pop('success', '系统提示', '系统初始化完成');	
+				$scope.show2=false;
+    	})
+    	
+    }
+    
+
+}])

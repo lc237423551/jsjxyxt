@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.SycodeDao">
+	<resultMap type="sycode" id="sycodeResult">
+		<id column="codeid" property="codeid"/>
+		<result column="codeno" property="codeno"/>
+		<result column="codename" property="codename"/>
+		<result column="codevalue" property="codevalue"/>
+		<result column="codecontent" property="codecontent"/>
+	</resultMap>
+	
+	<select id="findSycode" parameterType="sycode"  resultMap="sycodeResult">
+		 select * from sycode 
+		 <where>
+			<if test="codeno !=null and codeno!='' ">
+				and codeno like concat('%',#{codeno},'%')
+			</if>
+		</where>
+		order by codeno;
+	</select>
+	
+	<update id="updateSycode" parameterType="sycode" > 
+		update sycode
+		<set>
+			<if test="  codeno != null and  codeno != ''"> codeno = #{codeno },</if>
+			<if test="  codename != null and   codename != ''">  codename= #{ codename},</if>
+			<if test="  codevalue != null and   codevalue != ''">  codevalue= #{ codevalue},</if>
+			<if test="  codecontent != null and   codecontent != ''">  codecontent= #{ codecontent},</if>
+		</set>
+		where codeid = #{codeid}
+	</update>
+	
+	
+	<delete id="deleteSycode" parameterType="Integer" >
+	    delete from sycode where codeid=#{codeid};
+	</delete>
+	
+ 	<insert id="addSycode" parameterType="sycode">
+		insert into sycode(codeno,codename,codevalue,codecontent )values(#{codeno},#{codename},#{codevalue},#{codecontent});
+	</insert> 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

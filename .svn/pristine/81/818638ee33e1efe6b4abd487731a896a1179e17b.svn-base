@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.WeekworkDao">
+	<resultMap type="weekwork" id="weekworkResult">
+		<id column="sno" property="sno"/>
+		<id column="weeknum" property="weeknum"/>
+		<result column="summary" property="summary"/>
+		<result column="advise" property="advise"/>
+		<result column="arrange" property="arrange"/>
+		<result column="deal" property="deal"/>
+		<result column="evaluation" property="evaluation"/>
+		<result column="tab" property="tab"/>
+		<result column="wtime" property="wtime"/>
+		<association property="student" javaType="Student" >
+    	    <id column="sno" property="sno"/>
+			<result column="sname" property="sname"/>
+			<result column="ssex" property="ssex"/>
+			<result column="sid" property="sid"/>
+			<result column="semail" property="semail"/>
+			<result column="sphone" property="sphone"/>
+			<result column="sadress" property="sadress"/>
+			<result column="sremark" property="sremark"/>
+            <association property="cla" javaType="Cla" >
+			    <id column="cno" property="cno"/>
+			    <result column="cname" property="cname"/>
+				    <association property="speciality" javaType="Speciality" >
+				    	<id column="specid" property="specid"/>
+				    	<result column="specname" property="specname"/>
+					</association>
+			</association>
+		 </association>
+	</resultMap>
+	
+	
+	<select id="findWeekwork" parameterType="weekwork"  resultMap="weekworkResult">
+		        select * from student,speciality,cla,weekwork
+		 <where>
+		 	<if test="  sno != null and  sno != ''">
+		 	 and weekwork.sno=#{sno}
+		 	</if>
+		 	<if test="  weeknum != null and  weeknum != ''">
+		 	 and weeknum=#{weeknum}
+		 	</if>
+			and student.sno=weekwork.sno and student.cno=cla.cno and cla.specid=speciality.specid ;
+		</where>
+	</select>
+	
+	<select id="findCount" parameterType="String"  resultType="int" >
+		select count(*) from weekwork where sno=#{sno} and tab='1';
+	</select>
+	
+	<update id="updateWeekwork" parameterType="weekwork" > 
+		update weekwork
+		<set>
+			<if test="  summary != null and  summary != ''"> summary = #{summary },</if>
+			<if test="  advise != null and   advise != ''">  advise= #{ advise},</if>
+			<if test="  arrange != null and   arrange != ''">  arrange= #{ arrange},</if>
+			<if test="  deal != null and   deal != ''">  deal= #{ deal},</if>
+			<if test="  evaluation != null and   evaluation != ''">  evaluation= #{ evaluation},</if>
+			<if test="  tab != null and   tab != ''">  tab= #{ tab},</if>
+			<if test="  wtime != null and   wtime != ''">  wtime= #{ wtime},</if>
+		</set>
+		where sno = #{sno} and weeknum=#{weeknum}
+	</update>
+	<!-- 批量添加 -->
+	 <insert id="insertWeekwork" parameterType="java.util.List">
+        insert into weekwork(sno,weeknum,tab)values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sno},#{item.weeknum},#{item.tab})
+        </foreach>
+    </insert>
+	
+	
+</mapper>
+

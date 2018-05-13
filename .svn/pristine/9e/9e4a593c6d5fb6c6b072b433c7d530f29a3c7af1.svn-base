@@ -1,0 +1,80 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<ng-alert ng-show="isAlertShow" isClick="isAlertShow" ok_or_cancel="true_or_false" class="alert" ></ng-alert>
+<div class="bg-light wrapper-sm" style="overflow:hidden">
+  <div class=" pull-left" style="padding:6px 0">
+  	<span class="m-n font-thin h4" >班级管理</span>
+  </div>
+  <div  class=" pull-left col-md-11">
+    <span ng-controller="ModalAddclass" class="pull-left">
+	          <script type="text/ng-template" id="myModalAddclass.html">
+            <div ng-include="'tpl/modal.addclass.html'"></div>
+          </script>
+	          <button class="btn btn-info" ng-click="open('md')">增加班级</button>
+	    </span> 
+  </div>
+</div>
+ 
+<div class="m-t-xxs">
+  <table class="table table-bordered table-hover table-condensed bg-white-only t-c">
+    <tr style="font-weight: bold" class="success text-sm">
+     <td style="width:6%">序号</td>
+      <td style="width:15%">班级名称</td>
+      <td style="width:15%">专业</td>
+      <td style="width:15%">班主任</td>
+      <td style="width:12%">入学日期</td>
+      <td style="width:12%">毕业日期</td>
+      <td style="width:25%">操作</td>
+    </tr>
+    <tr ng-repeat="item in classes">
+    <td class="v-middle text-sm">
+      <span>
+          {{$index+1}}
+        </span>
+    </td>
+     
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span  e-name="cname" e-form="managerclassform"  e-required>
+          {{ item.cname || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <!-- editable username (text with validation) -->
+        <span  e-name="specname" e-form="managerclassform"  e-required>
+          {{ item.speciality.specname || '' }}
+        </span>
+      </td>
+      <td class="v-middle">   
+        <span editable-text="item.teacher.tno" e-name="tno" e-form="managerclassform"  e-required>
+          {{ item.teacher.tname || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span editable-text="item.start" e-name="start" e-form="managerclassform"  e-required>
+          {{ item.start || '' }}
+        </span>
+      </td>
+      <td class="v-middle">
+        <span editable-text="item.end" e-name="end" e-form="managerclassform"  e-required>
+          {{ item.end || '' }}
+        </span>
+      </td>
+      <td style="white-space: nowrap">
+        <!-- form -->
+        <form editable-form name="managerclassform" onaftersave="saveUser($data, item.cno)" ng-show="managerclassform.$visible" class="form-buttons form-inline" shown="inserted == classes">
+          <button type="submit" ng-disabled="managerclassform.$waiting" class="btn btn-sm btn-info">
+            	确认
+          </button>
+          <button type="button" ng-disabled="managerclassform.$waiting" ng-click="managerclassform.$cancel()" class="btn btn-sm btn-default">
+            	取消
+          </button>
+        </form>
+        <div class="buttons" ng-show="!managerclassform.$visible">
+          <button class="btn btn-sm btn-info" ng-click="managerclassform.$show()">编辑</button>
+          <button class="btn btn-sm btn-danger" ng-click="removeUser(item.cno)">删除</button>
+        </div>  
+      </td>
+    </tr>
+  </table>
+</div>
+

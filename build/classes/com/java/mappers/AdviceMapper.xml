@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.java.dao.AdviceDao">
+	<resultMap type="advice" id="adviceResult">
+		<id column="advice_id" property="advice_id"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="publishDate" property="publishDate"/>
+		<result column="filename" property="filename"/>
+		<result column="users" property="users"/>
+		<association property="user" javaType="user" >
+    		<id column="users" property="users"/>
+    		<result column="username" property="username"/>
+		</association>
+	</resultMap>
+	<select id="findAdvice" parameterType="advice"  resultMap="adviceResult">
+		        select * from advice,user
+		 <where>
+			<if test="username!=null and username!='' ">
+				and username like concat('%',#{username},'%')
+			</if>
+			   and advice.users=user.users;
+		</where>
+		       
+	</select>
+	
+	<update id="updateAdvice" parameterType="advice"  >
+		update advice
+		<set>
+			<if test=" content != null and content != ''"> content= #{content},</if>
+		</set>
+		where advice_id = #{advice_id}
+	</update>
+	<delete id="deleteAdvice" parameterType="String">
+	 	<!-- 删除学生 -->	
+		delete from advice where advice_id=#{advice_id};
+	</delete>
+	
+	<insert id="insertAdvice" parameterType="advice" >
+		insert into advice(title,content,publishDate,users,filename) values(#{title},#{content},now(),#{users},#{filename});
+	</insert>
+	
+</mapper>

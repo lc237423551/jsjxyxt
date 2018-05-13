@@ -1,0 +1,56 @@
+<!-- 实训指导教师界面 -->
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="wrapper-sm ">
+	<div class="col-sm-12">
+	<div class=" pull-left" style="padding:6px 0">
+  		<span class="m-n font-thin h4" >导出文档(周总结和实训任务书)</span>
+  	</div>
+		<a href="/jsjxyxt/importWeekwork/down.do?snos={{nums}}"  ><button  popover="导出所选学生的周总结" popover-placement="bottom" popover-trigger="mouseenter" class="btn btn-success  m-l pull-right"><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;导出周总结</button></a>
+   <a href="/jsjxyxt/importRenwushu/down.do?snos={{nums}}"  ><button  popover="导出所选学生的实训任务书" popover-placement="bottom" popover-trigger="mouseenter" class="btn btn-info  pull-right"><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;导出实训任务书</button></a>
+   </div>
+ <div class="m-t-xxl">
+  <table class="table table-bordered table-hover table-condensed bg-white-only ">
+    <tr style="font-weight: bold" class="success text-center">
+      <td style="width:5%"><label class="i-checks i-checks-sm">
+	    <input type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)"><i></i>
+	      </label></td>
+      <td style="width:5%"></td>
+      <td style="width:10%">班级</td>
+      <td style="width:10%">学号</td>
+      <td style="width:10%">姓名</td>
+      
+      <td style="width:10%">指导老师</td>
+      <td style="width:17%">实训题目</td>
+    </tr>
+    <tr ng-repeat="item in students" class="{{checkChange}}">
+     <td class="v-middle">
+	      <label class="i-checks i-checks-sm">
+            <input type="checkbox" ng-model="item.completed" ng-change="todoCompleted(item)"><i></i>
+          </label>
+      </td>
+      <td class="v-middle">
+        <small>{{$index+1}}</small>
+      </td>
+       <td class="v-middle">
+        <small>{{item.student.cla.cname}}</small>
+      </td>
+      <td class="v-middle">
+        <small>{{item.student.sno}}</small>
+      </td>
+      <td class="v-middle">
+        <small>{{item.student.sname}}</small>
+      </td>
+     
+      <td class="v-middle">
+        <small>{{item.teacher.tname}}</small>
+      </td>
+      <td class="v-middle">
+        <small>{{item.subjectname.name}}</small>
+      </td>
+           
+    </tr>
+  </table>
+
+</div>
+
+ </div>

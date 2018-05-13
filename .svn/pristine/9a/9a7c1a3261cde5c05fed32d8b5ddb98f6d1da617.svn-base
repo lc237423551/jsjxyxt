@@ -1,0 +1,13 @@
+app.controller('AnnouncementShowCtrl', ['$scope', '$filter', '$http', '$timeout', 'editableOptions', 'editableThemes','$filter', '$window', '$q', 
+  function($scope, $filter, $http, $timeout, editableOptions, editableThemes, $filter, $window, $q){
+    editableThemes.bs3.inputClass = 'input-sm';
+    editableThemes.bs3.buttonsClass = 'btn-sm';
+    editableOptions.theme = 'bs3';
+  //获取所有公告
+    $http.get('/jsjxyxt/advice/get.do').success(function(data){
+    	$scope.advices = data.result;
+    	$scope.nums=data.nums
+    })
+    
+}]);
+

@@ -1,0 +1,45 @@
+<draggable></draggable>
+<div class="modal-body wrapper bg-light"  >
+
+  <div class="row">
+    <div class="col-sm-12 ">
+    <span class="glyphicon glyphicon-remove pull-right" ng-click="closeModal($event)"></span>
+      <h3 class="m-t-none m-b b-b ">增加专业</h3>
+      <form  name="form" class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">专业代码:</label>
+          <div class="col-sm-9 p-r">
+          	<input type="text" class="form-control" name="specid" placeholder="请输入正确的代码" ng-model="spec.specid" required ng-mousedown="clearDown($event)">
+	          <span class="required text-danger text-lg">*</span>
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.specid.$dirty && form.specid.$valid"></span> 
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">专业名称:</label>
+          <div class="col-sm-9 p-r">
+          	<input type="text" class="form-control" placeholder="请输入正确的专业名称" name="specname" pattern="^[\u4E00-\u9FFF]+$" ng-model="spec.specname" required ng-mousedown="clearDown($event)">
+	          <span class="glyphicon glyphicon-ok text-success inputright-sm" ng-show=" form.specname.$dirty && form.specname.$valid"></span> 
+	          <span class="required text-danger text-lg">*</span>
+	          <span class="text-danger p-t block" ng-show=" form.specname.$dirty && form.specname.$invalid">此项必填</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3 row">专业负责人:</label>
+          <div class="col-sm-9">
+          	      <ui-select ng-model="spec.teacher" theme="bootstrap" required ng-mousedown="clearDown($event)">
+		            <ui-select-match placeholder="选择或搜索教师">{{$select.selected.tname}}</ui-select-match>
+		            <ui-select-choices group-by="'group'" repeat="item in teachers | filter: $select.search">
+		              <span ng-bind-html="item.tname | highlight: $select.search"></span>
+		              <small ng-bind-html="item.telphone | highlight: $select.search" ></small>
+		            </ui-select-choices>
+		          </ui-select>	
+		          <span class="required text-danger text-lg">*</span>
+          </div>
+        </div>            
+         <button type="sumbit" class="btn btn-md btn-success pull-right text-uc m-t m-l n-xs" ng-click="saveSpec(form)" ><strong>添加</strong></button>
+      	  <button type="reset" class="btn btn-md btn-warning pull-right text-uc m-t n-xs" ng-click="reset(form)"><strong>重置</strong></button>	
+      </form>
+      
+    </div>
+  </div>
+</div>
